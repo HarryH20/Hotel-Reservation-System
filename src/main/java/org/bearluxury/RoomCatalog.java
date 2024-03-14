@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RoomCatalog {
+class RoomCatalog {
     private List<Room> rooms = new ArrayList<>();
 
     public List<Room> getRooms() {

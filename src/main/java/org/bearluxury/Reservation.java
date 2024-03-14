@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Reservation {
+class Reservation {
     private Date startDate;
     private Date endDate;
     private double discount  = 1.0;
