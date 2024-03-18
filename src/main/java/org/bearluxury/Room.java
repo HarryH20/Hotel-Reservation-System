@@ -30,11 +30,11 @@ class Room {
     private boolean canSmoke;
     private double price;
     private TYPE roomType;
-    private List<BED_TYPE> bed = new ArrayList<>();
+    private BED_TYPE bed;
     private QUALITY_LEVEL qualityLevel;
 
     public Room(int roomNumber, boolean canSmoke, double price,
-                TYPE roomType, List<BED_TYPE> bed, QUALITY_LEVEL qualityLevel) {
+                TYPE roomType, BED_TYPE bed, QUALITY_LEVEL qualityLevel) {
         this.roomNumber = roomNumber;
         // this.isClean = isClean;
         this.canSmoke = canSmoke;
