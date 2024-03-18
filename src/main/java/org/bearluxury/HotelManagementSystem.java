@@ -1,7 +1,14 @@
 package org.bearluxury;
 
+import org.jdatepicker.JDatePanel;
+import org.jdatepicker.JDatePicker;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.Properties;
 
 public class HotelManagementSystem extends JFrame {
 
@@ -26,24 +33,31 @@ public class HotelManagementSystem extends JFrame {
         setIconImage(icon.getImage());
 
         JPanel northPanel = new JPanel();
-        northPanel.setPreferredSize(new Dimension(northPanel.getPreferredSize().width, 200));
         northPanel.setBackground(backgroundColor);
+        northPanel.setLayout(new GridLayout(2, 2, 10, 10));
 
-        ImageIcon logo = new ImageIcon("bbl-logo.png");
+        JLabel checkInLabel = new JLabel("Check in", SwingConstants.CENTER);
+        checkInLabel.setForeground(blackColor);
+        JLabel checkOutLabel = new JLabel("Check out", SwingConstants.CENTER);
+        checkOutLabel.setForeground(blackColor);
 
-        JLabel logoLabel = new JLabel();
-        logoLabel.setIcon(logo);
-        northPanel.add(logoLabel);
+        northPanel.add(checkInLabel);
+        northPanel.add(checkOutLabel);
+
+        JFormattedTextField checkInField = new JFormattedTextField(new java.text.SimpleDateFormat("E, MMM dd yyyy"));
+        checkInField.setValue(new java.util.Date());
+        JFormattedTextField checkOutField = new JFormattedTextField(new java.text.SimpleDateFormat("E, MMM dd yyyy"));
+        checkOutField.setValue(new java.util.Date());
+
+        northPanel.add(checkInField);
+        northPanel.add(checkOutField);
 
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(backgroundColor);
-        centerPanel.setLayout(new GridLayout(2, 2, 1, 1));
-        //centerPanel.setBorder(BorderFactory.createLineBorder(Color.black, 1));
+        centerPanel.setLayout(new GridLayout(2, 2, 10, 10));
 
-        JLabel guestsLabel = new JLabel("Beds", SwingConstants.CENTER);
+        JLabel guestsLabel = new JLabel("Guests", SwingConstants.CENTER);
         guestsLabel.setForeground(blackColor);
-        guestsLabel.setFont(new Font("Gill Sans", Font.PLAIN, 50));
-
         JLabel roomsLabel = new JLabel("Rooms", SwingConstants.CENTER);
         roomsLabel.setForeground(blackColor);
 
@@ -73,18 +87,14 @@ public class HotelManagementSystem extends JFrame {
         centerPanel.add(guestsPanel);
         centerPanel.add(roomsPanel);
 
-        JPanel eastPanel = new JPanel();
-        eastPanel.setBackground(backgroundColor);
-        eastPanel.setPreferredSize(new Dimension(200, eastPanel.getPreferredSize().height));
-
-        JPanel westPanel = new JPanel();
-        westPanel.setBackground(backgroundColor);
-        westPanel.setPreferredSize(new Dimension(200, westPanel.getPreferredSize().height));
+        JButton checkAvailabilityButton = new JButton("Check Availability");
+        checkAvailabilityButton.setBackground(blackColor);
+        checkAvailabilityButton.setOpaque(true);
+        checkAvailabilityButton.setBorderPainted(false);
 
         add(northPanel, BorderLayout.NORTH);
-        add(eastPanel, BorderLayout.EAST);
-        add(westPanel, BorderLayout.WEST);
         add(centerPanel, BorderLayout.CENTER);
+        add(checkAvailabilityButton, BorderLayout.SOUTH);
     }
 
     public static void main(String[] args) {
