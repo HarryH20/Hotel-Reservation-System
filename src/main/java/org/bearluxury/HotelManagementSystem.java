@@ -1,23 +1,14 @@
 package org.bearluxury;
 
-import org.jdatepicker.JDatePanel;
-import org.jdatepicker.JDatePicker;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
-
 import javax.swing.*;
 import java.awt.*;
-import java.util.Properties;
 
 public class HotelManagementSystem extends JFrame {
 
     ImageIcon icon;
     Color backgroundColor = new Color(232,223,185,255);
     Color blackColor = new Color(1,12,15,255);
-    Color goldColor = new Color(170,141,71,255);
-
-    Font f1 = new Font(Font.SANS_SERIF, Font.BOLD, 10);
+    //Color goldColor = new Color(170,141,71,255);
 
     public HotelManagementSystem() {
         setTitle("Bear Luxury");
