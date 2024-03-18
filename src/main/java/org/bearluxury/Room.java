@@ -3,26 +3,26 @@ package org.bearluxury;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Room {
-    public enum TYPE{
-        VINTAGE_CHARM,
-        URBAN_ELEGANCE,
-        NATURE_RETREAT
+enum TYPE{
+    VINTAGE_CHARM,
+    URBAN_ELEGANCE,
+    NATURE_RETREAT
 
 
-    }
-    public enum BED_TYPE{
-        QUEEN,
-        KING,
-        FULL,
-        TWIN
-    }
-    public enum QUALITY_LEVEL{
-        EXECUTIVE,
-        BUISNESS,
-        COMFORT,
-        ECONOMY
-    }
+}
+enum BED_TYPE{
+    QUEEN,
+    KING,
+    FULL,
+    TWIN
+}
+enum QUALITY_LEVEL{
+    EXECUTIVE,
+    BUISNESS,
+    COMFORT,
+    ECONOMY
+}
+class Room {
     private int roomNumber;
     private boolean isClean;
     private boolean canSmoke;
@@ -83,6 +83,7 @@ public class Room {
     public void setPrice(double price) {
         this.price = price;
     }
+
 
 
 }
