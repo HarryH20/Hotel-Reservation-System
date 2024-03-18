@@ -24,20 +24,20 @@ enum QUALITY_LEVEL{
 }
 class Room {
     private int roomNumber;
-    private boolean isClean;
+
+    // not necessary
+    // private boolean isClean;
     private boolean canSmoke;
-    private boolean isOpen;
     private double price;
     private TYPE roomType;
     private List<BED_TYPE> bed = new ArrayList<>();
     private QUALITY_LEVEL qualityLevel;
 
-    public Room(int roomNumber, boolean isClean, boolean canSmoke, boolean isOpen, double price,
+    public Room(int roomNumber, boolean canSmoke, double price,
                 TYPE roomType, List<BED_TYPE> bed, QUALITY_LEVEL qualityLevel) {
         this.roomNumber = roomNumber;
-        this.isClean = isClean;
+        // this.isClean = isClean;
         this.canSmoke = canSmoke;
-        this.isOpen = isOpen;
         this.price = price;
         this.roomType = roomType;
         this.bed = bed;
@@ -52,28 +52,12 @@ class Room {
         this.roomNumber = roomNumber;
     }
 
-    public boolean isClean() {
-        return isClean;
-    }
-
-    public void setClean(boolean clean) {
-        isClean = clean;
-    }
-
     public boolean isCanSmoke() {
         return canSmoke;
     }
 
     public void setCanSmoke(boolean canSmoke) {
         this.canSmoke = canSmoke;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public void setOpen(boolean open) {
-        isOpen = open;
     }
 
     public double getPrice() {
