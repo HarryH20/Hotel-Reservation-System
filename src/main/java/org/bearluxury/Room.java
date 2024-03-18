@@ -33,7 +33,7 @@ class Room {
     private BED_TYPE bed;
     private QUALITY_LEVEL qualityLevel;
 
-    public Room(int roomNumber, boolean canSmoke, double price,
+    public Room(int roomNumber, double price, boolean canSmoke,
                 TYPE roomType, BED_TYPE bed, QUALITY_LEVEL qualityLevel) {
         this.roomNumber = roomNumber;
         // this.isClean = isClean;
