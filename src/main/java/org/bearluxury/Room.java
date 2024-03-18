@@ -3,7 +3,7 @@ package org.bearluxury;
 import java.util.ArrayList;
 import java.util.List;
 
-enum TYPE{
+enum ROOM_TYPE{
     VINTAGE_CHARM,
     URBAN_ELEGANCE,
     NATURE_RETREAT
@@ -29,12 +29,12 @@ class Room {
     // private boolean isClean;
     private boolean canSmoke;
     private double price;
-    private TYPE roomType;
+    private ROOM_TYPE roomType;
     private BED_TYPE bed;
     private QUALITY_LEVEL qualityLevel;
 
     public Room(int roomNumber, double price, boolean canSmoke,
-                TYPE roomType, BED_TYPE bed, QUALITY_LEVEL qualityLevel) {
+                ROOM_TYPE roomType, BED_TYPE bed, QUALITY_LEVEL qualityLevel) {
         this.roomNumber = roomNumber;
         // this.isClean = isClean;
         this.canSmoke = canSmoke;
