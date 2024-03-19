@@ -22,37 +22,30 @@ public class AvaliableRoomsGUI extends JFrame {
 
         // Create table model with data
         String[] columnNames = {"Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
-        Object[][] data;
 
 
         List<Room> rooms = roomCatalog.getRooms();
+        DefaultTableModel model = fillColumns(new DefaultTableModel(),columnNames);
+        fillRows(rooms,model);
 
-        DefaultTableModel model = new DefaultTableModel(columnNames,0);
-        for (Room room : rooms) {
-            model.addRow(new Object[]{
-//                    room.getRoomNumber(),
-//                    room.getPrice(),
-//                    room.isCanSmoke() ? "Yes" : "No",
-//                    room.getRoomType(),
-//                    room.getBed(),
-//                    room.getQualityLevel(),
-//                    room.getNumberOfBeds()
-            });
-        }
-
-        JTable table = new JTable(model);
-        table.setBackground(Color.BLACK);
+        JTable table = new JTable(model){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table.setBackground(Color.WHITE);
         table.getTableHeader().setBackground(tableHeaderColor);
-        table.getTableHeader().setForeground(Color.WHITE);
+        table.getTableHeader().setForeground(Color.BLACK);
         table.getTableHeader().setFont(tableHeaderFont);
-        table.setGridColor(Color.WHITE);
+        table.setGridColor(Color.BLACK);
         table.setFillsViewportHeight(true);
 
 
         table.setFont(tableFont);
         table.setRowHeight(30);
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-        cellRenderer.setForeground(Color.WHITE);
+        cellRenderer.setForeground(Color.BLACK);
         table.setDefaultRenderer(Object.class, cellRenderer);
 
         JScrollPane scrollPane = new JScrollPane(table);
@@ -64,15 +57,38 @@ public class AvaliableRoomsGUI extends JFrame {
         panel.add(scrollPane, BorderLayout.CENTER);
 
         JButton reservationButton = new JButton("Make Reservation");
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(backgroundColor);
-        buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        buttonPanel.add(reservationButton);
+        reservationButton.setPreferredSize(new Dimension(200, 50));
+        reservationButton.setMargin(new Insets(10, 20, 10, 20));
+        reservationButton.setFont(new Font("Arial", Font.BOLD, 20));
+        reservationButton.setForeground(Color.BLACK);
+
+        JPanel buttonWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonWrapperPanel.setBackground(backgroundColor);
+        buttonWrapperPanel.add(reservationButton);
 
         getContentPane().setBackground(backgroundColor);
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panel, BorderLayout.CENTER);
+        getContentPane().add(buttonWrapperPanel, BorderLayout.SOUTH);
 
 
+    }
+    private void fillRows(List<Room> rooms, DefaultTableModel model){
+        for (Room room : rooms) {
+            model.addRow(new Object[]{
+                    room.getRoomType(),
+                    room.getPrice(),
+                    room.getQualityLevel(),
+                    room.getNumberOfBeds(),
+                    room.getBed(),
+                    room.isCanSmoke() ? "Yes" : "No"
+
+            });
+        }
+
+    }
+    private DefaultTableModel fillColumns(DefaultTableModel model, String[] columns){
+        model = new DefaultTableModel(columns,0);
+        return model;
     }
 }
