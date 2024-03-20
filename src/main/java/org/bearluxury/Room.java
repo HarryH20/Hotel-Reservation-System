@@ -18,7 +18,7 @@ enum BED_TYPE{
 }
 enum QUALITY_LEVEL{
     EXECUTIVE,
-    BUISNESS,
+    BUSINESS,
     COMFORT,
     ECONOMY
 }
