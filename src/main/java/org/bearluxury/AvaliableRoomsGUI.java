@@ -5,6 +5,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +42,10 @@ public class AvaliableRoomsGUI extends JFrame {
         table.getTableHeader().setFont(tableHeaderFont);
         table.setGridColor(Color.BLACK);
         table.setFillsViewportHeight(true);
-
-
         table.setFont(tableFont);
         table.setRowHeight(30);
+
+
         DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setForeground(Color.BLACK);
         table.setDefaultRenderer(Object.class, cellRenderer);
@@ -61,6 +63,7 @@ public class AvaliableRoomsGUI extends JFrame {
         reservationButton.setMargin(new Insets(10, 20, 10, 20));
         reservationButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservationButton.setForeground(Color.BLACK);
+        reservationButton.addActionListener(new ReservationFormOpener());
 
         JPanel buttonWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonWrapperPanel.setBackground(backgroundColor);
@@ -90,5 +93,13 @@ public class AvaliableRoomsGUI extends JFrame {
     private DefaultTableModel fillColumns(DefaultTableModel model, String[] columns){
         model = new DefaultTableModel(columns,0);
         return model;
+    }
+
+}
+class ReservationFormOpener implements ActionListener{
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        HotelManagementSystem.openReservationPane();
     }
 }

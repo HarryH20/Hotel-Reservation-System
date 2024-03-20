@@ -106,19 +106,30 @@ public class HotelManagementSystem extends JFrame {
         add(reservePanel, BorderLayout.SOUTH);
     }
 
+
+    public static void openRoomCatalogPane(){
+        RoomCatalog roomCatalog = new RoomCatalog();
+        roomCatalog.setRooms(new RoomBuilder("RoomList.csv").getRoomList());
+        AvaliableRoomsGUI display = new AvaliableRoomsGUI(roomCatalog);
+        display.setVisible(true);
+
+    }
+
     /*
     * Added this method to open the reservation panel.
     * Can help with being able to have a reserve button on
     * multiple different panes
     */
-    private void openReservationPane() {
+    public static void openReservationPane() {
         ReservationPane reservationPane = new ReservationPane();
         reservationPane.setVisible(true);
     }
     public static void main(String[] args) {
         HotelManagementSystem window = new HotelManagementSystem();
+        HotelManagementSystem.openRoomCatalogPane();
         window.setVisible(true);
     }
+
 }
 
 /*
