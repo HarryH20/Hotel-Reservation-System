@@ -123,7 +123,8 @@ public class HotelManagementSystem extends JFrame {
 
 /*
 * This is the class for the reservation pane is not completed.
-* Attempting to make it work with a calendar need new maven dependacies
+* Attempting to make it work with a calendar need new maven dependacies.
+* It is in its own seperate class and called by openReservationPane().
 */
 class ReservationPane extends JFrame implements ActionListener {
     private JTextField roomId;
