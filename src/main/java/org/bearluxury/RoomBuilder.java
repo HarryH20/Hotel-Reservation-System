@@ -13,7 +13,7 @@ class RoomBuilder {
     RoomBuilder(String csvName){
         roomList = new ArrayList<>();
         File file = new File(csvName);
-        BufferedReader reader;
+        BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
             String line;
@@ -34,6 +34,14 @@ class RoomBuilder {
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
         }
     }
     ArrayList<Room> getRoomList(){
