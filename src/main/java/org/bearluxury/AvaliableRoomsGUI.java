@@ -124,6 +124,6 @@ class ReservationFormOpener implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        HotelManagementSystem.openReservationPane();
+        //HotelManagementSystem.openReservationPane();
     }
 }
