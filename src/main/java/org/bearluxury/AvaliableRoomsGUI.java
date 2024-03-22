@@ -120,10 +120,14 @@ public class AvaliableRoomsGUI extends JFrame {
     }
 
 }
-class ReservationFormOpener implements ActionListener{
 
+class ReservationFormOpener implements ActionListener{
+    private static void openReservationForm(){
+        ReservationPane pane = new ReservationPane();
+        pane.setVisible(true);
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
-        //HotelManagementSystem.openReservationPane();
+        ReservationFormOpener.openReservationForm();
     }
 }

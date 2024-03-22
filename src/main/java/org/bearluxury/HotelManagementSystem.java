@@ -225,8 +225,18 @@ public class HotelManagementSystem extends JFrame implements DateChangeListener,
             System.out.println("Check out date: " + checkOutDate);
             System.out.println("Number of beds: " + numBeds);
             System.out.println("Number of rooms: " + numRooms);
+            dispose();
+            HotelManagementSystem.openRoomCatalogPane(numBeds);
         }
+
     }
+    private static void openRoomCatalogPane(int beds){
+        RoomCatalog rooms = new RoomCatalog();
+        rooms.setRooms(new RoomBuilder("RoomList.csv").getRoomList());
+        AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds);
+        catalogPane.setVisible(true);
+    }
+
 
     public static void main(String[] args) {
         FlatLightLaf.setup();
