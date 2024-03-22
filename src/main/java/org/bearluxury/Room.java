@@ -3,7 +3,7 @@ package org.bearluxury;
 import java.util.ArrayList;
 import java.util.List;
 
-enum TYPE{
+enum ROOM_TYPE{
     VINTAGE_CHARM,
     URBAN_ELEGANCE,
     NATURE_RETREAT
@@ -18,29 +18,55 @@ enum BED_TYPE{
 }
 enum QUALITY_LEVEL{
     EXECUTIVE,
-    BUISNESS,
+    BUSINESS,
     COMFORT,
     ECONOMY
 }
 class Room {
     private int roomNumber;
-    private boolean isClean;
-    private boolean canSmoke;
-    private boolean isOpen;
-    private double price;
-    private TYPE roomType;
-    private List<BED_TYPE> bed = new ArrayList<>();
-    private QUALITY_LEVEL qualityLevel;
 
-    public Room(int roomNumber, boolean isClean, boolean canSmoke, boolean isOpen, double price,
-                TYPE roomType, List<BED_TYPE> bed, QUALITY_LEVEL qualityLevel) {
+    // not necessary
+    // private boolean isClean;
+    private boolean canSmoke;
+    private double price;
+    private ROOM_TYPE roomType;
+    private BED_TYPE bed;
+    private QUALITY_LEVEL qualityLevel;
+    private int numberOfBeds;
+
+    public Room(int roomNumber, double price, boolean canSmoke,
+                ROOM_TYPE roomType, BED_TYPE bed, QUALITY_LEVEL qualityLevel, int numberOfBeds) {
         this.roomNumber = roomNumber;
-        this.isClean = isClean;
+        // this.isClean = isClean;
         this.canSmoke = canSmoke;
-        this.isOpen = isOpen;
         this.price = price;
         this.roomType = roomType;
         this.bed = bed;
+        this.qualityLevel = qualityLevel;
+        this.numberOfBeds = numberOfBeds;
+    }
+
+    public ROOM_TYPE getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(ROOM_TYPE roomType) {
+        this.roomType = roomType;
+    }
+
+    public BED_TYPE getBed() {
+        return bed;
+    }
+
+    public void setBed(BED_TYPE bed) {
+        this.bed = bed;
+    }
+
+    public QUALITY_LEVEL getQualityLevel() {
+        return qualityLevel;
+    }
+
+    public void setQualityLevel(QUALITY_LEVEL qualityLevel) {
         this.qualityLevel = qualityLevel;
     }
 
@@ -52,28 +78,12 @@ class Room {
         this.roomNumber = roomNumber;
     }
 
-    public boolean isClean() {
-        return isClean;
-    }
-
-    public void setClean(boolean clean) {
-        isClean = clean;
-    }
-
     public boolean isCanSmoke() {
         return canSmoke;
     }
 
     public void setCanSmoke(boolean canSmoke) {
         this.canSmoke = canSmoke;
-    }
-
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public void setOpen(boolean open) {
-        isOpen = open;
     }
 
     public double getPrice() {
@@ -84,6 +94,11 @@ class Room {
         this.price = price;
     }
 
+    public int getNumberOfBeds() {
+        return numberOfBeds;
+    }
 
-
+    public void setNumberOfBeds(int numberOfBeds) {
+        this.numberOfBeds = numberOfBeds;
+    }
 }
