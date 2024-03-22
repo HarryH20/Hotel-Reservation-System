@@ -25,7 +25,7 @@ public class AvaliableRoomsGUI extends JFrame {
         setLocationRelativeTo(null);
 
         // Create table model with data
-        String[] columnNames = {"Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
+        String[] columnNames = {"Room ID","Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
 
 
         List<Room> rooms = roomCatalog.getRooms();
@@ -90,6 +90,7 @@ public class AvaliableRoomsGUI extends JFrame {
             for (Room room : rooms) {
                 if (room.getNumberOfBeds() >= beds) {
                     model.addRow(new Object[]{
+                            room.getRoomNumber(),
                             room.getRoomType(),
                             room.getPrice(),
                             room.getQualityLevel(),
