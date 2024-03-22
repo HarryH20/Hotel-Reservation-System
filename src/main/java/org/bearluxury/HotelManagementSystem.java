@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
+//Window
 public class HotelManagementSystem extends JFrame implements DateChangeListener, ActionListener {
 
     ImageIcon icon;
