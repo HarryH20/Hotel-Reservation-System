@@ -17,17 +17,18 @@ class RoomBuilder {
         try {
             reader = new BufferedReader(new FileReader(file));
             String line;
+            reader.readLine();
             while ((line = reader.readLine() ) != null) {
                 String[] parsedLine = line.split(",");
 
                 Room room = new Room(
                         Integer.parseInt(parsedLine[0]),
                         Double.parseDouble(parsedLine[1]),
-                        Boolean.parseBoolean(parsedLine[2]),
-                        readAsRoomType(parsedLine[3]),
-                        readAsBedType(parsedLine[4]) ,
-                        readAsQualityLevel(parsedLine[5]),
-                        Integer.parseInt(parsedLine[6]));
+                        Boolean.parseBoolean(parsedLine[5]),
+                        readAsRoomType(parsedLine[2]),
+                        readAsBedType(parsedLine[6]) ,
+                        readAsQualityLevel(parsedLine[3]),
+                        Integer.parseInt(parsedLine[4]));
 
                 roomList.add(room);
             }
@@ -46,6 +47,6 @@ class RoomBuilder {
         return BED_TYPE.TWIN;
     }
     QUALITY_LEVEL readAsQualityLevel(String str){
-        return QUALITY_LEVEL.BUISNESS;
+        return QUALITY_LEVEL.BUSINESS;
     }
 }

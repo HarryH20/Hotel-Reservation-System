@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class AvaliableRoomsGUI extends JFrame {
@@ -16,7 +18,7 @@ public class AvaliableRoomsGUI extends JFrame {
     Color tableHeaderColor = new Color(184, 134, 11);
     Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     Font tableFont = new Font("Arial", Font.BOLD,16);
-    AvaliableRoomsGUI(RoomCatalog roomCatalog) {
+    AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds) {
         setTitle("Room Catalog");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -27,8 +29,9 @@ public class AvaliableRoomsGUI extends JFrame {
 
 
         List<Room> rooms = roomCatalog.getRooms();
+
         DefaultTableModel model = fillColumns(new DefaultTableModel(),columnNames);
-        fillRows(rooms,model);
+        fillRows(rooms,model,beds);
 
         JTable table = new JTable(model){
             @Override
@@ -76,17 +79,38 @@ public class AvaliableRoomsGUI extends JFrame {
 
 
     }
-    private void fillRows(List<Room> rooms, DefaultTableModel model){
-        for (Room room : rooms) {
-            model.addRow(new Object[]{
-                    room.getRoomType(),
-                    room.getPrice(),
-                    room.getQualityLevel(),
-                    room.getNumberOfBeds(),
-                    room.getBed(),
-                    room.isCanSmoke() ? "Yes" : "No"
+    private void fillRows(List<Room> rooms, DefaultTableModel model, int beds){
+        int maxBeds= rooms.stream()
+                .max(Comparator.comparingInt(Room::getNumberOfBeds))
+                .map(Room::getNumberOfBeds).orElseThrow(() -> new IllegalArgumentException("List is empty"));
+        try {
+            if(beds <= 0 || beds > maxBeds){
+                throw new IllegalArgumentException();
+            }
+            for (Room room : rooms) {
+                if (room.getNumberOfBeds() >= beds) {
+                    model.addRow(new Object[]{
+                            room.getRoomType(),
+                            room.getPrice(),
+                            room.getQualityLevel(),
+                            room.getNumberOfBeds(),
+                            room.getBed(),
+                            room.isCanSmoke() ? "Yes" : "No"
 
-            });
+                    });
+                }
+            }
+        }catch (IllegalArgumentException exe){
+            int option = JOptionPane.showConfirmDialog(null,
+                    "It looks like the bed selection must be within the range of 1 and " + maxBeds +
+                            ".\nIf you'd like to explore our entire room catalog, select yes!");
+
+            if (option == JOptionPane.YES_OPTION) {
+                fillRows(rooms,model,1);
+            } else {
+                System.exit(0);
+            }
+
         }
 
     }

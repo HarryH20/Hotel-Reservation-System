@@ -110,7 +110,7 @@ public class HotelManagementSystem extends JFrame {
     public static void openRoomCatalogPane(){
         RoomCatalog roomCatalog = new RoomCatalog();
         roomCatalog.setRooms(new RoomBuilder("RoomList.csv").getRoomList());
-        AvaliableRoomsGUI display = new AvaliableRoomsGUI(roomCatalog);
+        AvaliableRoomsGUI display = new AvaliableRoomsGUI(roomCatalog,1);
         display.setVisible(true);
 
     }
@@ -125,9 +125,9 @@ public class HotelManagementSystem extends JFrame {
         reservationPane.setVisible(true);
     }
     public static void main(String[] args) {
-        HotelManagementSystem window = new HotelManagementSystem();
+        //HotelManagementSystem window = new HotelManagementSystem();
         HotelManagementSystem.openRoomCatalogPane();
-        window.setVisible(true);
+        //window.setVisible(true);
     }
 
 }
