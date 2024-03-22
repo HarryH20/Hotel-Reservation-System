@@ -5,16 +5,33 @@ import java.util.Date;
 import java.util.List;
 
 class Reservation {
+    private int roomNumber;
+    private String guestName;
     private Date startDate;
     private Date endDate;
     private double discount  = 1.0;
 
-    List<Room> rooms = new ArrayList<>();
 
 
-    public Reservation(Date startDate, Date endDate) {
+    public Reservation(int roomNumber, String guestName, Date startDate, Date endDate, double discount) {
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
+    public String getGuestName() {
+        return guestName;
+    }
+
+    public void setGuestName(String guestName) {
+        this.guestName = guestName;
     }
 
     public Date getStartDate() {
