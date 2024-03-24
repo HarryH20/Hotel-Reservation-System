@@ -1,5 +1,5 @@
-room number,first name,last name,email,number of guests,start date,end date
-1000,Nicholas,Nolen,Will_Clore1@Baylor.edu,1,2024-03-24,2024-04-02
-1001,Will,Clore,Will_Clore1@Baylor.edu,1,2024-04-23,2024-05-01
-1002,Alan,Villigrand,Will_Clore1@Baylor.edu,1,2024-09-17,2024-09-29
-1000,Harrison,Hassler,Will_Clore1@Baylor.edu,1,2024-04-03,2024-04-10
+room number,guest name,start date,end date,discount
+1000,Nicholas Nolen,2024-03-24,2024-04-02,1.0
+1001,Will Clore,2024-04-23,2024-05-01,1.0
+1002,Alan Villigrand,2024-09-17,2024-09-29,1.0
+1000,Harrison Hassler,2024-04-03,2024-04-10,1.0
