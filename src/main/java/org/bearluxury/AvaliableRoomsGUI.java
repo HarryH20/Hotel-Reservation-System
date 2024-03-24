@@ -56,6 +56,7 @@ public class AvaliableRoomsGUI extends JFrame {
         table.setFillsViewportHeight(true);
         table.setFont(tableFont);
         table.setRowHeight(30);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
@@ -116,15 +117,14 @@ public class AvaliableRoomsGUI extends JFrame {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 int roomId = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-                openReservationForm();
-                System.out.println(roomId);
+                openReservationForm(roomId);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select a row first.");
             }
         }
 
-        private static void openReservationForm() {
-            ReservationPane pane = new ReservationPane();
+        private static void openReservationForm(int roomID) {
+            ReservationPane pane = new ReservationPane(roomID);
             pane.setVisible(true);
         }
     }
