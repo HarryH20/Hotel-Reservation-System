@@ -25,7 +25,7 @@ public class AvaliableRoomsGUI extends JFrame {
         setLocationRelativeTo(null);
 
         // Create table model with data
-        String[] columnNames = {"Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
+        String[] columnNames = {"Room ID","Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
 
 
         List<Room> rooms = roomCatalog.getRooms();
@@ -66,7 +66,7 @@ public class AvaliableRoomsGUI extends JFrame {
         reservationButton.setMargin(new Insets(10, 20, 10, 20));
         reservationButton.setFont(new Font("Arial", Font.BOLD, 20));
         reservationButton.setForeground(Color.BLACK);
-        reservationButton.addActionListener(new ReservationFormOpener());
+        reservationButton.addActionListener(new ReservationFormOpener(table));
 
         JPanel buttonWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonWrapperPanel.setBackground(backgroundColor);
@@ -90,6 +90,7 @@ public class AvaliableRoomsGUI extends JFrame {
             for (Room room : rooms) {
                 if (room.getNumberOfBeds() >= beds) {
                     model.addRow(new Object[]{
+                            room.getRoomNumber(),
                             room.getRoomType(),
                             room.getPrice(),
                             room.getQualityLevel(),
@@ -120,10 +121,27 @@ public class AvaliableRoomsGUI extends JFrame {
     }
 
 }
-class ReservationFormOpener implements ActionListener{
 
+class ReservationFormOpener implements ActionListener{
+    private JTable table;
+
+    ReservationFormOpener(JTable table) {
+        this.table = table;
+    }
+    private static void openReservationForm(){
+        ReservationPane pane = new ReservationPane();
+        pane.setVisible(true);
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
-        //HotelManagementSystem.openReservationPane();
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) { // Check if a row is selected
+            int roomId = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+            ReservationFormOpener.openReservationForm();
+            System.out.println(roomId);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select a row first.");
+        }
     }
 }
