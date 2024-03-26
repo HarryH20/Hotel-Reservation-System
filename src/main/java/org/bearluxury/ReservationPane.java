@@ -22,6 +22,7 @@ public class ReservationPane extends JFrame implements ActionListener {
     private JTextField firstName;
     private JTextField lastName;
     private JTextField email;
+    //Hello
     private JComboBox<String> roomType;
     private JSpinner guestNumber;
     private JButton submitButton;
