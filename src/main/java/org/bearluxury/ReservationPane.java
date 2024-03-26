@@ -64,19 +64,19 @@ public class ReservationPane extends JFrame implements ActionListener {
         guestNumber = new JSpinner(spinnerModel);
         add(guestNumber);
 
-//        DatePickerSettings checkInSettings = new DatePickerSettings();
-//        checkInDatePicker = new DatePicker(checkInSettings);
-//        checkInSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
-//        checkInDatePicker.setDateToToday();
-//        checkInDatePicker.setPreferredSize(new Dimension(200, 30));
-//        add(checkInDatePicker);
-//
+        //DatePickerSettings checkInSettings = new DatePickerSettings();
+        checkInDatePicker = new DatePicker();
+        //checkInSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
+        checkInDatePicker.setDateToToday();
+        checkInDatePicker.setPreferredSize(new Dimension(200, 30));
+        add(checkInDatePicker);
+
 //        DatePickerSettings checkOutSettings = new DatePickerSettings();
-//        checkOutDatePicker = new DatePicker(checkInSettings);
+        checkOutDatePicker = new DatePicker();
 //        checkOutSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
-//        checkOutDatePicker.setDateToToday();
-//        checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
-//        add(checkOutDatePicker);
+        checkOutDatePicker.setDateToToday();
+        checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
+        add(checkOutDatePicker);
 
         submitButton = new JButton("Submit");
         submitButton.addActionListener(this);
