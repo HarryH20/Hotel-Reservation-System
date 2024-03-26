@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,21 +24,21 @@ public class reservationRepo {
         this.template = template;
     }
 
-    public void save(Reservation reservations){
-        String data = "insert into reservations (room_Number, guest_Name, start_Date, end_Date, discount) values (?,?,?,?,?)";
+    public void save(Reservation reservation){
+        String data = "insert into RESERVATIONDB.PUBLIC.RESERVATIONS (room_Number, guest_Name, start_Date, end_Date, discount) values (?,?,?,?,?)";
         int rows = template.update(data,
-                reservations.getRoomNumber(),
-                reservations.getGuestName(),
-                reservations.getStartDate(),
-                reservations.getEndDate(),
-                reservations.getDiscount());
+                reservation.getRoomNumber(),
+                reservation.getGuestName(),
+                reservation.getStartDate(),
+                reservation.getEndDate(),
+                reservation.getDiscount());
         System.out.println(rows + " rows affected");
     }
 
 
 
     public List<Reservation> findAll(){
-        String data = "select * from reservations";
+        String data = "select * from RESERVATIONS";
         RowMapper<Reservation> mapper = new RowMapper<Reservation>() {
             @Override
             public Reservation mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -52,9 +53,17 @@ public class reservationRepo {
         };
 
 
+
         List<Reservation> reservationList = template.query(data,mapper);
 
+        // Print reservations in tabular format
+        System.out.println("Room Number | Guest Name | Start Date | End Date | Discount");
+        System.out.println("--------------------------------------------------------------");
+        for (Reservation reservation : reservationList) {
+            System.out.println(reservation.toString());
+        }
         return reservationList;
 
     }
+
 }

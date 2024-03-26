@@ -22,13 +22,11 @@ class Reservation {
 
     @Override
     public String toString() {
-        return "Reservation{" +
-                "roomNumber=" + roomNumber +
-                ", guestName='" + guestName + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", discount=" + discount +
-                '}';
+        return  roomNumber +
+                "          " + guestName +
+                "          " + startDate +
+                "    " + endDate +
+                "    " + discount+"\n";
     }
 
     public int getRoomNumber() {
