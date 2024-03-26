@@ -2,6 +2,7 @@ package org.bearluxury;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -46,6 +47,49 @@ class RoomBuilder {
     }
     ArrayList<Room> getRoomList(){
         return roomList;
+    }
+
+    public void addRoom(int roomNumber, double price, boolean canSmoke,
+                        ROOM_TYPE roomType, BED_TYPE bed,
+                        QUALITY_LEVEL qualityLevel, int numberOfBeds){
+        Room room = new Room(roomNumber,
+                price,
+                canSmoke,
+                roomType,
+                bed,
+                qualityLevel,
+                numberOfBeds);
+        roomList.add(room);
+    }
+    public void writeRoom(String csvName){
+        File file = new File(csvName);
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write("room number,guest name,start date,end date,discount\n");
+
+            //FORMAT: room number	price	room type	quality	number of beds	smoke	type of beds
+            for(int i = 0; i < roomList.size(); i++){
+                writer.write(roomList.get(i).getRoomNumber()+","
+                        +roomList.get(i).getPrice()+","
+                        +roomList.get(i).getRoomType()+","
+                        +roomList.get(i).getQualityLevel()+","
+                        +roomList.get(i).getNumberOfBeds()+","
+                        +roomList.get(i).isCanSmoke() +","
+                        +roomList.get(i).getBed()+'\n');
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
     }
 
     ROOM_TYPE readAsRoomType(String str){
