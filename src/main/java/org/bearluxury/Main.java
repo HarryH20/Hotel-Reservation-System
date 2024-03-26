@@ -9,7 +9,6 @@ import java.util.Date;
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        HotelManagementSystem.run();
         ApplicationContext context = SpringApplication.run(Main.class,args);
 
         Reservation reservation1 = context.getBean(Reservation.class);
@@ -22,7 +21,6 @@ public class Main {
         reservationRepo repo = context.getBean(reservationRepo.class);
         repo.save(reservation1);
         System.out.println(repo.findAll());
-
 
     }
 }
