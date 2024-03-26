@@ -6,7 +6,20 @@ import java.util.List;
 enum ROOM_TYPE{
     VINTAGE_CHARM,
     URBAN_ELEGANCE,
-    NATURE_RETREAT
+    NATURE_RETREAT;
+
+    public String toString(){
+        if(this == VINTAGE_CHARM){
+            return "Vintage Charm";
+        }
+        else if(this == URBAN_ELEGANCE){
+            return "Urban Elegance";
+        }
+        else if(this == NATURE_RETREAT){
+            return "Nature Retreat";
+        }
+        return "EMPTY";
+    }
 
 
 }
@@ -14,13 +27,43 @@ enum BED_TYPE{
     QUEEN,
     KING,
     FULL,
-    TWIN
+    TWIN;
+    public String toString(){
+        if(this == QUEEN){
+            return "Queen";
+        }
+        else if(this == KING){
+            return "King";
+        }
+        else if(this == FULL){
+            return "Full";
+        }
+        else if(this == TWIN){
+            return "Twin";
+        }
+        return "EMPTY";
+    }
 }
 enum QUALITY_LEVEL{
     EXECUTIVE,
     BUSINESS,
     COMFORT,
-    ECONOMY
+    ECONOMY;
+    public String toString(){
+        if(this == EXECUTIVE){
+            return "Executive";
+        }
+        else if(this == BUSINESS){
+            return "Business";
+        }
+        else if(this == COMFORT){
+            return "Comfort";
+        }
+        else if(this == ECONOMY){
+            return "Economy";
+        }
+        return "EMPTY";
+    }
 }
 class Room {
     private int roomNumber;
