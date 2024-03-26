@@ -75,7 +75,7 @@ class ReservationBuilder {
         }
     }
 
-    
+
     ArrayList<Reservation> getReservationList(){
         return reservationList;
     }
