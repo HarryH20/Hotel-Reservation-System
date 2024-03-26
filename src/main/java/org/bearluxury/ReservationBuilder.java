@@ -18,8 +18,8 @@ class ReservationBuilder {
             while ((line = reader.readLine()) != null) {
                 String[] parsedLine = line.split(",");
 
-                Date startDate = new Date(parsedLine[2]);
-                Date endDate = new Date(parsedLine[3]);
+                Date startDate = new Date(parsedLine[5]);
+                Date endDate = new Date(parsedLine[6]);
 
                 // room number,first name,last name,email,number of guests,start date,end date
                 Reservation reservation = new Reservation(
