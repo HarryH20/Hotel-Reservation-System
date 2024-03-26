@@ -25,11 +25,8 @@ public class AvaliableRoomsGUI extends JFrame {
         setLocationRelativeTo(null);
 
         DefaultTableModel model = createTableModel();
-
         JTable table = createTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
-
-
 
         JButton reservationButton = createReservationButton(table);
 
@@ -37,45 +34,17 @@ public class AvaliableRoomsGUI extends JFrame {
         JPanel buttonWrapperPanel = createButtonWrapperPanel(reservationButton);
 
         getContentPane().setBackground(backgroundColor);
-
-        fillTableRows(roomCatalog.getRooms(), model, beds);
-
-        JButton backButton = createBackButton();
-
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(backgroundColor);
-        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-        topPanel.add(backButton, BorderLayout.WEST);
-
         getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(panel, BorderLayout.CENTER);
         getContentPane().add(buttonWrapperPanel, BorderLayout.SOUTH);
+
+        fillTableRows(roomCatalog.getRooms(), model, beds);
     }
 
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Room ID", "Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
-        return new DefaultTableModel(columnNames, 0){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        return new DefaultTableModel(columnNames, 0);
     }
-    private JButton createBackButton() {
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                HotelManagementSystem window = new HotelManagementSystem();
-                window.setVisible(true);
-
-            }
-        });
-        return backButton;
-    }
-
 
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
@@ -123,29 +92,17 @@ public class AvaliableRoomsGUI extends JFrame {
     private void fillTableRows(List<Room> rooms, DefaultTableModel model, int beds) {
         Collections.sort(rooms, Comparator.comparing(room -> room.getRoomNumber()));
         Collections.sort(rooms, Comparator.comparing(room -> room.getNumberOfBeds()));
-        int maxBeds =  rooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
-        try {
-            if(beds > maxBeds){
-                throw new IllegalArgumentException();
-
-            }
-            rooms.stream()
-                    .filter(room -> room.getNumberOfBeds() >= beds)
-                    .forEach(room -> model.addRow(new Object[]{
-                            room.getRoomNumber(),
-                            room.getRoomType().toString(),
-                            room.getPrice(),
-                            room.getQualityLevel().toString(),
-                            room.getNumberOfBeds(),
-                            room.getBed().toString(),
-                            room.isCanSmoke() ? "Yes" : "No"
-                    }));
-        }catch (IllegalArgumentException exc){
-            JOptionPane.showMessageDialog(null,"Error: beds must be less than " +
-                    + maxBeds + ". \nShowing entire catalog!" );
-            fillTableRows(rooms,model,1);
-
-        }
+        rooms.stream()
+                .filter(room -> room.getNumberOfBeds() >= beds)
+                .forEach(room -> model.addRow(new Object[]{
+                        room.getRoomNumber(),
+                        room.getRoomType(),
+                        room.getPrice(),
+                        room.getQualityLevel(),
+                        room.getNumberOfBeds(),
+                        room.getBed(),
+                        room.isCanSmoke() ? "Yes" : "No"
+                }));
     }
 
     private static class ReservationFormOpener implements ActionListener {
