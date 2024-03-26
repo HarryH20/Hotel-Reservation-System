@@ -1,9 +1,11 @@
 package org.bearluxury;
 
-import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import java.util.Date;
-import java.util.List;
-
+@Component
+@Scope("prototype")
 class Reservation {
     private int roomNumber;
     private String guestName;
@@ -12,10 +14,21 @@ class Reservation {
     private double discount  = 1.0;
 
 
-
+    public Reservation(){}
     public Reservation(int roomNumber, String guestName, Date startDate, Date endDate, double discount) {
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "roomNumber=" + roomNumber +
+                ", guestName='" + guestName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", discount=" + discount +
+                '}';
     }
 
     public int getRoomNumber() {

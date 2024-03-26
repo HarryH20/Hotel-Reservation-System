@@ -22,7 +22,7 @@ public class ReservationPane extends JFrame implements ActionListener {
 //    private JDateChooser endDate;
     private JButton submitButton;
 
-    public ReservationPane() {
+    public ReservationPane(int id) {
         setTitle("Reservation Form");
         setSize(600, 300);
         setLocationRelativeTo(null);
@@ -32,6 +32,8 @@ public class ReservationPane extends JFrame implements ActionListener {
         JLabel roomIdLabel = new JLabel("Room ID:");
         add(roomIdLabel);
         roomId = new JTextField();
+        roomId.setText(String.valueOf(id));
+        roomId.setEditable(false);
         add(roomId);
 
         JLabel firstNameLabel = new JLabel("First Name:");
