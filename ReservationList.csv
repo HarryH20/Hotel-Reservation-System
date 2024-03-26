@@ -1,6 +1,5 @@
-1007,Derek,Martinez,testCSV@gmail.com,3
-,,,,1
-1013,Nicholas,Nolen,NickNol@gmail.com,5
-1011,Mark,Fuller,MFull@gmail.com,4
-2020,Derek,Martinez,dmartinez1203@gmail.com,3
-3011,Derek,Martinez,dmart3444@gmail.com,4
+room number,first name,last name,email,number of guests,start date,end date
+1000,Nicholas,Nolen,Will_Clore1@Baylor.edu,1,2024-03-24,2024-04-02
+1001,Will,Clore,Will_Clore1@Baylor.edu,1,2024-04-23,2024-05-01
+1002,Alan,Villigrand,Will_Clore1@Baylor.edu,1,2024-09-17,2024-09-29
+1000,Harrison,Hassler,Will_Clore1@Baylor.edu,1,2024-04-03,2024-04-10
