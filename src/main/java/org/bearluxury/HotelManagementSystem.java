@@ -6,7 +6,6 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -238,11 +237,11 @@ public class HotelManagementSystem extends JFrame implements DateChangeListener,
         AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds);
         catalogPane.setVisible(true);
     }
-    public static void run(){
+
+
+    public static void main(String[] args) {
         FlatLightLaf.setup();
         HotelManagementSystem window = new HotelManagementSystem();
         window.setVisible(true);
     }
-
-
 }
