@@ -68,6 +68,8 @@ public class ReservationPane extends JFrame implements ActionListener {
         //checkInSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
         checkInDatePicker.setDateToToday();
         checkInDatePicker.setPreferredSize(new Dimension(200, 30));
+        JLabel checkInLbl = new JLabel("Check-In:");
+        add(checkInLbl);
         add(checkInDatePicker);
 
 //        DatePickerSettings checkOutSettings = new DatePickerSettings();
@@ -75,6 +77,8 @@ public class ReservationPane extends JFrame implements ActionListener {
 //        checkOutSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
         checkOutDatePicker.setDateToToday();
         checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
+        JLabel checkOutLbl = new JLabel("Check-Out:");
+        add(checkOutLbl);
         add(checkOutDatePicker);
 
         submitButton = new JButton("Submit");
