@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /*
  * This is the class for the reservation pane is not completed.
@@ -72,14 +74,28 @@ public class ReservationPane extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
-            //saveToCSV();
-            JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-            dispose();
+            saveToCSV();
+            //JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+            //dispose();
         }
     }
 
     private void saveToCSV() {
         //FIX
+        String csvReservationList = "ReservationList.csv";
+
+        try(FileWriter writer = new FileWriter(csvReservationList, true)) {
+            writer.append(roomId.getText()).append(",")
+                    .append(firstName.getText()).append(",")
+                    .append(lastName.getText()).append(",")
+                    .append(email.getText()).append(",")
+                    .append(String.valueOf(guestNumber.getValue())).append("\n");
+            JOptionPane.showMessageDialog(this,"Reservation saved successfully.");
+            dispose();
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: Could not save reservation!");
+        }
     }
     private String formatDate(java.util.Date date) {
         return new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);
