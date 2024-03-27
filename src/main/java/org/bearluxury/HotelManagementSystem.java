@@ -236,11 +236,16 @@ public class HotelManagementSystem extends JFrame implements DateChangeListener,
         AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds);
         catalogPane.setVisible(true);
     }
-
-
-    public static void main(String[] args) {
+    public static void openHotelManagmentSystem(){
         FlatLightLaf.setup();
         HotelManagementSystem window = new HotelManagementSystem();
         window.setVisible(true);
+    }
+
+
+    public static void main(String[] args) {
+        HotelHomePage page = new HotelHomePage();
+        page.setVisible(true);
+
     }
 }
