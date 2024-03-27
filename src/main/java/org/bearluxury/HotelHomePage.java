@@ -68,6 +68,7 @@ public class HotelHomePage extends JFrame {
         reservePanel.add(seeReservations);
 
         JButton addUser = new JButton("Register");
+        addUser.addActionListener(new openRegisterAccountPane());
         JButton addRoom = new JButton("Add Room");
 
 
@@ -115,4 +116,11 @@ public class HotelHomePage extends JFrame {
         }
     }
 
+    private class openRegisterAccountPane implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            RegisterAccountPane.openAccountPane();
+        }
+    }
 }
