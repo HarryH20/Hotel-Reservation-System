@@ -104,7 +104,9 @@ public class ReservationPane extends JFrame implements ActionListener {
                     .append(firstName.getText()).append(",")
                     .append(lastName.getText()).append(",")
                     .append(email.getText()).append(",")
-                    .append(String.valueOf(guestNumber.getValue())).append("\n");
+                    .append(String.valueOf(guestNumber.getValue())).append(',').
+                    append(formatDate(java.sql.Date.valueOf(checkInDatePicker.getDate()))).append(',')
+                    .append(formatDate(java.sql.Date.valueOf(checkOutDatePicker.getDate()))).append("\n");
             JOptionPane.showMessageDialog(this,"Reservation saved successfully.");
             dispose();
         } catch (IOException e) {
