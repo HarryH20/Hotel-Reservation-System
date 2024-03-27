@@ -18,16 +18,18 @@ class ReservationBuilder {
             while ((line = reader.readLine()) != null) {
                 String[] parsedLine = line.split(",");
 
-                Date startDate = new Date(parsedLine[2]);
-                Date endDate = new Date(parsedLine[3]);
+                Date startDate = new Date(parsedLine[5]);
+                Date endDate = new Date(parsedLine[6]);
 
+                // room number,first name,last name,email,number of guests,start date,end date
                 Reservation reservation = new Reservation(
                         Integer.parseInt(parsedLine[0]),
                         parsedLine[1],
+                        parsedLine[2],
+                        parsedLine[3],
+                        Integer.parseInt(parsedLine[4]),
                         startDate,
-                        endDate,
-                        Double.parseDouble(parsedLine[0]));
-
+                        endDate);
                 reservationList.add(reservation);
             }
         } catch (IOException e) {
@@ -35,16 +37,21 @@ class ReservationBuilder {
         }
     }
 
+
     public void addReservation(int roomNumber,
-                               String guestName,
+                               String firstName,
+                               String lastName,
+                               String email,
+                               int numberOfGuests,
                                Date startDate,
-                               Date endDate,
-                               double discount){
+                               Date endDate){
         Reservation reservation = new Reservation(roomNumber,
-                guestName,
+                firstName,
+                lastName,
+                email,
+                numberOfGuests,
                 startDate,
-                endDate,
-                discount);
+                endDate);
         reservationList.add(reservation);
     }
     public void writeReservation(String csvName){
@@ -52,14 +59,10 @@ class ReservationBuilder {
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(file));
-            writer.write("room number,guest name,start date,end date,discount\n");
+            writer.write("room number,first name,last name,email,number of guests,start date,end date\n");
 
             for(int i = 0; i < reservationList.size(); i++){
-                writer.write(reservationList.get(i).getRoomNumber()+","
-                        +reservationList.get(i).getGuestName()+","
-                        +reservationList.get(i).getStartDate()+","
-                        +reservationList.get(i).getEndDate()+","
-                        +reservationList.get(i).getDiscount()+'\n');
+                writer.write(reservationList.get(i).toString());
             }
 
         } catch (IOException e) {

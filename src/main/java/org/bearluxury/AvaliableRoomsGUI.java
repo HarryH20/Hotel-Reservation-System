@@ -1,44 +1,84 @@
 package org.bearluxury;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class AvaliableRoomsGUI extends JFrame {
 
-    Color backgroundColor = new Color(232,223,185,255);
-    Color tableHeaderColor = new Color(184, 134, 11);
-    Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
-    Font tableFont = new Font("Arial", Font.BOLD,16);
-    AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds) {
+    private final Color backgroundColor = new Color(232, 223, 185);
+    private final Color tableHeaderColor = new Color(184, 134, 11);
+    private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
+    private final Font tableFont = new Font("Arial", Font.BOLD, 16);
+
+    public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds) {
         setTitle("Room Catalog");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Create table model with data
-        String[] columnNames = {"Room ID","Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
+        DefaultTableModel model = createTableModel();
+
+        JTable table = createTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
 
 
-        List<Room> rooms = roomCatalog.getRooms();
 
-        DefaultTableModel model = fillColumns(new DefaultTableModel(),columnNames);
-        fillRows(rooms,model,beds);
+        JButton reservationButton = createReservationButton(table);
 
-        JTable table = new JTable(model){
+        JPanel panel = createPanel(scrollPane);
+        JPanel buttonWrapperPanel = createButtonWrapperPanel(reservationButton);
+
+        getContentPane().setBackground(backgroundColor);
+
+        fillTableRows(roomCatalog.getRooms(), model, beds);
+
+        JButton backButton = createBackButton();
+
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(backgroundColor);
+        topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+        topPanel.add(backButton, BorderLayout.WEST);
+
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(topPanel, BorderLayout.NORTH);
+        getContentPane().add(panel, BorderLayout.CENTER);
+        getContentPane().add(buttonWrapperPanel, BorderLayout.SOUTH);
+    }
+
+    private DefaultTableModel createTableModel() {
+        String[] columnNames = {"Room ID", "Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
+        return new DefaultTableModel(columnNames, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
+    }
+    private JButton createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                HotelManagementSystem window = new HotelManagementSystem();
+                window.setVisible(true);
+
+            }
+        });
+        return backButton;
+    }
+
+
+    private JTable createTable(DefaultTableModel model) {
+        JTable table = new JTable(model);
         table.setBackground(Color.WHITE);
         table.getTableHeader().setBackground(tableHeaderColor);
         table.getTableHeader().setForeground(Color.BLACK);
@@ -47,101 +87,88 @@ public class AvaliableRoomsGUI extends JFrame {
         table.setFillsViewportHeight(true);
         table.setFont(tableFont);
         table.setRowHeight(30);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table.setRowSorter(sorter);
 
-        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-        cellRenderer.setForeground(Color.BLACK);
-        table.setDefaultRenderer(Object.class, cellRenderer);
+        return table;
+    }
 
-        JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBorder(new EmptyBorder(10, 10, 10, 10));
+    private JButton createReservationButton(JTable table) {
+        JButton reservationButton = new JButton("Make Reservation");
+        reservationButton.setPreferredSize(new Dimension(200, 50));
+        reservationButton.setMargin(new Insets(10, 20, 10, 20));
+        reservationButton.setFont(new Font("Arial", Font.BOLD, 15));
+        reservationButton.setForeground(Color.BLACK);
+        reservationButton.addActionListener(new ReservationFormOpener(table));
+        return reservationButton;
+    }
 
+    private JPanel createPanel(JScrollPane scrollPane) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
         panel.setBorder(new EmptyBorder(10, 10, 10, 10));
         panel.add(scrollPane, BorderLayout.CENTER);
+        return panel;
+    }
 
-        JButton reservationButton = new JButton("Make Reservation");
-        reservationButton.setPreferredSize(new Dimension(200, 50));
-        reservationButton.setMargin(new Insets(10, 20, 10, 20));
-        reservationButton.setFont(new Font("Arial", Font.BOLD, 20));
-        reservationButton.setForeground(Color.BLACK);
-        reservationButton.addActionListener(new ReservationFormOpener(table));
-
+    private JPanel createButtonWrapperPanel(JButton reservationButton) {
         JPanel buttonWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonWrapperPanel.setBackground(backgroundColor);
         buttonWrapperPanel.add(reservationButton);
-
-        getContentPane().setBackground(backgroundColor);
-        getContentPane().setLayout(new BorderLayout());
-        getContentPane().add(panel, BorderLayout.CENTER);
-        getContentPane().add(buttonWrapperPanel, BorderLayout.SOUTH);
-
-
+        return buttonWrapperPanel;
     }
-    private void fillRows(List<Room> rooms, DefaultTableModel model, int beds){
-        int maxBeds= rooms.stream()
-                .max(Comparator.comparingInt(Room::getNumberOfBeds))
-                .map(Room::getNumberOfBeds).orElseThrow(() -> new IllegalArgumentException("List is empty"));
+
+    private void fillTableRows(List<Room> rooms, DefaultTableModel model, int beds) {
+        Collections.sort(rooms, Comparator.comparing(room -> room.getRoomNumber()));
+        Collections.sort(rooms, Comparator.comparing(room -> room.getNumberOfBeds()));
+        int maxBeds =  rooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
         try {
-            if(beds <= 0 || beds > maxBeds){
+            if(beds > maxBeds){
                 throw new IllegalArgumentException();
+
             }
-            for (Room room : rooms) {
-                if (room.getNumberOfBeds() >= beds) {
-                    model.addRow(new Object[]{
+            rooms.stream()
+                    .filter(room -> room.getNumberOfBeds() >= beds)
+                    .forEach(room -> model.addRow(new Object[]{
                             room.getRoomNumber(),
-                            room.getRoomType(),
+                            room.getRoomType().toString(),
                             room.getPrice(),
-                            room.getQualityLevel(),
+                            room.getQualityLevel().toString(),
                             room.getNumberOfBeds(),
-                            room.getBed(),
+                            room.getBed().toString(),
                             room.isCanSmoke() ? "Yes" : "No"
-
-                    });
-                }
-            }
-        }catch (IllegalArgumentException exe){
-            int option = JOptionPane.showConfirmDialog(null,
-                    "It looks like the bed selection must be within the range of 1 and " + maxBeds +
-                            ".\nIf you'd like to explore our entire room catalog, select yes!");
-
-            if (option == JOptionPane.YES_OPTION) {
-                fillRows(rooms,model,1);
-            } else {
-                System.exit(0);
-            }
+                    }));
+        }catch (IllegalArgumentException exc){
+            JOptionPane.showMessageDialog(null,"Error: beds must be less than " +
+                    + maxBeds + ". \nShowing entire catalog!" );
+            fillTableRows(rooms,model,1);
 
         }
-
-    }
-    private DefaultTableModel fillColumns(DefaultTableModel model, String[] columns){
-        model = new DefaultTableModel(columns,0);
-        return model;
     }
 
-}
+    private static class ReservationFormOpener implements ActionListener {
+        private final JTable table;
 
-class ReservationFormOpener implements ActionListener{
-    private JTable table;
+        private ReservationFormOpener(JTable table) {
+            this.table = table;
+        }
 
-    ReservationFormOpener(JTable table) {
-        this.table = table;
-    }
-    private static void openReservationForm(){
-        ReservationPane pane = new ReservationPane();
-        pane.setVisible(true);
-    }
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow != -1) { // Check if a row is selected
-            int roomId = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-            ReservationFormOpener.openReservationForm();
-            System.out.println(roomId);
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow != -1) {
+                int roomId = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
+                openReservationForm(roomId);
+            } else {
+                JOptionPane.showMessageDialog(null, "Please select a row first.");
+            }
+        }
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Please select a row first.");
+        private static void openReservationForm(int roomID) {
+            ReservationPane pane = new ReservationPane(roomID);
+            pane.setVisible(true);
         }
     }
 }
