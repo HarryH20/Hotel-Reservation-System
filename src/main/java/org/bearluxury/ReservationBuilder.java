@@ -18,6 +18,8 @@ class ReservationBuilder {
         try {
             reader = new BufferedReader(new FileReader(file));
             String line;
+            //skip the first line of junk
+            line = reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] parsedLine = line.split(",");
 
