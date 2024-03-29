@@ -58,17 +58,22 @@ public class HotelHomePage extends JFrame {
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
         reserveButton.addActionListener(new openHotelManagmentPane());
+
         reservePanel.add(reserveButton);
 
         JButton seeReservations = new JButton("See All Reservations");
         JButton addUser = new JButton("Register");
         JButton addRoom = new JButton("Add Room");
+
+
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
         addUser.setFont(font);
         addUser.setForeground(Color.BLACK);
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
+        addRoom.addActionListener(new openAddRoomPane());
+
         reservePanel.add(seeReservations);
         reservePanel.add(addUser);
         reservePanel.add(addRoom);
@@ -86,5 +91,13 @@ public class HotelHomePage extends JFrame {
             HotelManagementSystem.openHotelManagmentSystem();
         }
     }
+    private class openAddRoomPane implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AddRoomPane.openAddRoomPane();
+        }
+    }
+
 
 }
