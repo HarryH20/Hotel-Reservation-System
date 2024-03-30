@@ -10,7 +10,14 @@ public class Account {
     private int cardNumber;
     private int cardCVS;
 
-    public Account(String firstName, String lastName, String userName, String email, int phoneNumber, String password, int cardNumber, int cardCVS) {
+    public Account(String firstName,
+                   String lastName,
+                   String userName,
+                   String email,
+                   int phoneNumber,
+                   String password,
+                   int cardNumber,
+                   int cardCVS) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
