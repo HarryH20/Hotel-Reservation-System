@@ -77,4 +77,8 @@ public class AccountBuilder {
             }
         }
     }
+
+    ArrayList<Account> getAccountList() {
+        return accountList;
+    }
 }
