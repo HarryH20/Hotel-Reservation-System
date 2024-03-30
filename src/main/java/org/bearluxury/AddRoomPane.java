@@ -59,30 +59,9 @@ public class AddRoomPane extends JFrame {
         createRoom = new JButton("Add Room");
         createRoom.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                double priceSelection = 0;
-                if(priceChoices.getSelectedItem().toString().equals("Other")){
-                    String enteredPrice = JOptionPane.showInputDialog(null,
-                            "Enter Desired Price: ");
-                    if(enteredPrice != null){
-                        priceSelection = Double.parseDouble(enteredPrice);
-                    }
-
-                }
-                else {
-                    priceSelection = Double.parseDouble(priceChoices.getSelectedItem().toString());
-                }
+            public void actionPerformed(ActionEvent e) {double priceSelection = getPriceSelection();
                 saveRoomToCSV(priceSelection);
-                int selection = JOptionPane.showConfirmDialog(null,"Room Created! " +
-                        "Would you like to add another?");
-                if(selection == JOptionPane.YES_OPTION){
-                    dispose();
-                    openAddRoomPane();
-                }
-                else{
-                    dispose();
-                }
-
+                showConfirmationDialog();
             }
         });
 
@@ -119,6 +98,29 @@ public class AddRoomPane extends JFrame {
         );
         builder.writeRoom("RoomList.csv");
 
+    }
+    private double getPriceSelection() {
+        double priceSelection = 0;
+        if (priceChoices.getSelectedItem().toString().equals("Other")) {
+            String enteredPrice = JOptionPane.showInputDialog(null, "Enter Desired Price: ");
+            if (enteredPrice != null) {
+                priceSelection = Double.parseDouble(enteredPrice);
+            }
+        }
+        else {
+            priceSelection = Double.parseDouble(priceChoices.getSelectedItem().toString());
+        }
+        return priceSelection;
+    }
+
+    private void showConfirmationDialog() {
+        int selection = JOptionPane.showConfirmDialog(null, "Room Created! Would you like to add another?");
+        if (selection == JOptionPane.YES_OPTION) {
+            dispose();
+            openAddRoomPane();
+        } else {
+            dispose();
+        }
     }
 
     public static void openAddRoomPane(){
