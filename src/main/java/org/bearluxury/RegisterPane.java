@@ -2,30 +2,38 @@ package org.bearluxury;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class RegisterPane extends JFrame {
     private Container c;
+    private JLabel title;
+    private JButton submitButton;
     private JTextField firstName;
     private JTextField lastName;
     private JTextField userName;
     private JTextField email;
     private JTextField phoneNumber;
     private JTextField password;
-    private JTextField cardNumber;
-    private JTextField cardCVS;
 
     public RegisterPane() {
         setTitle("Account Registration");
-        setBounds(300, 90, 900, 600);
+        setBounds(300, 90, 500, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
         c = getContentPane();
         c.setLayout(null);
 
+        title = new JLabel("Account Registration");
+        title.setFont(new Font("Arial", Font.PLAIN, 30));
+        title.setSize(300, 30);
+        title.setLocation(100, 20);
+        c.add(title);
+
         JPanel personalInfoPanel = new JPanel();
         personalInfoPanel.setBorder(BorderFactory.createTitledBorder("Personal Information"));
-        personalInfoPanel.setBounds(20, 20, 400, 180);
+        personalInfoPanel.setBounds(40, 80, 400, 160);
         personalInfoPanel.setLayout(null);
 
         JLabel fName = new JLabel("First Name");
@@ -46,22 +54,75 @@ public class RegisterPane extends JFrame {
         lastName.setBounds(170, 60, 190, 20);
         personalInfoPanel.add(lastName);
 
-        JLabel phoneNum = new JLabel("Phone Number");
-        phoneNum.setFont(new Font("Arial", Font.PLAIN, 15));
-        phoneNum.setBounds(20, 90, 120, 20);
-        personalInfoPanel.add(phoneNum);
+        JLabel phoneNumberLbl = new JLabel("Phone Number");
+        phoneNumberLbl.setFont(new Font("Arial", Font.PLAIN, 15));
+        phoneNumberLbl.setBounds(20, 90, 120, 20);
+        personalInfoPanel.add(phoneNumberLbl);
         phoneNumber = new JTextField();
         phoneNumber.setFont(new Font("Arial", Font.PLAIN, 15));
         phoneNumber.setBounds(170, 90, 190, 20);
         personalInfoPanel.add(phoneNumber);
 
+        JLabel emailLbl = new JLabel("Email");
+        emailLbl.setFont(new Font("Arial", Font.PLAIN, 15));
+        emailLbl.setBounds(20, 120, 120, 20);
+        personalInfoPanel.add(emailLbl);
+        email = new JTextField();
+        email.setFont(new Font("Arial", Font.PLAIN, 15));
+        email.setBounds(170, 120, 190, 20);
+        personalInfoPanel.add(email);
+
         c.add(personalInfoPanel);
 
         JPanel accountInfoPanel = new JPanel();
         accountInfoPanel.setBorder(BorderFactory.createTitledBorder("Account Information"));
-        accountInfoPanel.setBounds(20, 220, 400, 180);
+        accountInfoPanel.setBounds(40, 280, 400, 100);
         accountInfoPanel.setLayout(null);
 
+        JLabel usernameLbl = new JLabel("Username");
+        usernameLbl.setFont(new Font("Arial", Font.PLAIN, 15));
+        usernameLbl.setBounds(20, 30, 120, 20);
+        accountInfoPanel.add(usernameLbl);
+        userName = new JTextField();
+        userName.setFont(new Font("Arial", Font.PLAIN, 15));
+        userName.setBounds(170, 30, 190, 20);
+        accountInfoPanel.add(userName);
+
+        JLabel passwordLbl = new JLabel("Password");
+        passwordLbl.setFont(new Font("Arial", Font.PLAIN, 15));
+        passwordLbl.setBounds(20, 60, 120, 20);
+        accountInfoPanel.add(passwordLbl);
+        password = new JTextField();
+        password.setFont(new Font("Arial", Font.PLAIN, 15));
+        password.setBounds(170, 60, 190, 20);
+        accountInfoPanel.add(password);
         c.add(accountInfoPanel);
+
+        submitButton = new JButton("Submit");
+        add(submitButton);
+    }
+
+    public void saveAccountToCSV() {
+        String csvFile = "AccountList.csv";
+
+        String userFirstName = firstName.getText();
+        String userLastName = lastName.getText();
+        int userPhone = Integer.parseInt(phoneNumber.getText());
+        String userEmail = email.getText();
+        String guestUsername = userName.getText();
+        String userPassword = password.getText();
+
+        try {
+            AccountBuilder accountBuilder = new AccountBuilder(csvFile);
+            accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, userPhone, userPassword);
+
+            accountBuilder.writeAccount(csvFile);
+
+            JOptionPane.showMessageDialog(this, "Account registered.");
+            dispose();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
     }
 }

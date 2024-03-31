@@ -25,9 +25,7 @@ public class AccountBuilder {
                         parsedLine[2],
                         parsedLine[3],
                         Integer.parseInt(parsedLine[4]),
-                        parsedLine[5],
-                        Integer.parseInt(parsedLine[6]),
-                        Integer.parseInt(parsedLine[7])
+                        parsedLine[5]
                 );
             }
         } catch (IOException e) {
@@ -40,17 +38,13 @@ public class AccountBuilder {
                            String userName,
                            String email,
                            int phoneNumber,
-                           String password,
-                           int cardNumber,
-                           int cardCVS) {
+                           String password) {
         Account account = new Account(firstName,
                 lastName,
                 userName,
                 email,
                 phoneNumber,
-                password,
-                cardNumber,
-                cardCVS);
+                password);
         accountList.add(account);
     }
 
@@ -60,7 +54,7 @@ public class AccountBuilder {
 
         try {
             writer = new BufferedWriter(new FileWriter(file));
-            writer.write("first name, last name, username, email, phone number, password, card number, card cvs");
+            writer.write("first name, last name, username, email, phone number, password");
 
             for(int i = 0; i < accountList.size(); i++) {
                 writer.write(accountList.get(i).toString());
