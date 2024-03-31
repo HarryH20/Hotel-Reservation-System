@@ -26,12 +26,8 @@ public class LoginPage extends JFrame {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        JPanel logoPanel = new JPanel();
-        logoPanel.setBackground(backgroundColor);
-
-        logo = new ImageIcon("bbl-logo.png");
+        logo = new ImageIcon("bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
-        logoPanel.add(logoLabel);
 
         emailTextField = new JTextField();
         passwordTextField = new JPasswordField();
@@ -44,7 +40,7 @@ public class LoginPage extends JFrame {
                 "focusWidth:0;" +
                 "innerFocusWidth:0");
 
-        JPanel loginPanel = new JPanel(new MigLayout("wrap,fillx,insets 35 45 30 45", "fill,250:280"));
+        JPanel loginPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
         loginPanel.setBackground(backgroundColor);
         loginPanel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:20;" +
@@ -60,37 +56,31 @@ public class LoginPage extends JFrame {
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
 
-        loginPanel.add(header);
+        loginPanel.add(logoLabel);
+        loginPanel.add(header, "gapy 10");
         loginPanel.add(description);
         loginPanel.add(new JLabel("Email"), "gapy 8");
         loginPanel.add(emailTextField);
         loginPanel.add(new JLabel("Password"), "gapy 8");
         loginPanel.add(passwordTextField);
         loginPanel.add(loginButton, "gapy 10");
-        loginPanel.add(createSignupLabel(), "gapy 10");
+        loginPanel.add(createRegisterLabel(), "gapy 10");
 
-        JPanel mainPanel = new JPanel(new BorderLayout(0, 20));
-        mainPanel.setBackground(backgroundColor);
-
-        mainPanel.add(logoPanel, BorderLayout.NORTH);
-        mainPanel.add(loginPanel, BorderLayout.CENTER);
-
-        add(mainPanel);
+        add(loginPanel);
     }
 
-    private Component createSignupLabel() {
+    private Component createRegisterLabel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
-        JButton cmdRegister = new JButton("<html><a href=\"#\">Sign up</a></html>");
+        JButton cmdRegister = new JButton("<html><a href=\"#\">Register now</a></html>");
         cmdRegister.putClientProperty(FlatClientProperties.STYLE, "" +
                 "border:3,3,3,3");
         cmdRegister.setContentAreaFilled(false);
         cmdRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        JLabel label = new JLabel("Don't have an account ?");
+        JLabel label = new JLabel("Don't have an account?");
         label.putClientProperty(FlatClientProperties.STYLE, "" +
-                "[light]foreground:lighten(@foreground,30%);" +
-                "[dark]foreground:darken(@foreground,30%)");
+                "[light]foreground:lighten(@foreground,30%);");
         panel.add(label);
         panel.add(cmdRegister);
         return panel;
