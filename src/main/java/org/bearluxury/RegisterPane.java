@@ -133,14 +133,22 @@ public class RegisterPane extends JFrame {
 
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();
-        long userPhone = Long.parseLong(phoneNumber.getText());
+        String userPhone = phoneNumber.getText();
         String userEmail = email.getText();
         String guestUsername = userName.getText();
         String userPassword = password.getText();
 
+        if (userFirstName.isEmpty() || userLastName.isEmpty() || userPhone.isEmpty() ||
+                userEmail.isEmpty() || guestUsername.isEmpty() || userPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
+
         try {
+            //userPhone = String.valueOf(Long.parseLong(userPhone));
+
             AccountBuilder accountBuilder = new AccountBuilder(csvFile);
-            accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, userPhone, userPassword);
+            accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword);
 
             accountBuilder.writeAccount(csvFile);
 
