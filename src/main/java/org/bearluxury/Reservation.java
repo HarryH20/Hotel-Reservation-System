@@ -1,6 +1,6 @@
 package org.bearluxury;
 
-
+import com.github.lgooddatepicker.components.DatePicker;
 import java.util.Date;
 
 class Reservation {
@@ -9,15 +9,15 @@ class Reservation {
     private String lastName;
     private String email;
     private int numberOfGuests;
-    private Date startDate;
-    private Date endDate;
+    private DatePicker startDate;
+    private DatePicker endDate;
 
 
     public Reservation(){}
     public Reservation(int roomNumber, String firstName,
                        String lastName, String email,
-                       int numberOfGuests, Date startDate,
-                       Date endDate) {
+                       int numberOfGuests, DatePicker startDate,
+                       DatePicker endDate) {
         this.roomNumber = roomNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -48,19 +48,19 @@ class Reservation {
     }
 
 
-    public Date getStartDate() {
+    public DatePicker getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(DatePicker startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public DatePicker getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(DatePicker endDate) {
         this.endDate = endDate;
     }
 

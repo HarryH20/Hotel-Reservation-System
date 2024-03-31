@@ -1,8 +1,11 @@
 package org.bearluxury;
 
+import com.github.lgooddatepicker.components.DatePicker;
+
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -23,8 +26,8 @@ class ReservationBuilder {
             while ((line = reader.readLine()) != null) {
                 String[] parsedLine = line.split(",");
 
-                Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(parsedLine[5]);
-                Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(parsedLine[6]);
+                DatePicker startDate = new DatePicker();
+                DatePicker endDate = new DatePicker();
 
                 // room number,first name,last name,email,number of guests,start date,end date
                 Reservation reservation = new Reservation(
@@ -37,7 +40,7 @@ class ReservationBuilder {
                         endDate);
                 reservationList.add(reservation);
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -48,8 +51,8 @@ class ReservationBuilder {
                                String lastName,
                                String email,
                                int numberOfGuests,
-                               Date startDate,
-                               Date endDate){
+                               DatePicker startDate,
+                               DatePicker endDate){
         Reservation reservation = new Reservation(roomNumber,
                 firstName,
                 lastName,
