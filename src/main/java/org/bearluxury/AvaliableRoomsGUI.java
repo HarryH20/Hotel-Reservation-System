@@ -31,8 +31,7 @@ public class AvaliableRoomsGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
 
 
-
-        JButton reservationButton = createReservationButton(table, checkIn,checkOut);
+        JButton reservationButton = createReservationButton(table, checkIn,checkOut, model);
 
         JPanel panel = createPanel(scrollPane);
         JPanel buttonWrapperPanel = createButtonWrapperPanel(reservationButton);
@@ -96,13 +95,13 @@ public class AvaliableRoomsGUI extends JFrame {
         return table;
     }
 
-    private JButton createReservationButton(JTable table, LocalDate checkIn, LocalDate checkOut) {
+    private JButton createReservationButton(JTable table, LocalDate checkIn, LocalDate checkOut, DefaultTableModel model) {
         JButton reservationButton = new JButton("Make Reservation");
         reservationButton.setPreferredSize(new Dimension(200, 50));
         reservationButton.setMargin(new Insets(10, 20, 10, 20));
         reservationButton.setFont(new Font("Arial", Font.BOLD, 15));
         reservationButton.setForeground(Color.BLACK);
-        reservationButton.addActionListener(new ReservationFormOpener(table, checkIn, checkOut));
+        reservationButton.addActionListener(new ReservationFormOpener(table, checkIn, checkOut, model));
         return reservationButton;
     }
 
@@ -154,13 +153,15 @@ public class AvaliableRoomsGUI extends JFrame {
     private static class ReservationFormOpener implements ActionListener {
         private final JTable table;
 
+        private DefaultTableModel model;
         LocalDate checkIn;
 
         LocalDate checkOut;
 
 
-        private ReservationFormOpener(JTable table, LocalDate checkIn, LocalDate checkOut) {
+        private ReservationFormOpener(JTable table, LocalDate checkIn, LocalDate checkOut, DefaultTableModel model) {
             this.table = table;
+            this.model = model;
             this.checkIn = checkIn;
             this.checkOut = checkOut;
         }
@@ -171,6 +172,7 @@ public class AvaliableRoomsGUI extends JFrame {
             if (selectedRow != -1) {
                 int roomId = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
                 openReservationForm(roomId, checkIn, checkOut);
+                model.removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select a row first.");
             }
