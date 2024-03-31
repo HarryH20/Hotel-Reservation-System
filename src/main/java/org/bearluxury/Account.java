@@ -5,14 +5,14 @@ public class Account {
     private String lastName;
     private String userName;
     private String email;
-    private int phoneNumber;
+    private long phoneNumber;
     private String password;
 
     public Account(String firstName,
                    String lastName,
                    String userName,
                    String email,
-                   int phoneNumber,
+                   long phoneNumber,
                    String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -54,11 +54,11 @@ public class Account {
         this.email = email;
     }
 
-    public int getPhoneNumber() {
+    public long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

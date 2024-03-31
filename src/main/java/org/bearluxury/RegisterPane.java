@@ -28,8 +28,13 @@ public class RegisterPane extends JFrame {
         title = new JLabel("Account Registration");
         title.setFont(new Font("Arial", Font.PLAIN, 30));
         title.setSize(300, 30);
-        title.setLocation(100, 20);
+        title.setLocation(100, 30);
         c.add(title);
+
+        JButton backButton = createBackButton();
+        backButton.setSize(80, 20);
+        backButton.setLocation(20, 10);
+        c.add(backButton);
 
         JPanel personalInfoPanel = new JPanel();
         personalInfoPanel.setBorder(BorderFactory.createTitledBorder("Personal Information"));
@@ -99,7 +104,28 @@ public class RegisterPane extends JFrame {
         c.add(accountInfoPanel);
 
         submitButton = new JButton("Submit");
+        submitButton.setBounds(200, 400, 100, 40);
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveAccountToCSV();
+            }
+        });
         add(submitButton);
+    }
+
+    private JButton createBackButton() {
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                HotelHomePage window = new HotelHomePage();
+                window.setVisible(true);
+
+            }
+        });
+        return backButton;
     }
 
     public void saveAccountToCSV() {
@@ -107,7 +133,7 @@ public class RegisterPane extends JFrame {
 
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();
-        int userPhone = Integer.parseInt(phoneNumber.getText());
+        long userPhone = Long.parseLong(phoneNumber.getText());
         String userEmail = email.getText();
         String guestUsername = userName.getText();
         String userPassword = password.getText();

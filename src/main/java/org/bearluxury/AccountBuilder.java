@@ -24,7 +24,7 @@ public class AccountBuilder {
                         parsedLine[1],
                         parsedLine[2],
                         parsedLine[3],
-                        Integer.parseInt(parsedLine[4]),
+                        Long.parseLong(parsedLine[4]),
                         parsedLine[5]
                 );
             }
@@ -37,7 +37,7 @@ public class AccountBuilder {
                            String lastName,
                            String userName,
                            String email,
-                           int phoneNumber,
+                           long phoneNumber,
                            String password) {
         Account account = new Account(firstName,
                 lastName,
@@ -54,7 +54,7 @@ public class AccountBuilder {
 
         try {
             writer = new BufferedWriter(new FileWriter(file));
-            writer.write("first name, last name, username, email, phone number, password");
+            writer.write("first name, last name, username, email, phone number, password\n");
 
             for(int i = 0; i < accountList.size(); i++) {
                 writer.write(accountList.get(i).toString());
