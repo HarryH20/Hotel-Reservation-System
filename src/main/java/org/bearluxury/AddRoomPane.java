@@ -61,7 +61,6 @@ public class AddRoomPane extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {double priceSelection = getPriceSelection();
                 saveRoomToCSV(priceSelection);
-                showConfirmationDialog();
             }
         });
 
@@ -86,7 +85,8 @@ public class AddRoomPane extends JFrame {
 
     private void saveRoomToCSV(double priceSelection) {
         RoomBuilder builder = new RoomBuilder("RoomList.csv");
-        builder.addRoom(
+
+        boolean added = builder.addRoom(
                 Integer.parseInt(roomNumber.getText()),
                 priceSelection,
                 smokingStatus.isSelected(),
@@ -95,8 +95,14 @@ public class AddRoomPane extends JFrame {
                 builder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
                 Integer.parseInt(bedNumber.getValue().toString())
 
-        );
-        builder.writeRoom("RoomList.csv");
+            );
+        if(added) {
+            builder.writeRoom("RoomList.csv");
+            showConfirmationDialog();
+        }
+        else {
+            showFailureDialog();
+        }
 
     }
     private double getPriceSelection() {
@@ -114,7 +120,18 @@ public class AddRoomPane extends JFrame {
     }
 
     private void showConfirmationDialog() {
-        int selection = JOptionPane.showConfirmDialog(null, "Room Created! Would you like to add another?");
+        int selection = JOptionPane.showConfirmDialog(null, "Room Created! " +
+                "Would you like to add another?");
+        if (selection == JOptionPane.YES_OPTION) {
+            dispose();
+            openAddRoomPane();
+        } else {
+            dispose();
+        }
+    }
+    private void showFailureDialog() {
+        int selection = JOptionPane.showConfirmDialog(null, "Room already exists! " +
+                "Would you like to add another?");
         if (selection == JOptionPane.YES_OPTION) {
             dispose();
             openAddRoomPane();

@@ -8,9 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AvaliableRoomsGUI extends JFrame {
 
@@ -121,10 +121,12 @@ public class AvaliableRoomsGUI extends JFrame {
         return buttonWrapperPanel;
     }
 
-    private void fillTableRows(List<Room> rooms, DefaultTableModel model, int beds) {
-        Collections.sort(rooms, Comparator.comparing(room -> room.getRoomNumber()));
-        Collections.sort(rooms, Comparator.comparing(room -> room.getNumberOfBeds()));
-        int maxBeds =  rooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
+    private void fillTableRows(Set<Room> unsortedRooms, DefaultTableModel model, int beds) {
+        int maxBeds =  unsortedRooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
+        List<Room> rooms = unsortedRooms.stream().
+                sorted(Comparator.comparing(Room::getNumberOfBeds).
+                thenComparing(Room::getRoomNumber)).
+                collect(Collectors.toList());
         try {
             if(beds > maxBeds){
                 throw new IllegalArgumentException();
@@ -144,7 +146,7 @@ public class AvaliableRoomsGUI extends JFrame {
         }catch (IllegalArgumentException exc){
             JOptionPane.showMessageDialog(null,"Error: beds must be less than " +
                     + maxBeds + ". \nShowing entire catalog!" );
-            fillTableRows(rooms,model,1);
+            fillTableRows(unsortedRooms,model,1);
 
         }
     }
