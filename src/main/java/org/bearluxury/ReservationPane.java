@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.Date;
 
 /*
@@ -27,7 +28,7 @@ public class ReservationPane extends JFrame implements ActionListener {
     private DatePicker checkInDatePicker;
     private DatePicker checkOutDatePicker;
 
-    public ReservationPane(int id) {
+    public ReservationPane(int id, LocalDate checkIn, LocalDate checkOut) {
         setTitle("Reservation Form");
         setSize(600, 300);
         setLocationRelativeTo(null);
@@ -65,7 +66,7 @@ public class ReservationPane extends JFrame implements ActionListener {
         //DatePickerSettings checkInSettings = new DatePickerSettings();
         checkInDatePicker = new DatePicker();
         //checkInSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
-        checkInDatePicker.setDateToToday();
+        checkInDatePicker.setDate(checkIn);
         checkInDatePicker.setPreferredSize(new Dimension(200, 30));
         JLabel checkInLbl = new JLabel("Check-In:");
         add(checkInLbl);
@@ -74,7 +75,7 @@ public class ReservationPane extends JFrame implements ActionListener {
         //DatePickerSettings checkOutSettings = new DatePickerSettings();
         checkOutDatePicker = new DatePicker();
         //checkOutSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
-        checkOutDatePicker.setDateToToday();
+        checkOutDatePicker.setDate(checkOut);
         checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
         JLabel checkOutLbl = new JLabel("Check-Out:");
         add(checkOutLbl);
