@@ -1,8 +1,12 @@
 package org.bearluxury;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class HotelHomePage extends JFrame {
     public HotelHomePage() {
@@ -16,17 +20,29 @@ public class HotelHomePage extends JFrame {
         getContentPane().setBackground(backgroundColor);
 
 
-        JPanel logoPanel = new JPanel();
+        JPanel logoPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    BufferedImage hotelImage = ImageIO.read(new File("hotelStockImage.jpg"));
+                    BufferedImage logoImage = ImageIO.read(new File("logo.png"));
+
+
+                    int hotelX = (getWidth() - hotelImage.getWidth()) / 2;
+                    int hotelY = (getHeight() - hotelImage.getHeight()) / 2;
+                    g.drawImage(hotelImage, hotelX, hotelY, this);
+
+
+                    int logoX = (getWidth() - logoImage.getWidth()) / 2;
+                    int logoY = (getHeight() - logoImage.getHeight()) / 6;
+                    g.drawImage(logoImage, logoX, logoY, this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
         logoPanel.setBackground(backgroundColor);
-
-
-        ImageIcon logoIcon = new ImageIcon("bbl-logo.png");
-        JLabel logoLabel = new JLabel(logoIcon);
-
-        int logoWidth = logoIcon.getIconWidth() * 2; // Doubling the width
-        int logoHeight = logoIcon.getIconHeight() * 2; // Doubling the height
-        logoLabel.setPreferredSize(new Dimension(logoWidth, logoHeight));
-        logoPanel.add(logoLabel);
 
 
         JPanel welcomePanel = new JPanel();
@@ -46,17 +62,23 @@ public class HotelHomePage extends JFrame {
         reservePanel.add(reserveButton);
 
         JButton seeReservations = new JButton("See All Reservations");
+        seeReservations.setFont(font);
+        seeReservations.setForeground(Color.BLACK);
+        seeReservations.addActionListener(new openViewReservationPane());
+        reservePanel.add(seeReservations);
+
         JButton addUser = new JButton("Register");
         JButton addRoom = new JButton("Add Room");
 
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
         addUser.setFont(font);
+        addRoom.addActionListener(new openAddRoomPane());
+        addUser.addActionListener(new openRegistration());
         addUser.setForeground(Color.BLACK);
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
 
-        reservePanel.add(seeReservations);
         reservePanel.add(addUser);
         reservePanel.add(addRoom);
 
@@ -72,6 +94,30 @@ public class HotelHomePage extends JFrame {
         public void actionPerformed(ActionEvent e) {
             dispose();
             HotelManagementSystem.openHotelManagmentSystem();
+        }
+    }
+
+    private class openViewReservationPane implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            ReservationCatalog reservations = new ReservationCatalog();
+            reservations.setReservations(new ReservationBuilder("ReservationList.csv").getReservationList());
+            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations);
+            catalogPane.setVisible(true);
+        }
+    }
+    private class openAddRoomPane implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AddRoomPane.openAddRoomPane();
+        }
+    }
+    private class openRegistration implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            RegisterPane pane = new RegisterPane();
+            pane.setVisible(true);
         }
     }
 

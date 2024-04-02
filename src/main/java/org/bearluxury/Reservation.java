@@ -1,7 +1,10 @@
 package org.bearluxury;
 
-import com.github.lgooddatepicker.components.DatePicker;
+
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 class Reservation {
     private int roomNumber;
@@ -9,15 +12,15 @@ class Reservation {
     private String lastName;
     private String email;
     private int numberOfGuests;
-    private DatePicker startDate;
-    private DatePicker endDate;
+    private Date startDate;
+    private Date endDate;
 
 
     public Reservation(){}
     public Reservation(int roomNumber, String firstName,
                        String lastName, String email,
-                       int numberOfGuests, DatePicker startDate,
-                       DatePicker endDate) {
+                       int numberOfGuests, Date startDate,
+                       Date endDate) {
         this.roomNumber = roomNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -29,13 +32,25 @@ class Reservation {
 
     @Override
     public String toString() {
+        Calendar startCal = new GregorianCalendar();
+        startCal.setTime(startDate);
+
+        Calendar endCal = new GregorianCalendar();
+        endCal.setTime(startDate);
         return roomNumber            +
                 "," + firstName      +
                 "," + lastName       +
                 "," + email          +
                 "," + numberOfGuests +
-                "," + startDate      +
-                "," + endDate        +
+                // Date Format: yyyy-MM-dd
+                "," + startCal.get(Calendar.YEAR) +
+                "-" + startCal.get(Calendar.MONTH)+
+                "-" + startCal.get(Calendar.DATE) +
+
+                "," + endCal.get(Calendar.YEAR) +
+                "-" + endCal.get(Calendar.MONTH)+
+                "-" + endCal.get(Calendar.DATE) +
+
                 '\n';
     }
 
@@ -48,19 +63,19 @@ class Reservation {
     }
 
 
-    public DatePicker getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(DatePicker startDate) {
+    public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
 
-    public DatePicker getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(DatePicker endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 

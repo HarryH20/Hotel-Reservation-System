@@ -226,14 +226,14 @@ public class HotelManagementSystem extends JFrame implements DateChangeListener,
             System.out.println("Number of beds: " + numBeds);
             System.out.println("Number of rooms: " + numRooms);
             dispose();
-            HotelManagementSystem.openRoomCatalogPane(numBeds);
+            HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate);
         }
 
     }
-    private static void openRoomCatalogPane(int beds){
+    private static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
         RoomCatalog rooms = new RoomCatalog();
         rooms.setRooms(new RoomBuilder("RoomList.csv").getRoomList());
-        AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds);
+        AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds, checkIn, checkOut);
         catalogPane.setVisible(true);
     }
     public static void openHotelManagmentSystem(){
@@ -242,6 +242,10 @@ public class HotelManagementSystem extends JFrame implements DateChangeListener,
         window.setVisible(true);
     }
 
+    public static void openRegisterPane() {
+        RegisterPane register = new RegisterPane();
+        register.setVisible(true);
+    }
 
     public static void main(String[] args) {
         HotelHomePage page = new HotelHomePage();

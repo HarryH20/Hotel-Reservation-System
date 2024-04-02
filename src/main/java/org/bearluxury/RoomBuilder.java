@@ -1,18 +1,15 @@
 package org.bearluxury;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //Parser for room from CSV file
 class RoomBuilder {
-
-    ArrayList<Room> roomList;
+    Set <Room> roomList;
 
     RoomBuilder(String csvName){
-        roomList = new ArrayList<>();
+        roomList = new TreeSet<>(Comparator.comparing(Room::getRoomNumber));
         File file = new File(csvName);
         BufferedReader reader = null;
         try {
@@ -45,11 +42,11 @@ class RoomBuilder {
             }
         }
     }
-    ArrayList<Room> getRoomList(){
+    Set<Room> getRoomList(){
         return roomList;
     }
 
-    public void addRoom(int roomNumber, double price, boolean canSmoke,
+    public boolean addRoom(int roomNumber, double price, boolean canSmoke,
                         ROOM_TYPE roomType, BED_TYPE bed,
                         QUALITY_LEVEL qualityLevel, int numberOfBeds){
         Room room = new Room(roomNumber,
@@ -59,7 +56,8 @@ class RoomBuilder {
                 bed,
                 qualityLevel,
                 numberOfBeds);
-        roomList.add(room);
+       return roomList.add(room);
+
     }
     public void writeRoom(String csvName){
         File file = new File(csvName);
@@ -69,14 +67,14 @@ class RoomBuilder {
             writer.write("room number,guest name,start date,end date,discount\n");
 
             //FORMAT: room number	price	room type	quality	number of beds	smoke	type of beds
-            for(int i = 0; i < roomList.size(); i++){
-                writer.write(roomList.get(i).getRoomNumber()+","
-                        +roomList.get(i).getPrice()+","
-                        +roomList.get(i).getRoomType()+","
-                        +roomList.get(i).getQualityLevel()+","
-                        +roomList.get(i).getNumberOfBeds()+","
-                        +roomList.get(i).isCanSmoke() +","
-                        +roomList.get(i).getBed()+'\n');
+           for(Room room: roomList){
+                writer.write(room.getRoomNumber()+","
+                        +room.getPrice()+","
+                        +room.getRoomType()+","
+                        +room.getQualityLevel()+","
+                        +room.getNumberOfBeds()+","
+                        +room.isCanSmoke() +","
+                        +room.getBed()+'\n');
             }
 
         } catch (IOException e) {
