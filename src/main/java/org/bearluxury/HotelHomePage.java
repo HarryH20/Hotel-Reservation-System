@@ -73,6 +73,8 @@ public class HotelHomePage extends JFrame {
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
         addUser.setFont(font);
+        addRoom.addActionListener(new openAddRoomPane());
+        addUser.addActionListener(new openRegistration());
         addUser.setForeground(Color.BLACK);
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
@@ -103,6 +105,19 @@ public class HotelHomePage extends JFrame {
             reservations.setReservations(new ReservationBuilder("ReservationList.csv").getReservationList());
             BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations);
             catalogPane.setVisible(true);
+        }
+    }
+    private class openAddRoomPane implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AddRoomPane.openAddRoomPane();
+        }
+    }
+    private class openRegistration implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            RegisterPane pane = new RegisterPane();
+            pane.setVisible(true);
         }
     }
 

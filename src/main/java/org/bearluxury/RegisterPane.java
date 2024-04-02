@@ -19,7 +19,6 @@ public class RegisterPane extends JFrame {
     public RegisterPane() {
         setTitle("Account Registration");
         setBounds(300, 90, 500, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
 
         c = getContentPane();
