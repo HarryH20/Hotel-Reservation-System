@@ -7,16 +7,22 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class LoginPage extends JFrame {
+public class LoginPage extends JFrame implements ActionListener {
 
     Color backgroundColor = new Color(232,223,185,255);
 
     ImageIcon logo;
 
+    private JPanel loginPanel;
+
     private JTextField emailTextField;
     private JPasswordField passwordTextField;
     private JButton loginButton;
+
+    private JLabel wrongMsg;
 
     public LoginPage() {
         setTitle("Login");
@@ -39,8 +45,9 @@ public class LoginPage extends JFrame {
                 "borderWidth:0;" +
                 "focusWidth:0;" +
                 "innerFocusWidth:0");
+        loginButton.addActionListener(this);
 
-        JPanel loginPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
+        loginPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
         loginPanel.setBackground(backgroundColor);
         loginPanel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:20;" +
@@ -55,6 +62,9 @@ public class LoginPage extends JFrame {
         description.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
+
+        wrongMsg = new JLabel("Wrong username or password");
+        wrongMsg.setForeground(Color.red);
 
         loginPanel.add(logoLabel);
         loginPanel.add(header, "gapy 10");
@@ -84,6 +94,14 @@ public class LoginPage extends JFrame {
         panel.add(label);
         panel.add(cmdRegister);
         return panel;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == loginButton) {
+            loginPanel.add(wrongMsg, "gapy 8", 7);
+            this.setVisible(true);
+        }
     }
 
     public static void main(String[] args) {
