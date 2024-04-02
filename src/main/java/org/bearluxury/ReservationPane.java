@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Date;
 
 /*
@@ -104,8 +103,8 @@ public class ReservationPane extends JFrame implements ActionListener {
         String guestLastName = lastName.getText();
         String guestEmail = email.getText();
         int numberOfGuests = (int) guestNumber.getValue();
-        DatePicker startDate = checkInDatePicker;
-        DatePicker endDate = checkOutDatePicker;
+        Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
+        Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
 
         try {
             ReservationBuilder reservationBuilder = new ReservationBuilder(csvFileName);
