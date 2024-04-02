@@ -21,6 +21,7 @@ public class LoginPage extends JFrame implements ActionListener {
     private JTextField emailTextField;
     private JPasswordField passwordTextField;
     private JButton loginButton;
+    private JButton cmdRegister;
 
     private JLabel wrongMsg;
 
@@ -83,11 +84,12 @@ public class LoginPage extends JFrame implements ActionListener {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
-        JButton cmdRegister = new JButton("<html><a href=\"#\">Register now</a></html>");
+        cmdRegister = new JButton("<html><a href=\"#\">Register now</a></html>");
         cmdRegister.putClientProperty(FlatClientProperties.STYLE, "" +
                 "border:3,3,3,3");
         cmdRegister.setContentAreaFilled(false);
         cmdRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cmdRegister.addActionListener(this);
         JLabel label = new JLabel("Don't have an account?");
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);");
@@ -96,11 +98,19 @@ public class LoginPage extends JFrame implements ActionListener {
         return panel;
     }
 
+    public void openRegisterPage() {
+        dispose();
+        RegisterPage registerPage = new RegisterPage();
+        registerPage.setVisible(true);
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
             loginPanel.add(wrongMsg, "gapy 8", 7);
             this.setVisible(true);
+        } else if (e.getSource() == cmdRegister) {
+            openRegisterPage();
         }
     }
 

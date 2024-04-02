@@ -25,6 +25,7 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JPasswordField passwordTextField;
     private JPasswordField confirmPasswordField;
     private JButton registerButton;
+    JButton cmdRegister;
 
     public RegisterPage() {
         setTitle("Register");
@@ -97,11 +98,12 @@ public class RegisterPage extends JFrame implements ActionListener {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
-        JButton cmdRegister = new JButton("<html><a href=\"#\">Log in now</a></html>");
+        cmdRegister = new JButton("<html><a href=\"#\">Log in now</a></html>");
         cmdRegister.putClientProperty(FlatClientProperties.STYLE, "" +
                 "border:3,3,3,3");
         cmdRegister.setContentAreaFilled(false);
         cmdRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cmdRegister.addActionListener(this);
         JLabel label = new JLabel("Already have an account?");
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);");
@@ -110,15 +112,16 @@ public class RegisterPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+    public void openLoginPanel() {
+        dispose();
+        LoginPage loginPage = new LoginPage();
+        loginPage.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        FlatRobotoFont.install();
-        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        FlatLightLaf.setup();
-        RegisterPage registerPage = new RegisterPage();
-        registerPage.setVisible(true);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == cmdRegister) {
+            openLoginPanel();
+        }
     }
 }
