@@ -1,8 +1,7 @@
 room number,first name,last name,email,number of guests,start date,end date
-1000,Nicholas,Nolen,Will_Clore1@Baylor.edu,1,,
-1001,Will,Clore,Will_Clore1@Baylor.edu,1,,
-1002,Alan,Villigrand,Will_Clore1@Baylor.edu,1,,
-1000,Harrison,Hassler,Will_Clore1@Baylor.edu,1,,
-1011,josh,kim,jkim1902@gmail.com,1,,
-3011,Dan,Martin,DMartin@gmail.com,3,,
-3013,,,,1,2024-03-30,2024-03-30
+1000,Nicholas,Nolen,Will_Clore1@Baylor.edu,1,2024-1-28,2024-1-28
+1001,Will,Clore,Will_Clore1@Baylor.edu,1,2024-3-28,2024-3-28
+1002,Alan,Villigrand,Will_Clore1@Baylor.edu,1,2024-4-28,2024-4-28
+1000,Harrison,Hassler,Will_Clore1@Baylor.edu,1,2024-2-28,2024-2-28
+1011,josh,kim,jkim1902@gmail.com,1,2024-2-28,2024-2-28
+2020,Derek,M,dm@gmail.com,1,2024-3-2,2024-3-2

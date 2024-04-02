@@ -51,7 +51,6 @@ public class HotelHomePage extends JFrame {
         seeReservations.addActionListener(new openViewReservationPane());
         reservePanel.add(seeReservations);
 
-        JButton addUser = new JButton("Register");
         JButton addRoom = new JButton("Add Room");
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
