@@ -1,7 +1,6 @@
 package org.bearluxury;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.components.DatePickerSettings;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,8 +89,6 @@ public class ReservationPane extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == submitButton) {
             saveToCSV();
-            //JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-            //dispose();
         }
     }
 
@@ -119,22 +116,6 @@ public class ReservationPane extends JFrame implements ActionListener {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-        ///
-
-//        String csvReservationList = "ReservationList.csv";
-//
-//        try(FileWriter writer = new FileWriter(csvReservationList, true)) {
-//            writer.append(roomId.getText()).append(",")
-//                    .append(firstName.getText()).append(",")
-//                    .append(lastName.getText()).append(",")
-//                    .append(email.getText()).append(",")
-//                    .append(String.valueOf(guestNumber.getValue())).append("\n");
-//            JOptionPane.showMessageDialog(this,"Reservation saved successfully.");
-//            dispose();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            JOptionPane.showMessageDialog(this, "Error: Could not save reservation!");
-//        }
     }
     private String formatDate(java.util.Date date) {
         return new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);

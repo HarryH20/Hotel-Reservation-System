@@ -1,19 +1,16 @@
 package org.bearluxury;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class HotelHomePage extends JFrame {
     public HotelHomePage() {
         setTitle("Baylor Bear Luxury");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1080, 720);
+        setSize(1000, 720);
         setLocationRelativeTo(null); // Center the frame on the screen
+
 
         Color backgroundColor = new Color(232, 223, 185, 255);
         getContentPane().setBackground(backgroundColor);
@@ -44,6 +41,15 @@ public class HotelHomePage extends JFrame {
         logoPanel.setBackground(backgroundColor);
 
 
+        ImageIcon logoIcon = new ImageIcon("bbl-logo.png");
+        JLabel logoLabel = new JLabel(logoIcon);
+
+        int logoWidth = logoIcon.getIconWidth() * 2; // Doubling the width
+        int logoHeight = logoIcon.getIconHeight() * 2; // Doubling the height
+        logoLabel.setPreferredSize(new Dimension(logoWidth, logoHeight));
+        logoPanel.add(logoLabel);
+
+
         JPanel welcomePanel = new JPanel();
         welcomePanel.setBackground(backgroundColor);
         JLabel welcomeLabel = new JLabel("Welcome to Baylor Bear Luxury!");
@@ -58,7 +64,6 @@ public class HotelHomePage extends JFrame {
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
         reserveButton.addActionListener(new openHotelManagmentPane());
-
         reservePanel.add(reserveButton);
 
         JButton seeReservations = new JButton("See All Reservations");
@@ -68,9 +73,7 @@ public class HotelHomePage extends JFrame {
         reservePanel.add(seeReservations);
 
         JButton addUser = new JButton("Register");
-        addUser.addActionListener(new openRegisterAccountPane());
         JButton addRoom = new JButton("Add Room");
-
 
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
@@ -78,12 +81,12 @@ public class HotelHomePage extends JFrame {
         addUser.setForeground(Color.BLACK);
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
-        addRoom.addActionListener(new openAddRoomPane());
 
         reservePanel.add(addUser);
         reservePanel.add(addRoom);
 
-        // Adding Components to Frame
+
+
         setLayout(new BorderLayout());
         add(logoPanel, BorderLayout.CENTER);
         add(welcomePanel, BorderLayout.NORTH);
@@ -96,14 +99,6 @@ public class HotelHomePage extends JFrame {
             HotelManagementSystem.openHotelManagmentSystem();
         }
     }
-    private class openAddRoomPane implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            AddRoomPane.openAddRoomPane();
-        }
-    }
-
 
     private class openViewReservationPane implements ActionListener{
         @Override
@@ -116,10 +111,4 @@ public class HotelHomePage extends JFrame {
         }
     }
 
-    private class openRegisterAccountPane implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            RegisterAccountPane.openAccountPane();
-        }
-    }
 }

@@ -242,6 +242,10 @@ public class HotelManagementSystem extends JFrame implements DateChangeListener,
         window.setVisible(true);
     }
 
+    public static void openRegisterPane() {
+        RegisterPane register = new RegisterPane();
+        register.setVisible(true);
+    }
 
     public static void main(String[] args) {
         HotelHomePage page = new HotelHomePage();
