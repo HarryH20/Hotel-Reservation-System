@@ -17,7 +17,7 @@ public class BookedReservationsGUI extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
     private final Color tableHeaderColor = new Color(184, 134, 11);
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
-    private final Font tableFont = new Font("Arial", Font.BOLD, 16);
+    private final Font tableFont = new Font("Arial", Font.BOLD, 14);
 
     public BookedReservationsGUI(ReservationCatalog reservationCatalog) {
         setTitle("Booked Reservations");
