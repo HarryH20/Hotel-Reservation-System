@@ -1,7 +1,9 @@
+DROP TABLE IF EXISTS reservations;
+
 create table reservations (
-                              room_number INT,
-                              guest_name VARCHAR(255),
-                              start_date DATE,
-                              end_date DATE,
-                              discount DOUBLE
+                              room_number INT NOT NULL ,
+                              guest_name VARCHAR(255) NOT NULL,
+                              start_date DATE NOT NULL ,
+                              end_date DATE NOT NULL ,
+                              discount DOUBLE NOT NULL
 );

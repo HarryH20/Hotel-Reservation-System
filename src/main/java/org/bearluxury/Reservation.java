@@ -15,9 +15,13 @@ class Reservation {
 
 
     public Reservation(){}
+
     public Reservation(int roomNumber, String guestName, Date startDate, Date endDate, double discount) {
+        this.roomNumber = roomNumber;
+        this.guestName = guestName;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.discount = discount;
     }
 
     @Override
