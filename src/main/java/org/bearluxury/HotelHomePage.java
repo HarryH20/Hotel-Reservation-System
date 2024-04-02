@@ -1,8 +1,12 @@
 package org.bearluxury;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class HotelHomePage extends JFrame {
     public HotelHomePage() {
@@ -39,15 +43,6 @@ public class HotelHomePage extends JFrame {
             }
         };
         logoPanel.setBackground(backgroundColor);
-
-
-        ImageIcon logoIcon = new ImageIcon("bbl-logo.png");
-        JLabel logoLabel = new JLabel(logoIcon);
-
-        int logoWidth = logoIcon.getIconWidth() * 2; // Doubling the width
-        int logoHeight = logoIcon.getIconHeight() * 2; // Doubling the height
-        logoLabel.setPreferredSize(new Dimension(logoWidth, logoHeight));
-        logoPanel.add(logoLabel);
 
 
         JPanel welcomePanel = new JPanel();
