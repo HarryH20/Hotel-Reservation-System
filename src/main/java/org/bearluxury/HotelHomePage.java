@@ -119,7 +119,6 @@ public class HotelHomePage extends JFrame {
     private class openRegisterAccountPane implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
-            dispose();
             RegisterAccountPane.openAccountPane();
         }
     }

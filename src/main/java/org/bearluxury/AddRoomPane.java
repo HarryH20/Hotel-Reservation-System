@@ -84,24 +84,26 @@ public class AddRoomPane extends JFrame {
     }
 
     private void saveRoomToCSV(double priceSelection) {
-        RoomBuilder builder = new RoomBuilder("RoomList.csv");
-
-        boolean added = builder.addRoom(
-                Integer.parseInt(roomNumber.getText()),
-                priceSelection,
-                smokingStatus.isSelected(),
-                builder.readAsRoomType(roomTypes.getSelectedItem().toString()),
-                builder.readAsBedType(bedTypes.getSelectedItem().toString()),
-                builder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
-                Integer.parseInt(bedNumber.getValue().toString())
+        try {
+            RoomBuilder builder = new RoomBuilder("RoomList.csv");
+            boolean added = builder.addRoom(
+                    Integer.parseInt(roomNumber.getText()),
+                    priceSelection,
+                    smokingStatus.isSelected(),
+                    builder.readAsRoomType(roomTypes.getSelectedItem().toString()),
+                    builder.readAsBedType(bedTypes.getSelectedItem().toString()),
+                    builder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
+                    Integer.parseInt(bedNumber.getValue().toString())
 
             );
-        if(added) {
-            builder.writeRoom("RoomList.csv");
-            showConfirmationDialog();
-        }
-        else {
-            showFailureDialog();
+            if (added) {
+                builder.writeRoom("RoomList.csv");
+                showConfirmationDialog();
+            } else {
+                showFailureDialog();
+            }
+        }catch (Exception exc){
+            JOptionPane.showMessageDialog(null, "Room failed to be added...please try again!");
         }
 
     }

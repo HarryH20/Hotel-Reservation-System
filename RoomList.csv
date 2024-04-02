@@ -1,63 +1,66 @@
-room number,price,room type,quality,number of beds,smoke,type of beds
-1000,70,vintage,comfort,1,TRUE,King
-1001,70,urban,comfort,1,FALSE,Queen
-1002,200,vintage,executive,2,TRUE,Twin
-1003,150,urban,business,2,TRUE,Full
-1004,100,nature,economy,1,TRUE,King
-1005,150,urban,business,2,FALSE,Queen
-1006,150,urban,business,4,TRUE,Twin
-1007,100,vintage,economy,2,TRUE,Full
-1008,70,vintage,comfort,4,TRUE,Queen
-1009,100,vintage,economy,3,TRUE,Twin
-1010,200,urban,executive,2,TRUE,Full
-1011,200,nature,executive,2,FALSE,Queen
-1012,150,urban,business,4,FALSE,King
-1013,200,vintage,executive,4,TRUE,Queen
-1014,70,nature,comfort,3,TRUE,Twin
-1015,100,nature,economy,2,TRUE,King
-1016,150,urban,business,2,TRUE,Queen
-1017,70,nature,comfort,3,TRUE,Twin
-1018,150,nature,business,4,TRUE,Full
-1019,100,nature,economy,2,FALSE,King
-2000,150,urban,business,3,TRUE,Queen
-2001,70,nature,comfort,3,TRUE,Twin
-2002,150,nature,business,4,TRUE,Full
-2003,150,urban,business,4,FALSE,King
-2004,200,vintage,executive,1,TRUE,Queen
-2005,70,nature,comfort,1,TRUE,King
-2006,70,urban,comfort,3,TRUE,Queen
-2007,150,nature,business,3,TRUE,Twin
-2008,100,urban,economy,3,TRUE,Full
-2009,100,vintage,economy,3,TRUE,King
-2010,70,vintage,comfort,2,TRUE,King
-2011,100,vintage,economy,2,FALSE,Queen
-2012,70,urban,comfort,3,TRUE,Twin
-2013,200,nature,executive,2,TRUE,Full
-2014,100,vintage,economy,3,FALSE,King
-2015,100,vintage,economy,1,TRUE,Queen
-2016,70,vintage,comfort,3,FALSE,Twin
-2017,200,vintage,executive,2,TRUE,King
-2018,100,nature,economy,2,FALSE,Queen
-2019,150,nature,business,4,TRUE,Twin
-2020,150,nature,business,1,TRUE,Full
-3000,200,vintage,executive,2,FALSE,King
-3001,100,vintage,economy,2,TRUE,Queen
-3002,100,nature,economy,3,TRUE,Twin
-3003,100,nature,economy,1,TRUE,Full
-3004,100,vintage,economy,3,FALSE,King
-3005,70,vintage,comfort,3,TRUE,Queen
-3006,100,nature,economy,2,FALSE,Twin
-3007,100,vintage,economy,2,TRUE,King
-3008,200,vintage,executive,1,TRUE,Queen
-3009,100,vintage,economy,3,TRUE,Twin
-3010,150,urban,business,1,FALSE,King
-3011,150,vintage,business,1,TRUE,Queen
-3012,70,urban,comfort,3,TRUE,Twin
-3013,100,vintage,economy,1,TRUE,Full
-3014,150,vintage,business,3,TRUE,King
-3015,70,urban,comfort,4,TRUE,Queen
-3016,100,nature,economy,3,TRUE,King
-3017,100,nature,economy,2,FALSE,King
-3018,200,urban,executive,1,FALSE,Queen
-3019,100,vintage,economy,2,TRUE,Twin
-3020,150,nature,business,3,FALSE,Full
+room number,guest name,start date,end date,discount
+1,333.0,Nature Retreat,Comfort,3,true,Queen
+1000,70.0,Nature Retreat,Comfort,1,true,King
+1001,70.0,Nature Retreat,Comfort,1,false,Queen
+1002,200.0,Nature Retreat,Comfort,2,true,Twin
+1003,150.0,Nature Retreat,Comfort,2,true,Full
+1004,100.0,Nature Retreat,Comfort,1,true,King
+1005,150.0,Nature Retreat,Comfort,2,false,Queen
+1006,150.0,Nature Retreat,Comfort,4,true,Twin
+1007,100.0,Nature Retreat,Comfort,2,true,Full
+1008,70.0,Nature Retreat,Comfort,4,true,Queen
+1009,100.0,Nature Retreat,Comfort,3,true,Twin
+1010,200.0,Nature Retreat,Comfort,2,true,Full
+1011,200.0,Nature Retreat,Comfort,2,false,Queen
+1012,150.0,Nature Retreat,Comfort,4,false,King
+1013,200.0,Nature Retreat,Comfort,4,true,Queen
+1014,70.0,Nature Retreat,Comfort,3,true,Twin
+1015,100.0,Nature Retreat,Comfort,2,true,King
+1016,150.0,Nature Retreat,Comfort,2,true,Queen
+1017,70.0,Nature Retreat,Comfort,3,true,Twin
+1018,150.0,Nature Retreat,Comfort,4,true,Full
+1019,100.0,Nature Retreat,Comfort,2,false,King
+2000,150.0,Nature Retreat,Comfort,3,true,Queen
+2001,70.0,Nature Retreat,Comfort,3,true,Twin
+2002,150.0,Nature Retreat,Comfort,4,true,Full
+2003,150.0,Nature Retreat,Comfort,4,false,King
+2004,200.0,Nature Retreat,Comfort,1,true,Queen
+2005,70.0,Nature Retreat,Comfort,1,true,King
+2006,70.0,Nature Retreat,Comfort,3,true,Queen
+2007,150.0,Nature Retreat,Comfort,3,true,Twin
+2008,100.0,Nature Retreat,Comfort,3,true,Full
+2009,100.0,Nature Retreat,Comfort,3,true,King
+2010,70.0,Nature Retreat,Comfort,2,true,King
+2011,100.0,Nature Retreat,Comfort,2,false,Queen
+2012,70.0,Nature Retreat,Comfort,3,true,Twin
+2013,200.0,Nature Retreat,Comfort,2,true,Full
+2014,100.0,Nature Retreat,Comfort,3,false,King
+2015,100.0,Nature Retreat,Comfort,1,true,Queen
+2016,70.0,Nature Retreat,Comfort,3,false,Twin
+2017,200.0,Nature Retreat,Comfort,2,true,King
+2018,100.0,Nature Retreat,Comfort,2,false,Queen
+2019,150.0,Nature Retreat,Comfort,4,true,Twin
+2020,150.0,Nature Retreat,Comfort,1,true,Full
+3000,200.0,Nature Retreat,Comfort,2,false,King
+3001,100.0,Nature Retreat,Comfort,2,true,Queen
+3002,100.0,Nature Retreat,Comfort,3,true,Twin
+3003,100.0,Nature Retreat,Comfort,1,true,Full
+3004,100.0,Nature Retreat,Comfort,3,false,King
+3005,70.0,Nature Retreat,Comfort,3,true,Queen
+3006,100.0,Nature Retreat,Comfort,2,false,Twin
+3007,100.0,Nature Retreat,Comfort,2,true,King
+3008,200.0,Nature Retreat,Comfort,1,true,Queen
+3009,100.0,Nature Retreat,Comfort,3,true,Twin
+3010,150.0,Nature Retreat,Comfort,1,false,King
+3011,150.0,Nature Retreat,Comfort,1,true,Queen
+3012,70.0,Nature Retreat,Comfort,3,true,Twin
+3013,100.0,Nature Retreat,Comfort,1,true,Full
+3014,150.0,Nature Retreat,Comfort,3,true,King
+3015,70.0,Nature Retreat,Comfort,4,true,Queen
+3016,100.0,Nature Retreat,Comfort,3,true,King
+3017,100.0,Nature Retreat,Comfort,2,false,King
+3018,200.0,Nature Retreat,Comfort,1,false,Queen
+3019,100.0,Nature Retreat,Comfort,2,true,Twin
+3020,150.0,Nature Retreat,Comfort,3,false,Full
+3333,150.0,Nature Retreat,Comfort,3,false,Twin
+9122,100.0,Nature Retreat,Comfort,4,true,Full
