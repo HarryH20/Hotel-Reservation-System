@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.Date;
 
 /*
@@ -28,7 +27,7 @@ public class ReservationPane extends JFrame implements ActionListener {
     private DatePicker checkInDatePicker;
     private DatePicker checkOutDatePicker;
 
-    public ReservationPane(int id, LocalDate checkIn, LocalDate checkOut) {
+    public ReservationPane(int id) {
         setTitle("Reservation Form");
         setSize(600, 300);
         setLocationRelativeTo(null);
@@ -66,16 +65,16 @@ public class ReservationPane extends JFrame implements ActionListener {
         //DatePickerSettings checkInSettings = new DatePickerSettings();
         checkInDatePicker = new DatePicker();
         //checkInSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
-        checkInDatePicker.setDate(checkIn);
+        checkInDatePicker.setDateToToday();
         checkInDatePicker.setPreferredSize(new Dimension(200, 30));
         JLabel checkInLbl = new JLabel("Check-In:");
         add(checkInLbl);
         add(checkInDatePicker);
 
-//        DatePickerSettings checkOutSettings = new DatePickerSettings();
+        //DatePickerSettings checkOutSettings = new DatePickerSettings();
         checkOutDatePicker = new DatePicker();
-//        checkOutSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
-        checkOutDatePicker.setDate(checkOut);
+        //checkOutSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
+        checkOutDatePicker.setDateToToday();
         checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
         JLabel checkOutLbl = new JLabel("Check-Out:");
         add(checkOutLbl);
@@ -95,24 +94,46 @@ public class ReservationPane extends JFrame implements ActionListener {
         }
     }
 
-    private void saveToCSV() {
-        //FIX
-        String csvReservationList = "ReservationList.csv";
+    public void saveToCSV() {
+        String csvFileName = "ReservationList.csv";
 
-        try(FileWriter writer = new FileWriter(csvReservationList, true)) {
-            writer.append(roomId.getText()).append(",")
-                    .append(firstName.getText()).append(",")
-                    .append(lastName.getText()).append(",")
-                    .append(email.getText()).append(",")
-                    .append(String.valueOf(guestNumber.getValue())).append(',').
-                    append(formatDate(java.sql.Date.valueOf(checkInDatePicker.getDate()))).append(',')
-                    .append(formatDate(java.sql.Date.valueOf(checkOutDatePicker.getDate()))).append("\n");
-            JOptionPane.showMessageDialog(this,"Reservation saved successfully.");
+        // Extracting the reservation data from the form
+        int roomNumber = Integer.parseInt(roomId.getText());
+        String guestFirstName = firstName.getText();
+        String guestLastName = lastName.getText();
+        String guestEmail = email.getText();
+        int numberOfGuests = (int) guestNumber.getValue();
+        Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
+        Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
+
+        try {
+            ReservationBuilder reservationBuilder = new ReservationBuilder(csvFileName);
+            reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);
+
+            reservationBuilder.writeReservation(csvFileName);
+
+            JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
             dispose();
-        } catch (IOException e) {
+        } catch (RuntimeException e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error: Could not save reservation!");
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
+        ///
+
+//        String csvReservationList = "ReservationList.csv";
+//
+//        try(FileWriter writer = new FileWriter(csvReservationList, true)) {
+//            writer.append(roomId.getText()).append(",")
+//                    .append(firstName.getText()).append(",")
+//                    .append(lastName.getText()).append(",")
+//                    .append(email.getText()).append(",")
+//                    .append(String.valueOf(guestNumber.getValue())).append("\n");
+//            JOptionPane.showMessageDialog(this,"Reservation saved successfully.");
+//            dispose();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            JOptionPane.showMessageDialog(this, "Error: Could not save reservation!");
+//        }
     }
     private String formatDate(java.util.Date date) {
         return new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);

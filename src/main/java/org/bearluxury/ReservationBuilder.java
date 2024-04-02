@@ -37,7 +37,9 @@ class ReservationBuilder {
                         endDate);
                 reservationList.add(reservation);
             }
-        } catch (IOException | ParseException e) {
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
