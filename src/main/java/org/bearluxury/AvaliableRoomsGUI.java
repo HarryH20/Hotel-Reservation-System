@@ -68,7 +68,7 @@ public class AvaliableRoomsGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                InfoFilterPane window = new InfoFilterPane();
+                HotelHomePage window = new HotelHomePage();
                 window.setVisible(true);
 
             }
