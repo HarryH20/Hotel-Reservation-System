@@ -1,7 +1,10 @@
 package org.bearluxury;
 
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 class Reservation {
     private int roomNumber;
@@ -29,13 +32,25 @@ class Reservation {
 
     @Override
     public String toString() {
+        Calendar startCal = new GregorianCalendar();
+        startCal.setTime(startDate);
+
+        Calendar endCal = new GregorianCalendar();
+        endCal.setTime(startDate);
         return roomNumber            +
                 "," + firstName      +
                 "," + lastName       +
                 "," + email          +
                 "," + numberOfGuests +
-                "," + startDate      +
-                "," + endDate        +
+                // Date Format: yyyy-MM-dd
+                "," + startCal.get(Calendar.YEAR) +
+                "-" + startCal.get(Calendar.MONTH)+
+                "-" + startCal.get(Calendar.DATE) +
+
+                "," + endCal.get(Calendar.YEAR) +
+                "-" + endCal.get(Calendar.MONTH)+
+                "-" + endCal.get(Calendar.DATE) +
+
                 '\n';
     }
 

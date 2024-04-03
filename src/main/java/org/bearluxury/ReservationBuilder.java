@@ -1,6 +1,8 @@
 package org.bearluxury;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,11 +17,14 @@ class ReservationBuilder {
         try {
             reader = new BufferedReader(new FileReader(file));
             String line;
+            //ignore first line of garbage
+            line = reader.readLine();
+
             while ((line = reader.readLine()) != null) {
                 String[] parsedLine = line.split(",");
 
-                Date startDate = new Date(parsedLine[5]);
-                Date endDate = new Date(parsedLine[6]);
+                Date startDate = new SimpleDateFormat("yyyy-MM-dd").parse(parsedLine[5]);
+                Date endDate = new SimpleDateFormat("yyyy-MM-dd").parse(parsedLine[6]);
 
                 // room number,first name,last name,email,number of guests,start date,end date
                 Reservation reservation = new Reservation(
@@ -33,6 +38,8 @@ class ReservationBuilder {
                 reservationList.add(reservation);
             }
         } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
             throw new RuntimeException(e);
         }
     }
