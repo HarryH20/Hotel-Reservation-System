@@ -30,11 +30,6 @@ public class RegisterPane extends JFrame {
         title.setLocation(100, 30);
         c.add(title);
 
-        JButton backButton = createBackButton();
-        backButton.setSize(80, 20);
-        backButton.setLocation(20, 10);
-        c.add(backButton);
-
         JPanel personalInfoPanel = new JPanel();
         personalInfoPanel.setBorder(BorderFactory.createTitledBorder("Personal Information"));
         personalInfoPanel.setBounds(40, 80, 400, 160);
@@ -111,20 +106,6 @@ public class RegisterPane extends JFrame {
             }
         });
         add(submitButton);
-    }
-
-    private JButton createBackButton() {
-        JButton backButton = new JButton("Back");
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                HotelHomePage window = new HotelHomePage();
-                window.setVisible(true);
-
-            }
-        });
-        return backButton;
     }
 
     public void saveAccountToCSV() {
