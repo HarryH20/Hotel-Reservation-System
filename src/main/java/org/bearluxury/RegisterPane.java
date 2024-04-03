@@ -17,14 +17,14 @@ public class RegisterPane extends JFrame {
     private JTextField password;
 
     public RegisterPane() {
-        setTitle("Account Registration");
+        setTitle("Clerk Registration");
         setBounds(300, 90, 500, 600);
         setResizable(false);
 
         c = getContentPane();
         c.setLayout(null);
 
-        title = new JLabel("Account Registration");
+        title = new JLabel("Clerk Registration");
         title.setFont(new Font("Arial", Font.PLAIN, 30));
         title.setSize(300, 30);
         title.setLocation(100, 30);

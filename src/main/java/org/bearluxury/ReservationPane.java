@@ -139,6 +139,7 @@ public class ReservationPane extends JFrame {
         String guestLastName = lastName.getText();
         String guestEmail = email.getText();
         int numberOfGuests = (int) guestNumber.getValue();
+
         Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
         Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
 
@@ -148,12 +149,15 @@ public class ReservationPane extends JFrame {
         }
         try {
             ReservationBuilder reservationBuilder = new ReservationBuilder(csvFileName);
-            reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);
-
-            reservationBuilder.writeReservation(csvFileName);
-
-            JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-            dispose();
+            boolean added = reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);
+            if(added) {
+                reservationBuilder.writeReservation(csvFileName);
+                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Reservation Already Exists...please try again!");
+            }
         } catch (RuntimeException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());

@@ -20,6 +20,18 @@ enum ROOM_TYPE{
         }
         return "EMPTY";
     }
+    public String csvFormat(){
+        if(this == VINTAGE_CHARM){
+            return "vintage";
+        }
+        else if(this == URBAN_ELEGANCE){
+            return "urban";
+        }
+        else if(this == NATURE_RETREAT){
+            return "nature";
+        }
+        return "EMPTY";
+    }
 
 
 }
@@ -61,6 +73,21 @@ enum QUALITY_LEVEL{
         }
         else if(this == ECONOMY){
             return "Economy";
+        }
+        return "EMPTY";
+    }
+    public String csvFormat() {
+        if(this == EXECUTIVE){
+            return "executive";
+        }
+        else if(this == BUSINESS){
+            return "business";
+        }
+        else if(this == COMFORT){
+            return "comfort";
+        }
+        else if(this == ECONOMY){
+            return "economy";
         }
         return "EMPTY";
     }

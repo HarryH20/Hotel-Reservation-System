@@ -42,16 +42,16 @@ public class AddRoomPane extends JFrame {
         smokingStatusLabel = new JLabel("Can Smoke: ");
         smokingStatus = new JCheckBox();
         roomTypeLabel = new JLabel("Room Type: ");
-        String[] roomOptions = {ROOM_TYPE.VINTAGE_CHARM.toString(),ROOM_TYPE.URBAN_ELEGANCE.toString(),
-                ROOM_TYPE.NATURE_RETREAT.toString()};
+        String[] roomOptions = {ROOM_TYPE.VINTAGE_CHARM.csvFormat(),ROOM_TYPE.URBAN_ELEGANCE.csvFormat(),
+                ROOM_TYPE.NATURE_RETREAT.csvFormat()};
         roomTypes = new JComboBox<>(roomOptions);
         bedTypeLabel  = new JLabel("Bed: ");
         String[] bedOptions = {BED_TYPE.KING.toString(), BED_TYPE.QUEEN.toString(),
                 BED_TYPE.FULL.toString(),BED_TYPE.TWIN.toString()};
         bedTypes = new JComboBox<>(bedOptions);
         qualityLabel = new JLabel("Room Quality: ");
-        String[] qualityOptions = {QUALITY_LEVEL.EXECUTIVE.toString(),QUALITY_LEVEL.BUSINESS.toString(),
-                QUALITY_LEVEL.COMFORT.toString(),QUALITY_LEVEL.ECONOMY.toString()};
+        String[] qualityOptions = {QUALITY_LEVEL.EXECUTIVE.csvFormat(),QUALITY_LEVEL.BUSINESS.csvFormat(),
+                QUALITY_LEVEL.COMFORT.csvFormat(),QUALITY_LEVEL.ECONOMY.csvFormat()};
         qualityTypes = new JComboBox<>(qualityOptions);
         bedsNumberLabel = new JLabel("Number Of Beds:");
         SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 8, 1);

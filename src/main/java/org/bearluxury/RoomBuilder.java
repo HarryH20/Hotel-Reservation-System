@@ -64,14 +64,14 @@ class RoomBuilder {
         BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new FileWriter(file));
-            writer.write("room number,guest name,start date,end date,discount\n");
+            writer.write("room number, price, room type, quality, number of beds, smoke, type of beds\n");
 
             //FORMAT: room number	price	room type	quality	number of beds	smoke	type of beds
            for(Room room: roomList){
                 writer.write(room.getRoomNumber()+","
                         +room.getPrice()+","
-                        +room.getRoomType()+","
-                        +room.getQualityLevel()+","
+                        +room.getRoomType().csvFormat()+","
+                        +room.getQualityLevel().csvFormat()+","
                         +room.getNumberOfBeds()+","
                         +room.isCanSmoke() +","
                         +room.getBed()+'\n');
@@ -132,6 +132,7 @@ class RoomBuilder {
         else if(str.equals("executive")){
             return QUALITY_LEVEL.EXECUTIVE;
         }
-        return QUALITY_LEVEL.COMFORT;
+        return  QUALITY_LEVEL.COMFORT;
+
     }
 }
