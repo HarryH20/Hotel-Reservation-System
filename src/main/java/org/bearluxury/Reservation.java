@@ -1,38 +1,57 @@
 package org.bearluxury;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+
+import java.util.Calendar;
 import java.util.Date;
-@Component
-@Scope("prototype")
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
+
 class Reservation {
     private int roomNumber;
-    private String guestName;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private int numberOfGuests;
     private Date startDate;
     private Date endDate;
-    private double discount  = 1.0;
 
 
     public Reservation(){}
-
-    public Reservation(int roomNumber, String guestName, Date startDate, Date endDate, double discount) {
+    public Reservation(int roomNumber, String firstName,
+                       String lastName, String email,
+                       int numberOfGuests, Date startDate,
+                       Date endDate) {
         this.roomNumber = roomNumber;
-        this.guestName = guestName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.numberOfGuests = numberOfGuests;
+        this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.discount = discount;
     }
 
     @Override
     public String toString() {
-        return "Reservation{" +
-                "roomNumber=" + roomNumber +
-                ", guestName='" + guestName + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", discount=" + discount +
-                '}';
+        Calendar startCal = new GregorianCalendar();
+        startCal.setTime(startDate);
+
+        Calendar endCal = new GregorianCalendar();
+        endCal.setTime(startDate);
+        return roomNumber            +
+                "," + firstName      +
+                "," + lastName       +
+                "," + email          +
+                "," + numberOfGuests +
+                // Date Format: yyyy-MM-dd
+                "," + startCal.get(Calendar.YEAR) +
+                "-" + startCal.get(Calendar.MONTH)+
+                "-" + startCal.get(Calendar.DATE) +
+
+                "," + endCal.get(Calendar.YEAR) +
+                "-" + endCal.get(Calendar.MONTH)+
+                "-" + endCal.get(Calendar.DATE) +
+
+                '\n';
     }
 
     public int getRoomNumber() {
@@ -43,13 +62,6 @@ class Reservation {
         this.roomNumber = roomNumber;
     }
 
-    public String getGuestName() {
-        return guestName;
-    }
-
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
-    }
 
     public Date getStartDate() {
         return startDate;
@@ -67,11 +79,35 @@ class Reservation {
         this.endDate = endDate;
     }
 
-    public double getDiscount() {
-        return discount;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setDiscount(double discount) {
-        this.discount = discount;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getNumberOfGuests() {
+        return numberOfGuests;
+    }
+
+    public void setNumberOfGuests(int numberOfGuests) {
+        this.numberOfGuests = numberOfGuests;
     }
 }

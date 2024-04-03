@@ -1,19 +1,18 @@
 package org.bearluxury;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import com.sun.source.tree.Tree;
+
+import java.util.*;
 import java.util.stream.Collectors;
 
 class RoomCatalog {
-    private List<Room> rooms = new ArrayList<>();
+    private Set<Room> rooms = new TreeSet<>();
 
-    public List<Room> getRooms() {
+    public Set<Room> getRooms() {
         return rooms;
     }
 
-    public void setRooms(List<Room> rooms) {
+    public void setRooms(Set<Room> rooms) {
         this.rooms = rooms;
     }
 

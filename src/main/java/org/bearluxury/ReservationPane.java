@@ -1,88 +1,163 @@
 package org.bearluxury;
 
+import com.github.lgooddatepicker.components.DatePicker;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Date;
 
 /*
  * This is the class for the reservation pane is not completed.
  * Attempting to make it work with a calendar need new maven dependacies.
  * It is in its own seperate class and called by openReservationPane().
  */
-public class ReservationPane extends JFrame implements ActionListener {
+public class ReservationPane extends JFrame {
+    private Container c;
+    private JLabel title;
     private JTextField roomId;
     private JTextField firstName;
     private JTextField lastName;
     private JTextField email;
-    //Hello
     private JComboBox<String> roomType;
     private JSpinner guestNumber;
-    //    private JDateChooser startDate;
-//    private JDateChooser endDate;
     private JButton submitButton;
+    private DatePicker checkInDatePicker;
+    private DatePicker checkOutDatePicker;
 
-    public ReservationPane(int id) {
+    public ReservationPane(int id, LocalDate checkIn, LocalDate checkOut) {
         setTitle("Reservation Form");
-        setSize(600, 300);
-        setLocationRelativeTo(null);
+        setBounds(300, 90, 500, 600);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(new GridLayout(9, 2));
+
+        c = getContentPane();
+        c.setLayout(null);
+
+        title = new JLabel("Room Reservation");
+        title.setFont(new Font("Arial", Font.PLAIN, 30));
+        title.setSize(300, 30);
+        title.setLocation(100, 30);
+        c.add(title);
+
+        JPanel reservationPanel = new JPanel();
+        reservationPanel.setBorder(BorderFactory.createTitledBorder("Reservation Information"));
+        reservationPanel.setBounds(40, 80, 400, 320);
+        reservationPanel.setLayout(null);
 
         JLabel roomIdLabel = new JLabel("Room ID:");
-        add(roomIdLabel);
+        roomIdLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        roomIdLabel.setBounds(20, 30, 100, 20);
+        reservationPanel.add(roomIdLabel);
         roomId = new JTextField();
         roomId.setText(String.valueOf(id));
         roomId.setEditable(false);
-        add(roomId);
+        roomId.setFont(new Font("Arial", Font.PLAIN, 15));
+        roomId.setBounds(170, 30, 190, 20);
+        reservationPanel.add(roomId);
+
 
         JLabel firstNameLabel = new JLabel("First Name:");
-        add(firstNameLabel);
+        firstNameLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        firstNameLabel.setBounds(20, 60, 100, 20);
+        reservationPanel.add(firstNameLabel);
         firstName = new JTextField();
-        add(firstName);
+        firstName.setFont(new Font("Arial", Font.PLAIN, 15));
+        firstName.setBounds(170, 60, 190, 20);
+        reservationPanel.add(firstName);
 
         JLabel lastNameLabel = new JLabel("Last Name:");
-        add(lastNameLabel);
+        lastNameLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        lastNameLabel.setBounds(20, 90, 100, 20);
+        reservationPanel.add(lastNameLabel);
         lastName = new JTextField();
-        add(lastName);
+        lastName.setFont(new Font("Arial", Font.PLAIN, 15));
+        lastName.setBounds(170, 90, 190, 20);
+        reservationPanel.add(lastName);
 
         JLabel emailLabel = new JLabel("Email:");
-        add(emailLabel);
+        emailLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        emailLabel.setBounds(20, 120, 100, 20);
+        reservationPanel.add(emailLabel);
         email = new JTextField();
-        add(email);
+        email.setFont(new Font("Arial", Font.PLAIN, 15));
+        email.setBounds(170, 120, 190, 20);
+        reservationPanel.add(email);
 
         JLabel guestsNumberLabel = new JLabel("Guests Number:");
-        add(guestsNumberLabel);
+        guestsNumberLabel.setFont(new Font("Arial", Font.PLAIN, 15));
+        guestsNumberLabel.setBounds(20, 150, 120, 20);
+        reservationPanel.add(guestsNumberLabel);
         SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 8, 1);
         guestNumber = new JSpinner(spinnerModel);
-        add(guestNumber);
+        guestNumber.setBounds(170, 150, 190, 20);
+        reservationPanel.add(guestNumber);
 
-//        JLabel startDateLabel = new JLabel("Start Date:");
-//        add(startDateLabel);
-//        startDate = new JDateChooser();
-//        add(startDate);
-//
-//        JLabel endDateLabel = new JLabel("End Date:");
-//        add(endDateLabel);
-//        endDate = new JDateChooser();
-//        add(endDate);
+        JLabel checkInLbl = new JLabel("Check-In:");
+        checkInLbl.setFont(new Font("Arial", Font.PLAIN, 15));
+        checkInLbl.setBounds(20, 180, 120, 20);
+        reservationPanel.add(checkInLbl);
+        checkInDatePicker = new DatePicker();
+        checkInDatePicker.setBounds(170, 180, 190, 20);
+        checkInDatePicker.setDate(checkIn);
+        checkInDatePicker.setPreferredSize(new Dimension(200, 30));
+        reservationPanel.add(checkInDatePicker);
+
+        JLabel checkOutLbl = new JLabel("Check-Out:");
+        checkOutLbl.setFont(new Font("Arial", Font.PLAIN, 15));
+        checkOutLbl.setBounds(20, 210, 120, 20);
+        reservationPanel.add(checkOutLbl);
+        checkOutDatePicker = new DatePicker();
+        checkOutDatePicker.setBounds(170, 210, 190, 20);
+        checkOutDatePicker.setDate(checkOut);
+        checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
+        reservationPanel.add(checkOutDatePicker);
+
+        c.add(reservationPanel);
 
         submitButton = new JButton("Submit");
-        submitButton.addActionListener(this);
+        submitButton.setBounds(200, 400, 100, 40);
+        submitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveToCSV();
+            }
+        });
         add(submitButton);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == submitButton) {
-            //saveToCSV();
+    public void saveToCSV() {
+        String csvFileName = "ReservationList.csv";
+
+        // Extracting the reservation data from the form
+        int roomNumber = Integer.parseInt(roomId.getText());
+        String guestFirstName = firstName.getText();
+        String guestLastName = lastName.getText();
+        String guestEmail = email.getText();
+        int numberOfGuests = (int) guestNumber.getValue();
+        Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
+        Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
+
+        if (guestFirstName.isEmpty() || guestLastName.isEmpty() || guestEmail.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
+        try {
+            ReservationBuilder reservationBuilder = new ReservationBuilder(csvFileName);
+            reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);
+
+            reservationBuilder.writeReservation(csvFileName);
+
             JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
             dispose();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
-    }
-
-    private void saveToCSV() {
-        //FIX
     }
     private String formatDate(java.util.Date date) {
         return new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);

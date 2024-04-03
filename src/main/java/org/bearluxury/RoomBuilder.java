@@ -1,17 +1,15 @@
 package org.bearluxury;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Queue;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 //Parser for room from CSV file
 class RoomBuilder {
-
-    ArrayList<Room> roomList;
+    Set <Room> roomList;
 
     RoomBuilder(String csvName){
-        roomList = new ArrayList<>();
+        roomList = new TreeSet<>(Comparator.comparing(Room::getRoomNumber));
         File file = new File(csvName);
         BufferedReader reader = null;
         try {
@@ -44,8 +42,52 @@ class RoomBuilder {
             }
         }
     }
-    ArrayList<Room> getRoomList(){
+    Set<Room> getRoomList(){
         return roomList;
+    }
+
+    public boolean addRoom(int roomNumber, double price, boolean canSmoke,
+                        ROOM_TYPE roomType, BED_TYPE bed,
+                        QUALITY_LEVEL qualityLevel, int numberOfBeds){
+        Room room = new Room(roomNumber,
+                price,
+                canSmoke,
+                roomType,
+                bed,
+                qualityLevel,
+                numberOfBeds);
+       return roomList.add(room);
+
+    }
+    public void writeRoom(String csvName){
+        File file = new File(csvName);
+        BufferedWriter writer = null;
+        try {
+            writer = new BufferedWriter(new FileWriter(file));
+            writer.write("room number,guest name,start date,end date,discount\n");
+
+            //FORMAT: room number	price	room type	quality	number of beds	smoke	type of beds
+           for(Room room: roomList){
+                writer.write(room.getRoomNumber()+","
+                        +room.getPrice()+","
+                        +room.getRoomType()+","
+                        +room.getQualityLevel()+","
+                        +room.getNumberOfBeds()+","
+                        +room.isCanSmoke() +","
+                        +room.getBed()+'\n');
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                } catch (IOException e) {
+                    System.err.println(e.getLocalizedMessage());
+                }
+            }
+        }
     }
 
     ROOM_TYPE readAsRoomType(String str){

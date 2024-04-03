@@ -7,9 +7,10 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
-import java.util.Comparator;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AvaliableRoomsGUI extends JFrame {
 
@@ -18,7 +19,7 @@ public class AvaliableRoomsGUI extends JFrame {
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 16);
 
-    public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds) {
+    public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds, LocalDate checkIn, LocalDate checkOut) {
         setTitle("Room Catalog");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -30,8 +31,7 @@ public class AvaliableRoomsGUI extends JFrame {
         JScrollPane scrollPane = new JScrollPane(table);
 
 
-
-        JButton reservationButton = createReservationButton(table);
+        JButton reservationButton = createReservationButton(table, checkIn,checkOut, model);
 
         JPanel panel = createPanel(scrollPane);
         JPanel buttonWrapperPanel = createButtonWrapperPanel(reservationButton);
@@ -68,7 +68,7 @@ public class AvaliableRoomsGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                HotelManagementSystem window = new HotelManagementSystem();
+                HotelHomePage window = new HotelHomePage();
                 window.setVisible(true);
 
             }
@@ -95,13 +95,13 @@ public class AvaliableRoomsGUI extends JFrame {
         return table;
     }
 
-    private JButton createReservationButton(JTable table) {
+    private JButton createReservationButton(JTable table, LocalDate checkIn, LocalDate checkOut, DefaultTableModel model) {
         JButton reservationButton = new JButton("Make Reservation");
         reservationButton.setPreferredSize(new Dimension(200, 50));
         reservationButton.setMargin(new Insets(10, 20, 10, 20));
         reservationButton.setFont(new Font("Arial", Font.BOLD, 15));
         reservationButton.setForeground(Color.BLACK);
-        reservationButton.addActionListener(new ReservationFormOpener(table));
+        reservationButton.addActionListener(new ReservationFormOpener(table, checkIn, checkOut, model));
         return reservationButton;
     }
 
@@ -120,10 +120,12 @@ public class AvaliableRoomsGUI extends JFrame {
         return buttonWrapperPanel;
     }
 
-    private void fillTableRows(List<Room> rooms, DefaultTableModel model, int beds) {
-        Collections.sort(rooms, Comparator.comparing(room -> room.getRoomNumber()));
-        Collections.sort(rooms, Comparator.comparing(room -> room.getNumberOfBeds()));
-        int maxBeds =  rooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
+    private void fillTableRows(Set<Room> unsortedRooms, DefaultTableModel model, int beds) {
+        int maxBeds =  unsortedRooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
+        List<Room> rooms = unsortedRooms.stream().
+                sorted(Comparator.comparing(Room::getNumberOfBeds).
+                thenComparing(Room::getRoomNumber)).
+                collect(Collectors.toList());
         try {
             if(beds > maxBeds){
                 throw new IllegalArgumentException();
@@ -143,7 +145,7 @@ public class AvaliableRoomsGUI extends JFrame {
         }catch (IllegalArgumentException exc){
             JOptionPane.showMessageDialog(null,"Error: beds must be less than " +
                     + maxBeds + ". \nShowing entire catalog!" );
-            fillTableRows(rooms,model,1);
+            fillTableRows(unsortedRooms,model,1);
 
         }
     }
@@ -151,8 +153,17 @@ public class AvaliableRoomsGUI extends JFrame {
     private static class ReservationFormOpener implements ActionListener {
         private final JTable table;
 
-        private ReservationFormOpener(JTable table) {
+        private DefaultTableModel model;
+        LocalDate checkIn;
+
+        LocalDate checkOut;
+
+
+        private ReservationFormOpener(JTable table, LocalDate checkIn, LocalDate checkOut, DefaultTableModel model) {
             this.table = table;
+            this.model = model;
+            this.checkIn = checkIn;
+            this.checkOut = checkOut;
         }
 
         @Override
@@ -160,14 +171,15 @@ public class AvaliableRoomsGUI extends JFrame {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 int roomId = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-                openReservationForm(roomId);
+                openReservationForm(roomId, checkIn, checkOut);
+                model.removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select a row first.");
             }
         }
 
-        private static void openReservationForm(int roomID) {
-            ReservationPane pane = new ReservationPane(roomID);
+        private static void openReservationForm(int roomID, LocalDate checkIn, LocalDate checkOut) {
+            ReservationPane pane = new ReservationPane(roomID, checkIn, checkOut);
             pane.setVisible(true);
         }
     }
