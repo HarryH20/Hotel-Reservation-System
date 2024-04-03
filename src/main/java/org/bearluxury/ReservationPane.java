@@ -104,6 +104,10 @@ public class ReservationPane extends JFrame implements ActionListener {
         Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
         Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
 
+        if (guestFirstName.isEmpty() || guestLastName.isEmpty() || guestEmail.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
         try {
             ReservationBuilder reservationBuilder = new ReservationBuilder(csvFileName);
             reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);

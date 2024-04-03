@@ -125,8 +125,6 @@ public class RegisterPane extends JFrame {
         }
 
         try {
-            //userPhone = String.valueOf(Long.parseLong(userPhone));
-
             AccountBuilder accountBuilder = new AccountBuilder(csvFile);
             accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword);
 
