@@ -14,6 +14,7 @@ public class RegisterAccountPane extends JFrame {
     public RegisterAccountPane () {
         setTitle("Register Account");
         setSize(300, 150);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JPanel panel = new JPanel();
