@@ -112,16 +112,11 @@ public class RegisterPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    public void openLoginPanel() {
-        dispose();
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cmdRegister) {
-            openLoginPanel();
+            dispose();
+            HotelManagementSystem.openLoginPage();
         }
     }
 }

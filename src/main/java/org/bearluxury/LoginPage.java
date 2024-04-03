@@ -1,14 +1,13 @@
 package org.bearluxury;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatLightLaf;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class LoginPage extends JFrame implements ActionListener {
 
@@ -98,27 +97,31 @@ public class LoginPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    public void openRegisterPage() {
-        dispose();
-        RegisterPage registerPage = new RegisterPage();
-        registerPage.setVisible(true);
+    private Boolean doesAccountExist(String email, String password) {
+        AccountBuilder accountBuilder = new AccountBuilder("AccountList.csv");
+        ArrayList<Account> accounts = accountBuilder.getAccountList();
+        for (Account account : accounts) {
+            if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
-            loginPanel.add(wrongMsg, "gapy 8", 7);
-            this.setVisible(true);
+            if (doesAccountExist(emailTextField.getText(), passwordTextField.getText())) {
+                dispose();
+                HotelManagementSystem.openHomePage();
+            } else {
+                loginPanel.add(wrongMsg, "gapy 8", 7);
+                this.setVisible(true);
+            }
         } else if (e.getSource() == cmdRegister) {
-            openRegisterPage();
+            dispose();
+            HotelManagementSystem.openRegisterPage();
         }
     }
 
-    public static void main(String[] args) {
-        FlatRobotoFont.install();
-        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-        FlatLightLaf.setup();
-        LoginPage loginPage = new LoginPage();
-        loginPage.setVisible(true);
-    }
 }

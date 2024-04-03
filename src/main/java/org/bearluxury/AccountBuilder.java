@@ -27,6 +27,7 @@ public class AccountBuilder {
                         Long.parseLong(parsedLine[4]),
                         parsedLine[5]
                 );
+                accountList.add(account);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
