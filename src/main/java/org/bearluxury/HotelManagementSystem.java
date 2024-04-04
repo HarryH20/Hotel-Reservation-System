@@ -24,8 +24,7 @@ public class HotelManagementSystem  {
     }
 
     public static void main(String[] args) {
-        HotelHomePage page = new HotelHomePage();
-        page.setVisible(true);
+
 
     }
 }

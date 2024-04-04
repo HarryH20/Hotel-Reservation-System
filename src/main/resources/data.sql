@@ -1,2 +1,1 @@
 insert into reservations (room_number, guest_name, start_date, end_date, discount) VALUES (10, 'bill', '2024-03-25', '2024-03-30', 1.0);
-insert into reservations (room_number, guest_name, start_date, end_date, discount) VALUES (200, 'zebra', '2024-05-25', '2024-09-30', 1.0);

@@ -1,5 +1,10 @@
 package org.bearluxury;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -7,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 class ReservationBuilder {
+
+    private JdbcTemplate jdbcTemplate;
 
     ArrayList<Reservation> reservationList;
 
@@ -59,6 +66,8 @@ class ReservationBuilder {
                 numberOfGuests,
                 startDate,
                 endDate);
+
+
         return reservationList.add(reservation);
     }
     public void writeReservation(String csvName){
