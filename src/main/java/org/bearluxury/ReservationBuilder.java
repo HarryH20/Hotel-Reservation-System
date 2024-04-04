@@ -45,7 +45,7 @@ class ReservationBuilder {
     }
 
 
-    public void addReservation(int roomNumber,
+    public boolean addReservation(int roomNumber,
                                String firstName,
                                String lastName,
                                String email,
@@ -59,7 +59,7 @@ class ReservationBuilder {
                 numberOfGuests,
                 startDate,
                 endDate);
-        reservationList.add(reservation);
+        return reservationList.add(reservation);
     }
     public void writeReservation(String csvName){
         File file = new File(csvName);
