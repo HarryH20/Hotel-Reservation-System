@@ -49,7 +49,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
         accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
-        logo = new ImageIcon("bbl-logo-transparent.png");
+        logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
 
         firstNameField = new JTextField();
@@ -123,12 +123,12 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.add(new JLabel("Confirm password"), "gapy 6");
         registerPanel.add(confirmPasswordField);
         registerPanel.add(registerButton, "gapy 10");
-        registerPanel.add(createRegisterLabel(), "gapy 10");
+        registerPanel.add(createLoginLabel(), "gapy 10");
 
         add(registerPanel);
     }
 
-    private Component createRegisterLabel() {
+    private Component createLoginLabel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
@@ -146,8 +146,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    private Boolean checkCredentials() {
-        Boolean validCredentials = true;
+    private boolean checkCredentials() {
+        boolean validCredentials = true;
         AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
 

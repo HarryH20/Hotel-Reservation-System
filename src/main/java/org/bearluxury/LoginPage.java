@@ -97,7 +97,7 @@ public class LoginPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    private Boolean doesAccountExist(String email, String password) {
+    private boolean doesAccountExist(String email, String password) {
         AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
         for (Account account : accounts) {
