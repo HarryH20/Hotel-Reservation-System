@@ -5,9 +5,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
@@ -85,7 +82,7 @@ public class AddRoomPane extends JFrame {
 
     private void saveRoomToCSV(double priceSelection) {
         try {
-            RoomBuilder builder = new RoomBuilder("RoomList.csv");
+            RoomBuilder builder = new RoomBuilder("src/main/resources/RoomList.csv");
             boolean added = builder.addRoom(
                     Integer.parseInt(roomNumber.getText()),
                     priceSelection,
@@ -97,7 +94,7 @@ public class AddRoomPane extends JFrame {
 
             );
             if (added) {
-                builder.writeRoom("RoomList.csv");
+                builder.writeRoom("src/main/resources/RoomList.csv");
                 showConfirmationDialog();
             } else {
                 showFailureDialog();

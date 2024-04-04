@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -131,7 +129,7 @@ public class ReservationPane extends JFrame {
     }
 
     public void saveToCSV() {
-        String csvFileName = "ReservationList.csv";
+        String csvFileName = "src/main/resources/ReservationList.csv";
 
         // Extracting the reservation data from the form
         int roomNumber = Integer.parseInt(roomId.getText());

@@ -109,7 +109,7 @@ public class RegisterPane extends JFrame {
     }
 
     public void saveAccountToCSV() {
-        String csvFile = "AccountList.csv";
+        String csvFile = "src/main/resources/AccountList.csv";
 
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();

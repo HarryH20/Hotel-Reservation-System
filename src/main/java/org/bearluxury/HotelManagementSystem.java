@@ -12,7 +12,7 @@ public class HotelManagementSystem  {
 
     public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
         RoomCatalog rooms = new RoomCatalog();
-        rooms.setRooms(new RoomBuilder("RoomList.csv").getRoomList());
+        rooms.setRooms(new RoomBuilder("src/main/resources/RoomList.csv").getRoomList());
         AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds, checkIn, checkOut);
         catalogPane.setVisible(true);
     }

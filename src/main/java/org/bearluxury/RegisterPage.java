@@ -1,8 +1,6 @@
 package org.bearluxury;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatLightLaf;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -49,7 +47,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        accountBuilder = new AccountBuilder("AccountList.csv");
+        accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
         logo = new ImageIcon("bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
@@ -150,7 +148,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
-        AccountBuilder accountBuilder = new AccountBuilder("AccountList.csv");
+        AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
 
         // Check if fields are empty
@@ -232,7 +230,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         long phoneNumber = Long.parseLong(phoneTextField.getText());
         String password = passwordTextField.getText();
         accountBuilder.addAccount(firstName, lastName, email, userName, phoneNumber, password);
-        accountBuilder.writeAccount("AccountList.csv");
+        accountBuilder.writeAccount("src/main/resources/AccountList.csv");
     }
 
     @Override

@@ -32,7 +32,7 @@ public class LoginPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        logo = new ImageIcon("bbl-logo-transparent.png");
+        logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
 
         emailTextField = new JTextField();
@@ -98,7 +98,7 @@ public class LoginPage extends JFrame implements ActionListener {
     }
 
     private Boolean doesAccountExist(String email, String password) {
-        AccountBuilder accountBuilder = new AccountBuilder("AccountList.csv");
+        AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
         for (Account account : accounts) {
             if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
