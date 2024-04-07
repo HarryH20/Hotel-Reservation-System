@@ -92,16 +92,16 @@ class RoomBuilder {
 
     ROOM_TYPE readAsRoomType(String str){
         if(str.equals("vintage")){
-            return ROOM_TYPE.VINTAGE_CHARM;
+            return ROOM_TYPE.VINTAGE;
         }
         else if(str.equals("urban")){
-            return ROOM_TYPE.URBAN_ELEGANCE;
+            return ROOM_TYPE.URBAN;
         }
         else if(str.equals("nature")){
-            return ROOM_TYPE.NATURE_RETREAT;
+            return ROOM_TYPE.NATURE;
         }
 
-        return ROOM_TYPE.NATURE_RETREAT;
+        return ROOM_TYPE.NATURE;
 
     }
     BED_TYPE readAsBedType(String str){

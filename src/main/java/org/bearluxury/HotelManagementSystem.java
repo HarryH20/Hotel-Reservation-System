@@ -6,6 +6,10 @@ import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
 
 //Window
 public class HotelManagementSystem  {
@@ -46,6 +50,20 @@ public class HotelManagementSystem  {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
+        ReservationJDBCDAO data = new ReservationJDBCDAO();
+        List<Reservation> reservations = new ArrayList<>();
+        ReservationBuilder builder = new ReservationBuilder("src/main/resources/ReservationList.csv");
+        List<Reservation> res = builder.getReservationList();
+        RoomJDBCDAO dao = new RoomJDBCDAO();
+        RoomBuilder builder1 = new RoomBuilder("src/main/resources/RoomList.csv");
+        Set<Room> res1 = builder1.getRoomList();
+        for(Room res4: res1){
+            dao.insert(res4);
+        }
+        Set<Room> res2 = dao.list();
+        for(Room res4: res2){
+            System.out.println(res4.getRoomNumber());
+        }
         openLoginPage();
     }
 }
