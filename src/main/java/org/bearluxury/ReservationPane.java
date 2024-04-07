@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -131,7 +129,7 @@ public class ReservationPane extends JFrame {
     }
 
     public void saveToCSV() {
-        String csvFileName = "ReservationList.csv";
+        String csvFileName = "src/main/resources/ReservationList.csv";
 
         // Extracting the reservation data from the form
         int roomNumber = Integer.parseInt(roomId.getText());
@@ -139,6 +137,7 @@ public class ReservationPane extends JFrame {
         String guestLastName = lastName.getText();
         String guestEmail = email.getText();
         int numberOfGuests = (int) guestNumber.getValue();
+
         Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
         Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
 
@@ -148,12 +147,15 @@ public class ReservationPane extends JFrame {
         }
         try {
             ReservationBuilder reservationBuilder = new ReservationBuilder(csvFileName);
-            reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);
-
-            reservationBuilder.writeReservation(csvFileName);
-
-            JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-            dispose();
+            boolean added = reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);
+            if(added) {
+                reservationBuilder.writeReservation(csvFileName);
+                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+                dispose();
+            }
+            else{
+                JOptionPane.showMessageDialog(this, "Reservation Already Exists...please try again!");
+            }
         } catch (RuntimeException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());

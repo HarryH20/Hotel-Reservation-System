@@ -25,8 +25,8 @@ public class HotelHomePage extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 try {
-                    BufferedImage hotelImage = ImageIO.read(new File("hotelStockImage.jpg"));
-                    BufferedImage logoImage = ImageIO.read(new File("logo.png"));
+                    BufferedImage hotelImage = ImageIO.read(new File("src/main/resources/hotelStockImage.jpg"));
+                    BufferedImage logoImage = ImageIO.read(new File("src/main/resources/logo.png"));
 
 
                     int hotelX = (getWidth() - hotelImage.getWidth()) / 2;
@@ -102,7 +102,7 @@ public class HotelHomePage extends JFrame {
         public void actionPerformed(ActionEvent e) {
             dispose();
             ReservationCatalog reservations = new ReservationCatalog();
-            reservations.setReservations(new ReservationBuilder("ReservationList.csv").getReservationList());
+            reservations.setReservations(new ReservationBuilder("src/main/resources/ReservationList.csv").getReservationList());
             BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations);
             catalogPane.setVisible(true);
         }

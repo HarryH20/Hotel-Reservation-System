@@ -4,30 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 enum ROOM_TYPE{
-    VINTAGE_CHARM,
-    URBAN_ELEGANCE,
-    NATURE_RETREAT;
+    VINTAGE,
+    URBAN,
+    NATURE;
 
     public String toString(){
-        if(this == VINTAGE_CHARM){
+        if(this == VINTAGE){
             return "Vintage Charm";
         }
-        else if(this == URBAN_ELEGANCE){
+        else if(this == URBAN){
             return "Urban Elegance";
         }
-        else if(this == NATURE_RETREAT){
+        else if(this == NATURE){
             return "Nature Retreat";
         }
         return "EMPTY";
     }
     public String csvFormat(){
-        if(this == VINTAGE_CHARM){
+        if(this == VINTAGE){
             return "vintage";
         }
-        else if(this == URBAN_ELEGANCE){
+        else if(this == URBAN){
             return "urban";
         }
-        else if(this == NATURE_RETREAT){
+        else if(this == NATURE){
             return "nature";
         }
         return "EMPTY";
@@ -114,6 +114,19 @@ class Room {
         this.bed = bed;
         this.qualityLevel = qualityLevel;
         this.numberOfBeds = numberOfBeds;
+    }
+
+    @Override
+    public String toString() {
+        return "Room{" +
+                "roomNumber=" + roomNumber +
+                ", canSmoke=" + canSmoke +
+                ", price=" + price +
+                ", roomType=" + roomType +
+                ", bed=" + bed +
+                ", qualityLevel=" + qualityLevel +
+                ", numberOfBeds=" + numberOfBeds +
+                '}';
     }
 
     public ROOM_TYPE getRoomType() {
