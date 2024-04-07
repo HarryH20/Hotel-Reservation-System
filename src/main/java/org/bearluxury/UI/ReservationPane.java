@@ -1,6 +1,7 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import org.bearluxury.reservation.ReservationBuilder;
 
 import javax.swing.*;
 import java.awt.*;

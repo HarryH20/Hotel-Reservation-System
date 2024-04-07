@@ -1,7 +1,10 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.UI.HotelManagementSystem;
+import org.bearluxury.account.Account;
+import org.bearluxury.account.AccountBuilder;
 
 import javax.swing.*;
 import java.awt.*;

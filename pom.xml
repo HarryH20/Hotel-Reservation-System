@@ -59,7 +59,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>org.bearluxury.HotelManagementSystem</mainClass>
+                            <mainClass>org.bearluxury.UI.HotelManagementSystem</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -70,7 +70,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.bearluxury.HotelManagementSystem</mainClass>
+                            <mainClass>org.bearluxury.UI.HotelManagementSystem</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

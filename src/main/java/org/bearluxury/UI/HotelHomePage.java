@@ -1,4 +1,7 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+import org.bearluxury.reservation.ReservationBuilder;
+import org.bearluxury.reservation.ReservationCatalog;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;

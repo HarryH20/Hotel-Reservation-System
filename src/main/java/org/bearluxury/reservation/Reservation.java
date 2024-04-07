@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.reservation;
 
 
 import java.text.SimpleDateFormat;
@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-class Reservation {
+public class Reservation {
     private int roomNumber;
     private String firstName;
     private String lastName;

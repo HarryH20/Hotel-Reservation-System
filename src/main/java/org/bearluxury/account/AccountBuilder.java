@@ -1,4 +1,6 @@
-package org.bearluxury;
+package org.bearluxury.account;
+
+import org.bearluxury.account.Account;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -6,7 +8,7 @@ import java.util.ArrayList;
 public class AccountBuilder {
     ArrayList<Account> accountList;
 
-    AccountBuilder (String csvFile) {
+    public AccountBuilder(String csvFile) {
         accountList = new ArrayList<>();
         File file = new File(csvFile);
         BufferedReader reader;
@@ -73,7 +75,7 @@ public class AccountBuilder {
         }
     }
 
-    ArrayList<Account> getAccountList() {
+    public ArrayList<Account> getAccountList() {
         return accountList;
     }
 }

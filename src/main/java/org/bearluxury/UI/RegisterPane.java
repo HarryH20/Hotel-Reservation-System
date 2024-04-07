@@ -1,4 +1,6 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.account.AccountBuilder;
 
 import javax.swing.*;
 import java.awt.*;

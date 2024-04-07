@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.account;
 
 public class Guest {
     private static int nextAccountNumber = 1000;

@@ -1,11 +1,11 @@
-package org.bearluxury;
+package org.bearluxury.room;
 
-import com.sun.source.tree.Tree;
+import org.bearluxury.room.Room;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-class RoomCatalog {
+public class RoomCatalog {
     private Set<Room> rooms = new TreeSet<>();
 
     public Set<Room> getRooms() {

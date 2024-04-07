@@ -1,13 +1,19 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import org.bearluxury.reservation.Reservation;
+import org.bearluxury.reservation.ReservationBuilder;
+import org.bearluxury.reservation.ReservationJDBCDAO;
+import org.bearluxury.room.Room;
+import org.bearluxury.room.RoomBuilder;
+import org.bearluxury.room.RoomCatalog;
+import org.bearluxury.room.RoomJDBCDAO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 

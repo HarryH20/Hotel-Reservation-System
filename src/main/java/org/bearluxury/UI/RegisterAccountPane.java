@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import javax.swing.*;
