@@ -17,9 +17,28 @@ public class HotelManagementSystem  {
         catalogPane.setVisible(true);
     }
 
+   //added homepages for user role
+    /*
     public static void openHomePage() {
         HotelHomePage hotelHomePage = new HotelHomePage();
         hotelHomePage.setVisible(true);
+    }
+
+     */
+
+    public static void openGuestHomePage() {
+        GuestHomePage guestHomePage = new GuestHomePage();
+        guestHomePage.setVisible(true);
+    }
+
+    public static void openClerkHomePage() {
+        ClerkHomePage clerkHomePage = new ClerkHomePage();
+        clerkHomePage.setVisible(true);
+    }
+
+    public static void openAdminHomePage() {
+        AdminHomePage adminHomePage = new AdminHomePage();
+        adminHomePage.setVisible(true);
     }
 
     public static void openLoginPage() {
@@ -48,4 +67,5 @@ public class HotelManagementSystem  {
         FlatLightLaf.setup();
         openLoginPage();
     }
+
 }

@@ -8,7 +8,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class HotelHomePage extends JFrame {
+public abstract class HotelHomePage extends JFrame {
+    Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
+    JPanel reservePanel = new JPanel();
     public HotelHomePage() {
         setTitle("Baylor Bear Luxury");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,47 +50,23 @@ public class HotelHomePage extends JFrame {
         JPanel welcomePanel = new JPanel();
         welcomePanel.setBackground(backgroundColor);
         JLabel welcomeLabel = new JLabel("Welcome to Baylor Bear Luxury!");
-        Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
+        //moved variable declaration for use in child classes
+        //Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
         welcomeLabel.setFont(font);
         welcomePanel.add(welcomeLabel);
 
-
-        JPanel reservePanel = new JPanel();
+        //moved variable declaration for use in child classes
+        //JPanel reservePanel = new JPanel();
         reservePanel.setBackground(backgroundColor);
-        JButton reserveButton = new JButton("Get A Room");
-        reserveButton.setFont(font);
-        reserveButton.setForeground(Color.BLACK);
-        reserveButton.addActionListener(new openHotelManagmentPane());
-        reservePanel.add(reserveButton);
-
-        JButton seeReservations = new JButton("See All Reservations");
-        seeReservations.setFont(font);
-        seeReservations.setForeground(Color.BLACK);
-        seeReservations.addActionListener(new openViewReservationPane());
-        reservePanel.add(seeReservations);
-
-        JButton addUser = new JButton("Register");
-        JButton addRoom = new JButton("Add Room");
-
-        seeReservations.setFont(font);
-        seeReservations.setForeground(Color.BLACK);
-        addUser.setFont(font);
-        addRoom.addActionListener(new openAddRoomPane());
-        addUser.addActionListener(new openRegistration());
-        addUser.setForeground(Color.BLACK);
-        addRoom.setFont(font);
-        addRoom.setForeground(Color.BLACK);
-
-        reservePanel.add(addUser);
-        reservePanel.add(addRoom);
-
-
 
         setLayout(new BorderLayout());
         add(logoPanel, BorderLayout.CENTER);
         add(welcomePanel, BorderLayout.NORTH);
         add(reservePanel, BorderLayout.SOUTH);
     }
+
+    //Move these classes to inherited classes of HotelHomePage
+    /*
     private class openHotelManagmentPane implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -120,5 +98,7 @@ public class HotelHomePage extends JFrame {
             pane.setVisible(true);
         }
     }
+
+     */
 
 }

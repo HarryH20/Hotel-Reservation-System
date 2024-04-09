@@ -108,6 +108,7 @@ public class RegisterPane extends JFrame {
         add(submitButton);
     }
 
+    //FIXME: SET ROLE TO GUEST
     public void saveAccountToCSV() {
         String csvFile = "AccountList.csv";
 
@@ -117,6 +118,8 @@ public class RegisterPane extends JFrame {
         String userEmail = email.getText();
         String guestUsername = userName.getText();
         String userPassword = password.getText();
+        //FIXME
+        Role role = Role.GUEST;
 
         if (userFirstName.isEmpty() || userLastName.isEmpty() || userPhone.isEmpty() ||
                 userEmail.isEmpty() || guestUsername.isEmpty() || userPassword.isEmpty()) {
@@ -126,7 +129,8 @@ public class RegisterPane extends JFrame {
 
         try {
             AccountBuilder accountBuilder = new AccountBuilder(csvFile);
-            accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword);
+            //FIXME
+            accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role);
 
             accountBuilder.writeAccount(csvFile);
 

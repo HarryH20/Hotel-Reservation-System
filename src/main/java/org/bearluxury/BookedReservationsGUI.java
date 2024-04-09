@@ -30,9 +30,6 @@ public class BookedReservationsGUI extends JFrame {
         JTable table = createTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
 
-
-
-
         JPanel panel = createPanel(scrollPane);
 
         getContentPane().setBackground(backgroundColor);
@@ -63,11 +60,12 @@ public class BookedReservationsGUI extends JFrame {
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
+           //FIXME: NEED TO FIX ACTION
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                HotelHomePage window = new HotelHomePage();
-                window.setVisible(true);
+                //HotelHomePage window = new HotelHomePage();
+                //window.setVisible(true);
             }
         });
         return backButton;

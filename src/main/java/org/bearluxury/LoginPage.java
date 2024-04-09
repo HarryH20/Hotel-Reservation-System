@@ -97,23 +97,31 @@ public class LoginPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    private Boolean doesAccountExist(String email, String password) {
+    private Account doesAccountExist(String email, String password) {
         AccountBuilder accountBuilder = new AccountBuilder("AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
         for (Account account : accounts) {
             if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
-                return true;
+                return account;
             }
         }
-        return false;
+        return null;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
-            if (doesAccountExist(emailTextField.getText(), passwordTextField.getText())) {
+            Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
+            if (account != null) {
                 dispose();
-                HotelManagementSystem.openHomePage();
+                if (account.getRole().equals(Role.GUEST)) {
+                    System.out.println(account.getRole());
+                    HotelManagementSystem.openGuestHomePage();
+                } else if (account.getRole().equals(Role.CLERK)) {
+                    HotelManagementSystem.openClerkHomePage();
+                } else if (account.getRole().equals(Role.ADMIN)) {
+                    HotelManagementSystem.openAdminHomePage();
+                }
             } else {
                 loginPanel.add(wrongMsg, "gapy 8", 7);
                 this.setVisible(true);

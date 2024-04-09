@@ -223,6 +223,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         return validCredentials;
     }
 
+    /////TEMP FIX: MADE ACCOUNT BUILDER ROLE GUEST
     private void registerAccount() {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -231,7 +232,9 @@ public class RegisterPage extends JFrame implements ActionListener {
         String userName = emailTextField.getText();
         long phoneNumber = Long.parseLong(phoneTextField.getText());
         String password = passwordTextField.getText();
-        accountBuilder.addAccount(firstName, lastName, email, userName, phoneNumber, password);
+        //FIXME
+        Role role = Role.GUEST;
+        accountBuilder.addAccount(firstName, lastName, email, userName, phoneNumber, password, role);
         accountBuilder.writeAccount("AccountList.csv");
     }
 

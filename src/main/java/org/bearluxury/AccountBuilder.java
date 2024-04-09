@@ -25,7 +25,8 @@ public class AccountBuilder {
                         parsedLine[2],
                         parsedLine[3],
                         Long.parseLong(parsedLine[4]),
-                        parsedLine[5]
+                        parsedLine[5],
+                        Role.valueOf(parsedLine[6])
                 );
                 accountList.add(account);
             }
@@ -39,13 +40,15 @@ public class AccountBuilder {
                            String userName,
                            String email,
                            long phoneNumber,
-                           String password) {
+                           String password,
+                           Role role) {
         Account account = new Account(firstName,
                 lastName,
                 userName,
                 email,
                 phoneNumber,
-                password);
+                password,
+                role);
         accountList.add(account);
     }
 
