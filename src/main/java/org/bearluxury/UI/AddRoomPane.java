@@ -1,11 +1,13 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.controllers.RoomController;
 import org.bearluxury.room.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -59,7 +61,7 @@ public class AddRoomPane extends JFrame {
         createRoom.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {double priceSelection = getPriceSelection();
-                saveRoomToCSV(priceSelection);
+                saveRoom(priceSelection);
             }
         });
 
@@ -82,13 +84,13 @@ public class AddRoomPane extends JFrame {
         add(createRoom);
     }
 
-    private void saveRoomToCSV(double priceSelection) {
-        RoomJDBCDAO dao = new RoomJDBCDAO();
-        boolean added = false;
-        try {
+    private void saveRoom(double priceSelection) {
 
+        try {
+            RoomController controller = new RoomController(new RoomJDBCDAO());
+            boolean added = false;
             RoomBuilder builder = new RoomBuilder("src/main/resources/RoomList.csv");
-            dao.insert(new Room(
+            controller.insertRoom(new Room(
                     Integer.parseInt(roomNumber.getText()),
                     priceSelection,
                     smokingStatus.isSelected(),
@@ -103,9 +105,6 @@ public class AddRoomPane extends JFrame {
         }catch (Exception exc){
             showFailureDialog();
         }
-
-        System.out.println(dao.get(Integer.parseInt(roomNumber.getText())));
-
     }
     private double getPriceSelection() {
         double priceSelection = 0;
