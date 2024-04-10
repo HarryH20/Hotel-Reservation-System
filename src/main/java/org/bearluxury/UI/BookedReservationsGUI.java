@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.account.Role;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 
@@ -20,7 +21,7 @@ public class BookedReservationsGUI extends JFrame {
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 14);
 
-    public BookedReservationsGUI(ReservationCatalog reservationCatalog) {
+    public BookedReservationsGUI(ReservationCatalog reservationCatalog, Role role) {
         setTitle("Booked Reservations");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -37,7 +38,7 @@ public class BookedReservationsGUI extends JFrame {
 
         fillTableRows(reservationCatalog.getReservations(), model);
 
-        JButton backButton = createBackButton();
+        JButton backButton = createBackButton(role);
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(backgroundColor);
@@ -58,15 +59,30 @@ public class BookedReservationsGUI extends JFrame {
             }
         };
     }
-    private JButton createBackButton() {
+    private JButton createBackButton(Role role) {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
            //FIXME: NEED TO FIX ACTION
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                //HotelHomePage window = new HotelHomePage();
-                //window.setVisible(true);
+                try {
+                    System.out.println("This is my role: " + role);
+                    if (role == Role.GUEST) {
+                        HotelManagementSystem.openGuestHomePage();
+                    }
+                    else if (role == Role.CLERK) {
+                        HotelManagementSystem.openClerkHomePage();
+                    }
+                    else if (role == Role.ADMIN) {
+                        HotelManagementSystem.openAdminHomePage();
+                    }
+                    else{
+                        throw new RuntimeException();
+                    }
+                }catch(RuntimeException exc){
+                    JOptionPane.showMessageDialog(null,"Invalid user info! please contact admin.");
+                }
             }
         });
         return backButton;

@@ -51,7 +51,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        accountBuilder = new AccountBuilder("AccountList.csv");
+        accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
         logo = new ImageIcon("bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
@@ -152,7 +152,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
-        AccountBuilder accountBuilder = new AccountBuilder("AccountList.csv");
+        AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
 
         // Check if fields are empty

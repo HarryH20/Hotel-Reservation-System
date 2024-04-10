@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.account.Role;
 import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationCatalog;
 
@@ -10,19 +11,22 @@ import java.awt.event.ActionListener;
 
 public class ClerkHomePage extends HotelHomePage{
 
-    public ClerkHomePage() {
-        super();
+
+    public ClerkHomePage(Role role) {
+        super(role);
+
+
 
         JButton reserveButton = new JButton("Get A Room");
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
-        reserveButton.addActionListener(new ClerkHomePage.openHotelManagmentPane());
+        reserveButton.addActionListener(new openHotelManagmentPane(role));
         reservePanel.add(reserveButton);
 
         JButton seeReservations = new JButton("See All Reservations");
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
-        seeReservations.addActionListener(new ClerkHomePage.openViewReservationPane());
+        seeReservations.addActionListener(new openViewReservationPane(role));
         reservePanel.add(seeReservations);
 
         JButton addUser = new JButton("Register");
@@ -31,8 +35,8 @@ public class ClerkHomePage extends HotelHomePage{
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
         addUser.setFont(font);
-        addRoom.addActionListener(new ClerkHomePage.openAddRoomPane());
-        addUser.addActionListener(new ClerkHomePage.openRegistration());
+        addRoom.addActionListener(new openAddRoomPane());
+        addUser.addActionListener(new openRegistration());
         addUser.setForeground(Color.BLACK);
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
@@ -41,20 +45,31 @@ public class ClerkHomePage extends HotelHomePage{
         reservePanel.add(addRoom);
     }
     private class openHotelManagmentPane implements ActionListener {
+        Role role;
+
+        public openHotelManagmentPane(Role role){
+            this.role = role;
+        }
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
-            HotelManagementSystem.openHotelManagmentSystem();
+            HotelManagementSystem.openHotelManagmentSystem(role);
         }
     }
 
     private class openViewReservationPane implements ActionListener{
+
+        Role role;
+
+        public openViewReservationPane(Role role){
+            this.role = role;
+        }
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
             ReservationCatalog reservations = new ReservationCatalog();
-            reservations.setReservations(new ReservationBuilder("ReservationList.csv").getReservationList());
-            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations);
+            reservations.setReservations(new ReservationBuilder("src/main/resources/ReservationList.csv").getReservationList());
+            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations, role);
             catalogPane.setVisible(true);
         }
     }

@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import org.bearluxury.account.Role;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationJDBCDAO;
@@ -20,10 +21,10 @@ import java.util.Set;
 //Window
 public class HotelManagementSystem  {
 
-    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
+    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut, Role role){
         RoomCatalog rooms = new RoomCatalog();
         rooms.setRooms(new RoomBuilder("src/main/resources/RoomList.csv").getRoomList());
-        AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds, checkIn, checkOut);
+        AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds, checkIn, checkOut,role);
         catalogPane.setVisible(true);
     }
 
@@ -37,17 +38,17 @@ public class HotelManagementSystem  {
      */
 
     public static void openGuestHomePage() {
-        GuestHomePage guestHomePage = new GuestHomePage();
+        GuestHomePage guestHomePage = new GuestHomePage(Role.GUEST);
         guestHomePage.setVisible(true);
     }
 
     public static void openClerkHomePage() {
-        ClerkHomePage clerkHomePage = new ClerkHomePage();
+        ClerkHomePage clerkHomePage = new ClerkHomePage(Role.CLERK);
         clerkHomePage.setVisible(true);
     }
 
     public static void openAdminHomePage() {
-        AdminHomePage adminHomePage = new AdminHomePage();
+        AdminHomePage adminHomePage = new AdminHomePage(Role.ADMIN);
         adminHomePage.setVisible(true);
     }
 
@@ -61,8 +62,8 @@ public class HotelManagementSystem  {
         registerPage.setVisible(true);
     }
 
-    public static void openHotelManagmentSystem(){
-        InfoFilterPane window = new InfoFilterPane();
+    public static void openHotelManagmentSystem(Role role){
+        InfoFilterPane window = new InfoFilterPane(role);
         window.setVisible(true);
     }
 
