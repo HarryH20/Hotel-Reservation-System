@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,7 +1,11 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.account.Account;
+import org.bearluxury.account.AccountBuilder;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.account.Role;
 
 import javax.swing.*;
 import java.awt.*;
@@ -98,7 +102,7 @@ public class LoginPage extends JFrame implements ActionListener {
     }
 
     private Account doesAccountExist(String email, String password) {
-        AccountBuilder accountBuilder = new AccountBuilder("AccountList.csv");
+        AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
         for (Account account : accounts) {
             if (account.getEmail().equals(email) && account.getPassword().equals(password)) {

@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.account;
 
 public class Admin extends Account {
     public Admin(String firstName, String lastName, String userName,

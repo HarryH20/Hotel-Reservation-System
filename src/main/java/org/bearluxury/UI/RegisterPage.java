@@ -1,9 +1,11 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.account.AccountBuilder;
+import org.bearluxury.account.Account;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import com.formdev.flatlaf.FlatLightLaf;
-import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.account.Role;
 
 import javax.swing.*;
 import java.awt.*;
