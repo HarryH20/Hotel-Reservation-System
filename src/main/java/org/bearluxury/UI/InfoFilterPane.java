@@ -1,9 +1,10 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
+import org.bearluxury.UI.HotelManagementSystem;
 
 import javax.swing.*;
 import java.awt.*;

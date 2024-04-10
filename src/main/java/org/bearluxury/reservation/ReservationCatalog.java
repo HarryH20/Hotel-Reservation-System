@@ -1,12 +1,13 @@
-package org.bearluxury;
+package org.bearluxury.reservation;
+
+import org.bearluxury.reservation.Reservation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-class ReservationCatalog {
+public class ReservationCatalog {
     private List<Reservation> reservations = new ArrayList<>();
 
     public List<Reservation> getReservations() {

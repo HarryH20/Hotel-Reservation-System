@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.account;
 
 public class Guest extends Account{
     public Guest(String firstName, String lastName, String userName,

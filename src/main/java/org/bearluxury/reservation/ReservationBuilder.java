@@ -1,4 +1,6 @@
-package org.bearluxury;
+package org.bearluxury.reservation;
+
+import org.bearluxury.reservation.Reservation;
 
 import java.io.*;
 import java.text.ParseException;
@@ -6,11 +8,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-class ReservationBuilder {
+public class ReservationBuilder {
 
     ArrayList<Reservation> reservationList;
 
-    ReservationBuilder(String csvName) {
+    public ReservationBuilder(String csvName) {
         reservationList = new ArrayList<>();
         File file = new File(csvName);
         BufferedReader reader;
@@ -86,7 +88,7 @@ class ReservationBuilder {
     }
 
     
-    ArrayList<Reservation> getReservationList(){
+    public ArrayList<Reservation> getReservationList(){
         return reservationList;
     }
 

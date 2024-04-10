@@ -1,13 +1,12 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.room.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
@@ -42,8 +41,8 @@ public class AddRoomPane extends JFrame {
         smokingStatusLabel = new JLabel("Can Smoke: ");
         smokingStatus = new JCheckBox();
         roomTypeLabel = new JLabel("Room Type: ");
-        String[] roomOptions = {ROOM_TYPE.VINTAGE_CHARM.csvFormat(),ROOM_TYPE.URBAN_ELEGANCE.csvFormat(),
-                ROOM_TYPE.NATURE_RETREAT.csvFormat()};
+        String[] roomOptions = {ROOM_TYPE.VINTAGE.csvFormat(),ROOM_TYPE.URBAN.csvFormat(),
+                ROOM_TYPE.NATURE.csvFormat()};
         roomTypes = new JComboBox<>(roomOptions);
         bedTypeLabel  = new JLabel("Bed: ");
         String[] bedOptions = {BED_TYPE.KING.toString(), BED_TYPE.QUEEN.toString(),
@@ -84,9 +83,12 @@ public class AddRoomPane extends JFrame {
     }
 
     private void saveRoomToCSV(double priceSelection) {
+        RoomJDBCDAO dao = new RoomJDBCDAO();
+        boolean added = false;
         try {
-            RoomBuilder builder = new RoomBuilder("RoomList.csv");
-            boolean added = builder.addRoom(
+
+            RoomBuilder builder = new RoomBuilder("src/main/resources/RoomList.csv");
+            dao.insert(new Room(
                     Integer.parseInt(roomNumber.getText()),
                     priceSelection,
                     smokingStatus.isSelected(),
@@ -95,16 +97,14 @@ public class AddRoomPane extends JFrame {
                     builder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
                     Integer.parseInt(bedNumber.getValue().toString())
 
-            );
-            if (added) {
-                builder.writeRoom("RoomList.csv");
-                showConfirmationDialog();
-            } else {
-                showFailureDialog();
-            }
+            ));
+
+            showConfirmationDialog();
         }catch (Exception exc){
-            JOptionPane.showMessageDialog(null, "Room failed to be added...please try again!");
+            showFailureDialog();
         }
+
+        System.out.println(dao.get(Integer.parseInt(roomNumber.getText())));
 
     }
     private double getPriceSelection() {

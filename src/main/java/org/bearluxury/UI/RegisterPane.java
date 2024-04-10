@@ -1,4 +1,6 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.account.AccountBuilder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -110,7 +112,7 @@ public class RegisterPane extends JFrame {
 
     //FIXME: SET ROLE TO GUEST
     public void saveAccountToCSV() {
-        String csvFile = "AccountList.csv";
+        String csvFile = "src/main/resources/AccountList.csv";
 
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();

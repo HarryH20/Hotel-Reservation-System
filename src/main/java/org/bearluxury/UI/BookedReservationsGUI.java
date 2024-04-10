@@ -1,4 +1,7 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.reservation.Reservation;
+import org.bearluxury.reservation.ReservationCatalog;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,8 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 

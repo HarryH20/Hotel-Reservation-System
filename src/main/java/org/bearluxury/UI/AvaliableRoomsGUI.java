@@ -1,7 +1,9 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+import org.bearluxury.room.Room;
+import org.bearluxury.room.RoomCatalog;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
