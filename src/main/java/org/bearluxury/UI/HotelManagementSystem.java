@@ -2,25 +2,21 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import org.bearluxury.reservation.Reservation;
-import org.bearluxury.reservation.ReservationBuilder;
-import org.bearluxury.reservation.ReservationJDBCDAO;
-import org.bearluxury.room.Room;
-import org.bearluxury.room.RoomBuilder;
+import org.bearluxury.account.Role;
+import org.bearluxury.controllers.RoomController;
 import org.bearluxury.room.RoomCatalog;
 import org.bearluxury.room.RoomJDBCDAO;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+
 
 //Window
 public class HotelManagementSystem  {
 
-    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
+    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut, Role role){
         try {
             RoomController rooms = new RoomController(new RoomJDBCDAO());
             RoomCatalog roomCatalog = new RoomCatalog();
@@ -66,8 +62,8 @@ public class HotelManagementSystem  {
         registerPage.setVisible(true);
     }
 
-    public static void openHotelManagmentSystem(){
-        InfoFilterPane window = new InfoFilterPane();
+    public static void openHotelManagmentSystem(Role role){
+        InfoFilterPane window = new InfoFilterPane(role);
         window.setVisible(true);
     }
 

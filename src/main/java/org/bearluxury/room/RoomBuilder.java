@@ -94,7 +94,7 @@ public class RoomBuilder {
         }
     }
 
-    public ROOM_TYPE readAsRoomType(String str){
+    public static ROOM_TYPE readAsRoomType(String str){
         if(str.equals("vintage")){
             return ROOM_TYPE.VINTAGE;
         }
@@ -108,7 +108,7 @@ public class RoomBuilder {
         return ROOM_TYPE.NATURE;
 
     }
-    public BED_TYPE readAsBedType(String str){
+    public static BED_TYPE readAsBedType(String str){
         if(str.equals("King")){
             return BED_TYPE.KING;
         }
@@ -123,7 +123,7 @@ public class RoomBuilder {
         }
         return BED_TYPE.KING;
     }
-    public QUALITY_LEVEL readAsQualityLevel(String str){
+    public static QUALITY_LEVEL readAsQualityLevel(String str){
         if(str.equals("business")){
             return QUALITY_LEVEL.BUSINESS;
         }

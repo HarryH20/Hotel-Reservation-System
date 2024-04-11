@@ -1,8 +1,10 @@
 package org.bearluxury.UI;
 
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationCatalog;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -68,7 +70,8 @@ public class ClerkHomePage extends HotelHomePage{
         public void actionPerformed(ActionEvent e) {
             dispose();
             ReservationCatalog reservations = new ReservationCatalog();
-            reservations.setReservations(new ReservationBuilder("src/main/resources/ReservationList.csv").getReservationList());
+            ReservationController controller = new ReservationController(new ReservationJDBCDAO());
+            reservations.setReservations(controller.listRooms());
             BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations, role);
             catalogPane.setVisible(true);
         }
