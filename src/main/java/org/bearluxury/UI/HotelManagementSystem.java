@@ -2,7 +2,6 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
-import org.bearluxury.account.Role;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationJDBCDAO;
@@ -21,11 +20,16 @@ import java.util.Set;
 //Window
 public class HotelManagementSystem  {
 
-    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut, Role role){
-        RoomCatalog rooms = new RoomCatalog();
-        rooms.setRooms(new RoomBuilder("src/main/resources/RoomList.csv").getRoomList());
-        AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(rooms,beds, checkIn, checkOut,role);
-        catalogPane.setVisible(true);
+    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
+        try {
+            RoomController rooms = new RoomController(new RoomJDBCDAO());
+            RoomCatalog roomCatalog = new RoomCatalog();
+            roomCatalog.setRooms(rooms.listRooms());
+            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut, role);
+            catalogPane.setVisible(true);
+        }catch (SQLException exc){
+            exc.printStackTrace();
+        }
     }
 
    //added homepages for user role
@@ -62,8 +66,8 @@ public class HotelManagementSystem  {
         registerPage.setVisible(true);
     }
 
-    public static void openHotelManagmentSystem(Role role){
-        InfoFilterPane window = new InfoFilterPane(role);
+    public static void openHotelManagmentSystem(){
+        InfoFilterPane window = new InfoFilterPane();
         window.setVisible(true);
     }
 
@@ -76,21 +80,6 @@ public class HotelManagementSystem  {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
-        ReservationJDBCDAO data = new ReservationJDBCDAO();
-        List<Reservation> reservations = new ArrayList<>();
-        ReservationBuilder builder = new ReservationBuilder("src/main/resources/ReservationList.csv");
-        List<Reservation> res = builder.getReservationList();
-        RoomJDBCDAO dao = new RoomJDBCDAO();
-        RoomBuilder builder1 = new RoomBuilder("src/main/resources/RoomList.csv");
-        Set<Room> res1 = builder1.getRoomList();
-        for(Room res4: res1){
-            dao.insert(res4);
-        }
-        Set<Room> res2 = dao.list();
-        for(Room res4: res2){
-            System.out.println(res4.getRoomNumber());
-        }
         openLoginPage();
     }
-
 }

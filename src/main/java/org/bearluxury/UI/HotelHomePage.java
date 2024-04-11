@@ -5,6 +5,8 @@ import org.bearluxury.account.Role;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -63,6 +65,34 @@ public abstract class HotelHomePage extends JFrame {
         //moved variable declaration for use in child classes
         //JPanel reservePanel = new JPanel();
         reservePanel.setBackground(backgroundColor);
+        JButton reserveButton = new JButton("Get A Room");
+        reserveButton.setFont(font);
+        reserveButton.setForeground(Color.BLACK);
+        reserveButton.addActionListener(new openHotelManagmentPane());
+        reservePanel.add(reserveButton);
+
+        JButton seeReservations = new JButton("See All Reservations");
+        seeReservations.setFont(font);
+        seeReservations.setForeground(Color.BLACK);
+        seeReservations.addActionListener(new openViewReservationPane());
+        reservePanel.add(seeReservations);
+
+        JButton addUser = new JButton("Register");
+        JButton addRoom = new JButton("Add Room");
+
+        seeReservations.setFont(font);
+        seeReservations.setForeground(Color.BLACK);
+        addUser.setFont(font);
+        addRoom.addActionListener(new openAddRoomPane());
+        addUser.addActionListener(new openRegistration());
+        addUser.setForeground(Color.BLACK);
+        addRoom.setFont(font);
+        addRoom.setForeground(Color.BLACK);
+
+        reservePanel.add(addUser);
+        reservePanel.add(addRoom);
+
+
 
         setLayout(new BorderLayout());
         add(logoPanel, BorderLayout.CENTER);
@@ -103,7 +133,5 @@ public abstract class HotelHomePage extends JFrame {
             pane.setVisible(true);
         }
     }
-
-     */
 
 }
