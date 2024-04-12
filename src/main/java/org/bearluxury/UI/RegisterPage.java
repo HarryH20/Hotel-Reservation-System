@@ -53,7 +53,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
         accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
-        logo = new ImageIcon("bbl-logo-transparent.png");
+        logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
 
         firstNameField = new JTextField();

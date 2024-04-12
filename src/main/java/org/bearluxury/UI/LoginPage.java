@@ -36,7 +36,7 @@ public class LoginPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        logo = new ImageIcon("bbl-logo-transparent.png");
+        logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
 
         emailTextField = new JTextField();

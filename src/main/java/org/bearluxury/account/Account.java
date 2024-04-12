@@ -25,6 +25,10 @@ public class Account {
         this.role = role;
     }
 
+    public Account() {
+
+    }
+
     public String getFirstName() {
         return firstName;
     }
