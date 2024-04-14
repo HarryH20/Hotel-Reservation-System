@@ -59,10 +59,15 @@ public class HotelManagementSystem  {
         register.setVisible(true);
     }
 
+    public static void openShopHomePage() {
+        ShopHomePage shopHomePage = new ShopHomePage();
+        shopHomePage.setVisible(true);
+    }
+
     public static void main(String[] args) {
         FlatRobotoFont.install();
-        UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+        UIManager.put("defaultFont", Style.defaultFont);
         FlatLightLaf.setup();
-        openLoginPage();
+        openShopHomePage();
     }
 }
