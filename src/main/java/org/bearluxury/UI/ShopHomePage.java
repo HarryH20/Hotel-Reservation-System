@@ -18,8 +18,7 @@ public class ShopHomePage extends JFrame {
     JScrollPane categoryPane;
 
     JLabel sortLabel;
-    JLabel priceHighToLow;
-    JLabel priceLowToHigh;
+    JComboBox sortDropDown;
 
 
     public ShopHomePage() {
@@ -43,6 +42,8 @@ public class ShopHomePage extends JFrame {
 
         sortLabel = new JLabel("Sort By");
         sortLabel.putClientProperty(FlatClientProperties.STYLE, "" + "font:bold +10");
+        String[] sortTypes = {"None", "Price: High to Low", "Price: Low to High"};
+        sortDropDown = new JComboBox(sortTypes);
 
         sideBar.add(backButton);
         sideBar.add(fillSpace(100));
@@ -51,6 +52,7 @@ public class ShopHomePage extends JFrame {
         sideBar.add(categoryPane);
         sideBar.add(fillSpace(100));
         sideBar.add(sortLabel);
+        sideBar.add(sortDropDown);
 
         add(sideBar, BorderLayout.WEST);
     }
