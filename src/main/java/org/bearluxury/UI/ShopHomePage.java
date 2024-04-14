@@ -12,6 +12,7 @@ public class ShopHomePage extends JFrame {
 
     JPanel sideBar;
     JPanel itemPanel;
+    JPanel checkoutPanel;
 
     JButton backButton;
 
@@ -22,6 +23,10 @@ public class ShopHomePage extends JFrame {
     JLabel sortLabel;
     JComboBox sortDropDown;
 
+    JScrollPane productScrollPane;
+
+    JLabel cartLabel;
+
 
     public ShopHomePage(ProductCatalog productCatalog) {
         setTitle("Shop Home");
@@ -31,10 +36,14 @@ public class ShopHomePage extends JFrame {
         getContentPane().setBackground(Style.backgroundColor);
 
         sideBar = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
-        sideBar.setPreferredSize(new Dimension(250, this.getHeight()));
+        sideBar.setPreferredSize(new Dimension(230, this.getHeight()));
 
         itemPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 20));
         itemPanel.setBackground(Style.backgroundColor);
+        itemPanel.setPreferredSize(new Dimension(0, 150 * (productCatalog.getProducts().size() / 3)));
+
+        checkoutPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
+        checkoutPanel.setPreferredSize(new Dimension(180, this.getHeight()));
 
         backButton = new JButton("Back");
 
@@ -59,12 +68,15 @@ public class ShopHomePage extends JFrame {
         sideBar.add(sortLabel);
         sideBar.add(sortDropDown);
 
-        ProductCard itemCard = new ProductCard(new Product("Handwoven Basket", 2.50, 8, PRODUCT_TYPE.ARTESIAN_GOOD));
+        for (Product product : productCatalog.getProducts()) {
+            itemPanel.add(new ProductCard(product));
+        }
 
-        itemPanel.add(itemCard);
+        productScrollPane = new JScrollPane(itemPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         add(sideBar, BorderLayout.WEST);
-        add(itemPanel, BorderLayout.CENTER);
+        add(productScrollPane, BorderLayout.CENTER);
+        add(checkoutPanel, BorderLayout.EAST);
     }
 
     private JLabel fillSpace(int whitespace) {

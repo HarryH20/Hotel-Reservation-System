@@ -13,4 +13,5 @@ public class ProductCatalog {
     public void setProducts(Set<Product> products) {
         this.products = products;
     }
+
 }

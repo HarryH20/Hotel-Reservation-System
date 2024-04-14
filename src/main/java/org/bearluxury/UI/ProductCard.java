@@ -40,7 +40,7 @@ public class ProductCard extends JPanel {
 
         quantityTextField = new JTextField("0", 1);
         minusButton = new JButton("-");
-        //minusButton.setEnabled(false);
+        minusButton.setEnabled(false);
         plusButton = new JButton("+");
 
         northPanel.add(productName);

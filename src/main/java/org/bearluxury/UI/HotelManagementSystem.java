@@ -65,6 +65,7 @@ public class HotelManagementSystem  {
     public static void openShopHomePage() {
         ProductCatalog productCatalog = new ProductCatalog();
         ProductBuilder productBuilder = new ProductBuilder("src/main/resources/ProductList.csv");
+        System.out.println(productBuilder.getProductList().size());
         productCatalog.setProducts(productBuilder.getProductList());
         ShopHomePage shopHomePage = new ShopHomePage(productCatalog);
         shopHomePage.setVisible(true);
