@@ -1,0 +1,11 @@
+name,price,quantity,type
+T-Shirt,15.99,100,clothing
+Jeans,29.99,50,clothing
+Sunglasses,25.50,80,accessory
+Handbag,50.00,30,accessory
+Handcrafted Soap,8.99,120,artesian good
+Handwoven Basket,19.99,60,artesian good
+Shampoo,12.49,90,toiletry
+Toothpaste,4.99,150,toiletry
+Aspirin,6.99,200,pharmaceutical
+Bandages,3.50,300,pharmaceutical

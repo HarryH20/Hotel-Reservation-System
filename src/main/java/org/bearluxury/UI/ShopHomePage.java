@@ -10,6 +10,7 @@ import java.awt.*;
 public class ShopHomePage extends JFrame {
 
     JPanel sideBar;
+    JPanel itemPanel;
 
     JButton backButton;
 
@@ -31,12 +32,15 @@ public class ShopHomePage extends JFrame {
         sideBar = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
         sideBar.setPreferredSize(new Dimension(250, this.getHeight()));
 
+        itemPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 20));
+        itemPanel.setBackground(Style.backgroundColor);
+
         backButton = new JButton("Back");
 
         categoryLabel = new JLabel("Category");
         categoryLabel.putClientProperty(FlatClientProperties.STYLE, "" + "font:bold +10");
 
-        String[] categoryTypes = {"All items", "Snacks", "Beverages", "Toiletries", "Pharmaceutical", "Accessories"};
+        String[] categoryTypes = {"All items", "Clothing", "Accessories", "Artesian Goods", "Toiletries", "Pharmaceutical"};
         categories = new JList<>(categoryTypes);
         categoryPane = new JScrollPane(categories);
 
@@ -54,7 +58,12 @@ public class ShopHomePage extends JFrame {
         sideBar.add(sortLabel);
         sideBar.add(sortDropDown);
 
+        ItemCard itemCard = new ItemCard("Apple", 2.50);
+
+        itemPanel.add(itemCard);
+
         add(sideBar, BorderLayout.WEST);
+        add(itemPanel, BorderLayout.CENTER);
     }
 
     private JLabel fillSpace(int whitespace) {
