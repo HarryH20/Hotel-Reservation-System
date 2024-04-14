@@ -1,8 +1,9 @@
 package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import jdk.jfr.Category;
-import net.miginfocom.swing.MigLayout;
+import org.bearluxury.product.PRODUCT_TYPE;
+import org.bearluxury.product.Product;
+import org.bearluxury.product.ProductCatalog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,7 @@ public class ShopHomePage extends JFrame {
     JComboBox sortDropDown;
 
 
-    public ShopHomePage() {
+    public ShopHomePage(ProductCatalog productCatalog) {
         setTitle("Shop Home");
         setSize(1280, 720);
         setLocationRelativeTo(null);
@@ -58,7 +59,7 @@ public class ShopHomePage extends JFrame {
         sideBar.add(sortLabel);
         sideBar.add(sortDropDown);
 
-        ItemCard itemCard = new ItemCard("Apple", 2.50);
+        ProductCard itemCard = new ProductCard(new Product("Handwoven Basket", 2.50, 8, PRODUCT_TYPE.ARTESIAN_GOOD));
 
         itemPanel.add(itemCard);
 

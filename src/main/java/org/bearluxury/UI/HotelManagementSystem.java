@@ -2,7 +2,10 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import org.bearluxury.account.AccountBuilder;
 import org.bearluxury.controllers.RoomController;
+import org.bearluxury.product.ProductBuilder;
+import org.bearluxury.product.ProductCatalog;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationJDBCDAO;
@@ -60,7 +63,10 @@ public class HotelManagementSystem  {
     }
 
     public static void openShopHomePage() {
-        ShopHomePage shopHomePage = new ShopHomePage();
+        ProductCatalog productCatalog = new ProductCatalog();
+        ProductBuilder productBuilder = new ProductBuilder("src/main/resources/ProductList.csv");
+        productCatalog.setProducts(productBuilder.getProductList());
+        ShopHomePage shopHomePage = new ShopHomePage(productCatalog);
         shopHomePage.setVisible(true);
     }
 
