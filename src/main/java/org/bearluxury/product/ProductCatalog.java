@@ -1,5 +1,6 @@
 package org.bearluxury.product;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -14,4 +15,15 @@ public class ProductCatalog {
         this.products = products;
     }
 
+    public void sortByPriceHighToLow() {
+        Set<Product> temp = products;
+        products = new TreeSet<>(Comparator.comparing(Product::getPrice).reversed());
+        products.addAll(temp);
+    }
+
+    public void sortByPriceLowToHigh() {
+        Set<Product> temp = products;
+        products = new TreeSet<>(Comparator.comparing(Product::getPrice));
+        products.addAll(temp);
+    }
 }
