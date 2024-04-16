@@ -1,10 +1,11 @@
 package org.bearluxury.UI;
 
-import com.formdev.flatlaf.FlatClientProperties;
-import net.miginfocom.swing.MigLayout;
-import org.bearluxury.UI.HotelManagementSystem;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountBuilder;
+
+import com.formdev.flatlaf.FlatClientProperties;
+import net.miginfocom.swing.MigLayout;
+import org.bearluxury.account.Role;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,23 +101,31 @@ public class LoginPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    private boolean doesAccountExist(String email, String password) {
+    private Account doesAccountExist(String email, String password) {
         AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
         for (Account account : accounts) {
             if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
-                return true;
+                return account;
             }
         }
-        return false;
+        return null;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
-            if (doesAccountExist(emailTextField.getText(), passwordTextField.getText())) {
+            Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
+            if (account != null) {
                 dispose();
-                HotelManagementSystem.openHomePage();
+                if (account.getRole().equals(Role.GUEST)) {
+                    System.out.println(account.getRole());
+                    HotelManagementSystem.openGuestHomePage();
+                } else if (account.getRole().equals(Role.CLERK)) {
+                    HotelManagementSystem.openClerkHomePage();
+                } else if (account.getRole().equals(Role.ADMIN)) {
+                    HotelManagementSystem.openAdminHomePage();
+                }
             } else {
                 loginPanel.add(wrongMsg, "gapy 8", 7);
                 this.setVisible(true);

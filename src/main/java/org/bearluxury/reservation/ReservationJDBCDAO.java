@@ -1,13 +1,14 @@
 package org.bearluxury.reservation;
 
 import org.bearluxury.DAO;
+import org.bearluxury.RoomResDAO;
 import org.bearluxury.reservation.Reservation;
 
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
-public class ReservationJDBCDAO implements DAO<Reservation> {
+public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservation> {
 
     private Connection connection;
 

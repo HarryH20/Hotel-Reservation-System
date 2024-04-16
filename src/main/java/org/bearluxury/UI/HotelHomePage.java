@@ -1,8 +1,6 @@
 package org.bearluxury.UI;
-import org.bearluxury.controllers.ReservationController;
-import org.bearluxury.reservation.ReservationBuilder;
-import org.bearluxury.reservation.ReservationCatalog;
-import org.bearluxury.reservation.ReservationJDBCDAO;
+
+import org.bearluxury.account.Role;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,8 +11,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class HotelHomePage extends JFrame {
-    public HotelHomePage() {
+public abstract class HotelHomePage extends JFrame {
+    Role role;
+    Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
+    JPanel reservePanel = new JPanel();
+
+
+    public HotelHomePage(Role role) {
+        this.role = role;
         setTitle("Baylor Bear Luxury");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 720);
@@ -53,40 +57,14 @@ public class HotelHomePage extends JFrame {
         JPanel welcomePanel = new JPanel();
         welcomePanel.setBackground(backgroundColor);
         JLabel welcomeLabel = new JLabel("Welcome to Baylor Bear Luxury!");
-        Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
+        //moved variable declaration for use in child classes
+        //Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
         welcomeLabel.setFont(font);
         welcomePanel.add(welcomeLabel);
 
-
-        JPanel reservePanel = new JPanel();
+        //moved variable declaration for use in child classes
+        //JPanel reservePanel = new JPanel();
         reservePanel.setBackground(backgroundColor);
-        JButton reserveButton = new JButton("Get A Room");
-        reserveButton.setFont(font);
-        reserveButton.setForeground(Color.BLACK);
-        reserveButton.addActionListener(new openHotelManagmentPane());
-        reservePanel.add(reserveButton);
-
-        JButton seeReservations = new JButton("See All Reservations");
-        seeReservations.setFont(font);
-        seeReservations.setForeground(Color.BLACK);
-        seeReservations.addActionListener(new openViewReservationPane());
-        reservePanel.add(seeReservations);
-
-        JButton addUser = new JButton("Register");
-        JButton addRoom = new JButton("Add Room");
-
-        seeReservations.setFont(font);
-        seeReservations.setForeground(Color.BLACK);
-        addUser.setFont(font);
-        addRoom.addActionListener(new openAddRoomPane());
-        addUser.addActionListener(new openRegistration());
-        addUser.setForeground(Color.BLACK);
-        addRoom.setFont(font);
-        addRoom.setForeground(Color.BLACK);
-
-        reservePanel.add(addUser);
-        reservePanel.add(addRoom);
-
 
 
         setLayout(new BorderLayout());
@@ -94,6 +72,10 @@ public class HotelHomePage extends JFrame {
         add(welcomePanel, BorderLayout.NORTH);
         add(reservePanel, BorderLayout.SOUTH);
     }
+}
+
+    //Move these classes to inherited classes of HotelHomePage
+    /*
     private class openHotelManagmentPane implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -106,10 +88,9 @@ public class HotelHomePage extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
-            ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-            ReservationCatalog reservationCatalog = new ReservationCatalog();
-            reservationCatalog.setReservations(controller.listRooms());
-            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservationCatalog);
+            ReservationCatalog reservations = new ReservationCatalog();
+            reservations.setReservations(new ReservationBuilder("src/main/resources/ReservationList.csv").getReservationList());
+            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations);
             catalogPane.setVisible(true);
         }
     }
@@ -128,3 +109,5 @@ public class HotelHomePage extends JFrame {
     }
 
 }
+
+     */
