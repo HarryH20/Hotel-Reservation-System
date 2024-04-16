@@ -1,10 +1,16 @@
-package org.bearluxury;
+package org.bearluxury.room;
+
+import org.bearluxury.DAO;
+import org.bearluxury.RoomResDAO;
+import org.bearluxury.room.BED_TYPE;
+import org.bearluxury.room.QUALITY_LEVEL;
+import org.bearluxury.room.ROOM_TYPE;
+import org.bearluxury.room.Room;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
-public class RoomJDBCDAO implements DAO<Room>{
+public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
     private Connection connection;
 
     private static String JDBC_URL = "jdbc:h2:mem:roomdb";
@@ -79,26 +85,22 @@ public class RoomJDBCDAO implements DAO<Room>{
 
 
     @Override
-    public void insert(Room room) {
-        try {
-            String sql = "INSERT INTO rooms(roomNumber, price, canSmoke, roomType, bedType, qualityLevel, numberOfBeds) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public void insert(Room room) throws SQLException {
+        String sql = "INSERT INTO rooms(roomNumber, price, canSmoke, roomType, bedType, qualityLevel, numberOfBeds) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, room.getRoomNumber());
-            preparedStatement.setDouble(2, room.getPrice());
-            preparedStatement.setBoolean(3, room.isCanSmoke());
-            preparedStatement.setString(4, room.getRoomType().csvFormat());
-            preparedStatement.setString(5, room.getBed().toString());
-            preparedStatement.setString(6, room.getQualityLevel().csvFormat());
-            preparedStatement.setInt(7, room.getNumberOfBeds());
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setInt(1, room.getRoomNumber());
+        preparedStatement.setDouble(2, room.getPrice());
+        preparedStatement.setBoolean(3, room.isCanSmoke());
+        preparedStatement.setString(4, room.getRoomType().csvFormat());
+        preparedStatement.setString(5, room.getBed().toString());
+        preparedStatement.setString(6, room.getQualityLevel().csvFormat());
+        preparedStatement.setInt(7, room.getNumberOfBeds());
 
-            int rowsInserted = preparedStatement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("A new room was inserted successfully!");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        int rowsInserted = preparedStatement.executeUpdate();
+        if (rowsInserted > 0) {
+            System.out.println("A new room was inserted successfully!");
         }
     }
 

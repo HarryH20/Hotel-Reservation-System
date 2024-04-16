@@ -1,10 +1,14 @@
-package org.bearluxury;
+package org.bearluxury.reservation;
+
+import org.bearluxury.DAO;
+import org.bearluxury.RoomResDAO;
+import org.bearluxury.reservation.Reservation;
 
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
-public class ReservationJDBCDAO implements DAO<Reservation>{
+public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservation> {
 
     private Connection connection;
 
@@ -74,7 +78,6 @@ public class ReservationJDBCDAO implements DAO<Reservation>{
         }
         return reservations;
     }
-
 
     @Override
     public void insert(Reservation reservation) {

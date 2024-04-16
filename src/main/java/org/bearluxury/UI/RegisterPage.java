@@ -1,7 +1,11 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.account.AccountBuilder;
+import org.bearluxury.account.Account;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.account.Role;
 
 import javax.swing.*;
 import java.awt.*;
@@ -123,12 +127,12 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.add(new JLabel("Confirm password"), "gapy 6");
         registerPanel.add(confirmPasswordField);
         registerPanel.add(registerButton, "gapy 10");
-        registerPanel.add(createLoginLabel(), "gapy 10");
+        registerPanel.add(createRegisterLabel(), "gapy 10");
 
         add(registerPanel);
     }
 
-    private Component createLoginLabel() {
+    private Component createRegisterLabel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
@@ -146,8 +150,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    private boolean checkCredentials() {
-        boolean validCredentials = true;
+    private Boolean checkCredentials() {
+        Boolean validCredentials = true;
         AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
         ArrayList<Account> accounts = accountBuilder.getAccountList();
 
@@ -221,6 +225,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         return validCredentials;
     }
 
+    /////TEMP FIX: MADE ACCOUNT BUILDER ROLE GUEST
     private void registerAccount() {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -229,8 +234,10 @@ public class RegisterPage extends JFrame implements ActionListener {
         String userName = emailTextField.getText();
         long phoneNumber = Long.parseLong(phoneTextField.getText());
         String password = passwordTextField.getText();
-        accountBuilder.addAccount(firstName, lastName, email, userName, phoneNumber, password);
-        accountBuilder.writeAccount("src/main/resources/AccountList.csv");
+        //FIXME
+        Role role = Role.GUEST;
+        accountBuilder.addAccount(firstName, lastName, email, userName, phoneNumber, password, role);
+        accountBuilder.writeAccount("AccountList.csv");
     }
 
     @Override

@@ -1,9 +1,13 @@
-package org.bearluxury;
+package org.bearluxury.UI;
+
+import org.bearluxury.controllers.RoomController;
+import org.bearluxury.room.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
@@ -57,7 +61,7 @@ public class AddRoomPane extends JFrame {
         createRoom.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {double priceSelection = getPriceSelection();
-                saveRoomToCSV(priceSelection);
+                saveRoom(priceSelection);
             }
         });
 
@@ -80,19 +84,17 @@ public class AddRoomPane extends JFrame {
         add(createRoom);
     }
 
-    private void saveRoomToCSV(double priceSelection) {
-        RoomJDBCDAO dao = new RoomJDBCDAO();
-        boolean added = false;
-        try {
+    private void saveRoom(double priceSelection) {
 
-            RoomBuilder builder = new RoomBuilder("src/main/resources/RoomList.csv");
-            dao.insert(new Room(
+        try {
+            RoomController controller = new RoomController(new RoomJDBCDAO());
+            controller.insertRoom(new Room(
                     Integer.parseInt(roomNumber.getText()),
                     priceSelection,
                     smokingStatus.isSelected(),
-                    builder.readAsRoomType(roomTypes.getSelectedItem().toString()),
-                    builder.readAsBedType(bedTypes.getSelectedItem().toString()),
-                    builder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
+                    RoomBuilder.readAsRoomType(roomTypes.getSelectedItem().toString()),
+                    RoomBuilder.readAsBedType(bedTypes.getSelectedItem().toString()),
+                    RoomBuilder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
                     Integer.parseInt(bedNumber.getValue().toString())
 
             ));
@@ -101,9 +103,6 @@ public class AddRoomPane extends JFrame {
         }catch (Exception exc){
             showFailureDialog();
         }
-
-        System.out.println(dao.get(Integer.parseInt(roomNumber.getText())));
-
     }
     private double getPriceSelection() {
         double priceSelection = 0;

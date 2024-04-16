@@ -1,9 +1,11 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
+import org.bearluxury.UI.HotelManagementSystem;
+import org.bearluxury.account.Role;
 
 import javax.swing.*;
 import java.awt.*;
@@ -58,7 +60,11 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
     private int numBeds;
     private int numRooms;
 
-    public InfoFilterPane() {
+    Role role;
+
+
+    public InfoFilterPane(Role role) {
+        this.role = role;
         setTitle("Bear Luxury");
         setSize(1280, 720);
         setLocationRelativeTo(null);
@@ -224,7 +230,7 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
             System.out.println("Number of beds: " + numBeds);
             System.out.println("Number of rooms: " + numRooms);
             dispose();
-            HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate);
+            HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate, role);
         }
 
     }

@@ -1,14 +1,18 @@
-package org.bearluxury;
+package org.bearluxury.room;
+
+import org.bearluxury.room.BED_TYPE;
+import org.bearluxury.room.QUALITY_LEVEL;
+import org.bearluxury.room.ROOM_TYPE;
+import org.bearluxury.room.Room;
 
 import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 //Parser for room from CSV file
-class RoomBuilder {
+public class RoomBuilder {
     Set <Room> roomList;
 
-    RoomBuilder(String csvName){
+    public RoomBuilder(String csvName){
         roomList = new TreeSet<>(Comparator.comparing(Room::getRoomNumber));
         File file = new File(csvName);
         BufferedReader reader = null;
@@ -42,13 +46,13 @@ class RoomBuilder {
             }
         }
     }
-    Set<Room> getRoomList(){
+    public Set<Room> getRoomList(){
         return roomList;
     }
 
     public boolean addRoom(int roomNumber, double price, boolean canSmoke,
-                        ROOM_TYPE roomType, BED_TYPE bed,
-                        QUALITY_LEVEL qualityLevel, int numberOfBeds){
+                           ROOM_TYPE roomType, BED_TYPE bed,
+                           QUALITY_LEVEL qualityLevel, int numberOfBeds){
         Room room = new Room(roomNumber,
                 price,
                 canSmoke,
@@ -90,7 +94,7 @@ class RoomBuilder {
         }
     }
 
-    ROOM_TYPE readAsRoomType(String str){
+    public static ROOM_TYPE readAsRoomType(String str){
         if(str.equals("vintage")){
             return ROOM_TYPE.VINTAGE;
         }
@@ -104,7 +108,7 @@ class RoomBuilder {
         return ROOM_TYPE.NATURE;
 
     }
-    BED_TYPE readAsBedType(String str){
+    public static BED_TYPE readAsBedType(String str){
         if(str.equals("King")){
             return BED_TYPE.KING;
         }
@@ -119,7 +123,7 @@ class RoomBuilder {
         }
         return BED_TYPE.KING;
     }
-    QUALITY_LEVEL readAsQualityLevel(String str){
+    public static QUALITY_LEVEL readAsQualityLevel(String str){
         if(str.equals("business")){
             return QUALITY_LEVEL.BUSINESS;
         }

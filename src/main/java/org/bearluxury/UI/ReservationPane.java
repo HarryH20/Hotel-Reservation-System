@@ -1,6 +1,10 @@
-package org.bearluxury;
+package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import org.bearluxury.controllers.ReservationController;
+import org.bearluxury.reservation.Reservation;
+import org.bearluxury.reservation.ReservationBuilder;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -146,19 +150,13 @@ public class ReservationPane extends JFrame {
             return;
         }
         try {
-            ReservationBuilder reservationBuilder = new ReservationBuilder(csvFileName);
-            boolean added = reservationBuilder.addReservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate);
-            if(added) {
-                reservationBuilder.writeReservation(csvFileName);
-                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-                dispose();
-            }
-            else{
-                JOptionPane.showMessageDialog(this, "Reservation Already Exists...please try again!");
-            }
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            ReservationController controller = new ReservationController(new ReservationJDBCDAO());
+            controller.insertReservation(new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate));
+            JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+            dispose();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Reservation failed to save! ");
         }
     }
     private String formatDate(java.util.Date date) {
