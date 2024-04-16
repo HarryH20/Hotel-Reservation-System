@@ -1,27 +1,16 @@
 package org.bearluxury.reservation;
 
-import org.bearluxury.reservation.Reservation;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class ReservationCatalog {
-    private List<Reservation> reservations = new ArrayList<>();
+    private Set<Reservation> reservations = new TreeSet<>(Comparator.comparing(Reservation::getRoomNumber));
 
-    public List<Reservation> getReservations() {
+    public Set<Reservation> getReservations() {
         return reservations;
     }
 
-    public void setReservations(List<Reservation> reservations) {
+    public void setReservations(Set<Reservation> reservations) {
         this.reservations = reservations;
-    }
-
-    public List<Reservation> sortByRoomNumber(){
-        List<Reservation> reservationsByNumber = reservations.stream().sorted
-                (Comparator.comparing(Reservation::getRoomNumber)).collect(Collectors.toList());
-        return reservationsByNumber;
     }
 
 

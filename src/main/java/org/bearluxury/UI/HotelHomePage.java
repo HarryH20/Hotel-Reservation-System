@@ -1,6 +1,8 @@
 package org.bearluxury.UI;
+import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationCatalog;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -104,9 +106,10 @@ public class HotelHomePage extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
-            ReservationCatalog reservations = new ReservationCatalog();
-            reservations.setReservations(new ReservationBuilder("src/main/resources/ReservationList.csv").getReservationList());
-            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations);
+            ReservationController controller = new ReservationController(new ReservationJDBCDAO());
+            ReservationCatalog reservationCatalog = new ReservationCatalog();
+            reservationCatalog.setReservations(controller.listRooms());
+            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservationCatalog);
             catalogPane.setVisible(true);
         }
     }

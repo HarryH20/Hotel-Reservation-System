@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
+import org.bearluxury.room.Room;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,6 +14,8 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BookedReservationsGUI extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
@@ -103,9 +106,11 @@ public class BookedReservationsGUI extends JFrame {
     }
 
 
-    private void fillTableRows(List<Reservation> reservations, DefaultTableModel model) {
-        reservations.sort(Comparator.comparing(Reservation::getRoomNumber));
-        reservations.sort(Comparator.comparing(Reservation::getStartDate));
+    private void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
+        List<Reservation> reservations = unsortedReservations.stream().
+                sorted(Comparator.comparing(Reservation::getFirstName).
+                        thenComparing(Reservation::getRoomNumber)).
+                collect(Collectors.toList());
 
         // format output dates
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");

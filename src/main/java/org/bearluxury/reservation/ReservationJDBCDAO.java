@@ -78,7 +78,6 @@ public class ReservationJDBCDAO implements DAO<Reservation> {
         return reservations;
     }
 
-
     @Override
     public void insert(Reservation reservation) {
         try {
