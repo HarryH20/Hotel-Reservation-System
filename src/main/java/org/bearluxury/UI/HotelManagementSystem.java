@@ -56,7 +56,6 @@ public class HotelManagementSystem  {
         LoginPage loginPage = new LoginPage();
         loginPage.setVisible(true);
     }
-
     public static void openRegisterPage() {
         RegisterPage registerPage = new RegisterPage();
         registerPage.setVisible(true);

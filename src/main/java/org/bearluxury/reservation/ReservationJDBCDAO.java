@@ -12,7 +12,26 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:mem:reservationdb";
+    private static String JDBC_URL = "jdbc:h2:~/test";
+
+    /*You can use H2 database in in-memory mode, which means the database is created in memory when the first connection is established,
+     and is removed when all connections are closed. The database engine runs in the same process of the application.
+     Using H2 in-memory database is preferred for quick testing in which data is not need to be stored permanently on disk.
+     To connect to a H2 in-memory database, you need to use JDBC URLs look like follows:
+     jdbc:h2:mem:<databaseName> again it can be whatever like jdbc:h2:mem:reservation
+     will only temporarily save it on each iteration
+    */
+    /*In embedded mode, a H2 database is stored permanently on disk and the database engine runs in the same process that runs the application.
+      To connect to an H2 embedded database, you need to use one of the following JDBC URLs:
+      jdbc:h2:~/test ‘test’ database in the user home directory
+      can be named whatever test is just an example
+      these below also work and store it in different places on the disk
+      jdbc:h2:./test the ‘test’ database in the current directory
+      jdbc:h2:/data/test the ‘test’ database in the /data directory (Unix)
+      jdbc:h2:D:/data/test the ‘test’ database in the D:/data directory (Windows)
+     */
+
+
 
     public ReservationJDBCDAO() {
         try {
@@ -47,7 +66,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 stmt.executeUpdate(createTableSQL);
                 System.out.println("table made");
             } else {
-                System.out.println("Employee table already exists.");
+                System.out.println("Reservation table already exists.");
             }
 
         } catch (SQLException e) {
