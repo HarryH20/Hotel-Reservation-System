@@ -88,15 +88,13 @@ public class AddRoomPane extends JFrame {
 
         try {
             RoomController controller = new RoomController(new RoomJDBCDAO());
-            boolean added = false;
-            RoomBuilder builder = new RoomBuilder("src/main/resources/RoomList.csv");
             controller.insertRoom(new Room(
                     Integer.parseInt(roomNumber.getText()),
                     priceSelection,
                     smokingStatus.isSelected(),
-                    builder.readAsRoomType(roomTypes.getSelectedItem().toString()),
-                    builder.readAsBedType(bedTypes.getSelectedItem().toString()),
-                    builder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
+                    RoomBuilder.readAsRoomType(roomTypes.getSelectedItem().toString()),
+                    RoomBuilder.readAsBedType(bedTypes.getSelectedItem().toString()),
+                    RoomBuilder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
                     Integer.parseInt(bedNumber.getValue().toString())
 
             ));

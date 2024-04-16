@@ -7,19 +7,26 @@ public class Account {
     private String email;
     private long phoneNumber;
     private String password;
+    private Role role;
 
     public Account(String firstName,
                    String lastName,
                    String userName,
                    String email,
                    long phoneNumber,
-                   String password) {
+                   String password,
+                   Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userName = userName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.role = role;
+    }
+
+    public Account() {
+
     }
 
     public String getFirstName() {
@@ -68,6 +75,14 @@ public class Account {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Role getRole() {
+        return this.role;
     }
 
     @Override

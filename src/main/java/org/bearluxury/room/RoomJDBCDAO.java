@@ -1,6 +1,7 @@
 package org.bearluxury.room;
 
 import org.bearluxury.DAO;
+import org.bearluxury.RoomResDAO;
 import org.bearluxury.room.BED_TYPE;
 import org.bearluxury.room.QUALITY_LEVEL;
 import org.bearluxury.room.ROOM_TYPE;
@@ -9,7 +10,7 @@ import org.bearluxury.room.Room;
 import java.sql.*;
 import java.util.*;
 
-public class RoomJDBCDAO implements DAO<Room> {
+public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
     private Connection connection;
 
     private static String JDBC_URL = "jdbc:h2:mem:roomdb";

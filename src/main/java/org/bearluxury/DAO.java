@@ -1,4 +1,6 @@
 package org.bearluxury;
+import org.bearluxury.account.Account;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -8,12 +10,6 @@ public interface DAO<T>{
     Set<T> list();
 
     void insert(T t) throws SQLException;
-
-    Optional<T> get(int roomNumber);
-
-    void update(T t, int roomNumber);
-
-    boolean delete(int roomNumber);
 
     void close();
 
