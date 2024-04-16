@@ -16,7 +16,18 @@ public class GuestHomePage extends HotelHomePage {
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
         reserveButton.addActionListener(new openHotelManagmentPane(role));
+        JButton shopButton = shopButton = new JButton("Shop");
+        shopButton.setFont(font);
+        shopButton.setForeground(Color.BLACK);
+        shopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                HotelManagementSystem.openShopHomePage();
+            }
+        });
         reservePanel.add(reserveButton);
+        reservePanel.add(shopButton);
     }
     private class openHotelManagmentPane implements ActionListener {
         Role role;
