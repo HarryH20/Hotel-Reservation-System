@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 import org.bearluxury.account.Role;
+import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.room.Room;
 import org.bearluxury.room.RoomCatalog;
 
@@ -22,7 +23,8 @@ public class AvaliableRoomsGUI extends JFrame {
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 16);
 
-    public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds, LocalDate checkIn, LocalDate checkOut, Role role) {
+    public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds, LocalDate checkIn, LocalDate checkOut, Role role,
+                             ReservationCatalog reservationCatalog) {
         setTitle("Room Catalog");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -41,7 +43,7 @@ public class AvaliableRoomsGUI extends JFrame {
 
         getContentPane().setBackground(backgroundColor);
 
-        fillTableRows(roomCatalog.getRooms(), model, beds);
+        fillTableRows(roomCatalog.getRooms(), model, beds, reservationCatalog, checkIn, checkOut);
 
         JButton backButton = createBackButton(role);
 
@@ -138,7 +140,8 @@ public class AvaliableRoomsGUI extends JFrame {
         return buttonWrapperPanel;
     }
 
-    private void fillTableRows(Set<Room> unsortedRooms, DefaultTableModel model, int beds) {
+    private void fillTableRows(Set<Room> unsortedRooms, DefaultTableModel model, int beds,
+                               ReservationCatalog reservationCatalog, LocalDate checkIn, LocalDate checkOut) {
         int maxBeds =  unsortedRooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
         List<Room> rooms = unsortedRooms.stream().
                 sorted(Comparator.comparing(Room::getNumberOfBeds).
@@ -151,6 +154,7 @@ public class AvaliableRoomsGUI extends JFrame {
             }
             rooms.stream()
                     .filter(room -> room.getNumberOfBeds() >= beds)
+                    .filter(room -> reservationCatalog.isAvailableDate(room,checkIn,checkOut))
                     .forEach(room -> model.addRow(new Object[]{
                             room.getRoomNumber(),
                             room.getRoomType().toString(),
@@ -163,7 +167,7 @@ public class AvaliableRoomsGUI extends JFrame {
         }catch (IllegalArgumentException exc){
             JOptionPane.showMessageDialog(null,"Error: beds must be less than " +
                     + maxBeds + ". \nShowing entire catalog!" );
-            fillTableRows(unsortedRooms,model,1);
+            fillTableRows(unsortedRooms,model,1, reservationCatalog, checkIn, checkOut);
 
         }
     }
