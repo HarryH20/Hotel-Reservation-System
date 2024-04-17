@@ -34,7 +34,7 @@ public class AccountController {
         return accountDAO.delete(email);
     }
 
-    public void clearRooms() {
+    public void clearAccounts() {
         accountDAO.clear();
     }
     public void closeConnection() {
