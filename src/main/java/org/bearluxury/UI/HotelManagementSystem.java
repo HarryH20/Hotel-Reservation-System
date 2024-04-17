@@ -3,7 +3,10 @@ package org.bearluxury.UI;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.controllers.RoomController;
+import org.bearluxury.reservation.ReservationCatalog;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
 import org.bearluxury.room.RoomJDBCDAO;
 
@@ -21,7 +24,10 @@ public class HotelManagementSystem  {
             RoomController rooms = new RoomController(new RoomJDBCDAO());
             RoomCatalog roomCatalog = new RoomCatalog();
             roomCatalog.setRooms(rooms.listRooms());
-            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut, role);
+            ReservationController reservationController = new ReservationController(new ReservationJDBCDAO());
+            ReservationCatalog reservationCatalog = new ReservationCatalog();
+            reservationCatalog.setReservations(reservationController.listRooms());
+            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut, role, reservationCatalog);
             catalogPane.setVisible(true);
         }catch (SQLException exc){
             exc.printStackTrace();
