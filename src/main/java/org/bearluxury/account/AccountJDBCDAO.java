@@ -10,7 +10,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:mem:accountdb";
+    private static String JDBC_URL = "jdbc:h2:~/account ";
 
     public AccountJDBCDAO() {
         try {

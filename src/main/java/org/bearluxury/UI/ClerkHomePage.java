@@ -72,7 +72,7 @@ public class ClerkHomePage extends HotelHomePage{
             ReservationCatalog reservations = new ReservationCatalog();
             ReservationController controller = new ReservationController(new ReservationJDBCDAO());
             reservations.setReservations(controller.listReservations());
-            BookedReservationsGUI catalogPane = new BookedReservationsGUI(reservations, role);
+            ClerkBookedReservationsGUI catalogPane = new ClerkBookedReservationsGUI(reservations, role);
             catalogPane.setVisible(true);
         }
     }

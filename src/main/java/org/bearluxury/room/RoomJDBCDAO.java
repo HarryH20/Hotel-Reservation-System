@@ -13,7 +13,7 @@ import java.util.*;
 public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:mem:roomdb";
+    private static String JDBC_URL = "jdbc:h2:~/room";
 
     public RoomJDBCDAO() {
         try {
