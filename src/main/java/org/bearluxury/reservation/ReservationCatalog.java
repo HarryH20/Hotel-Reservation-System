@@ -31,11 +31,6 @@ public class ReservationCatalog {
 
         for(Reservation r : listOfAllDatesAtRoom){
 
-            System.out.println("The chosen start date is : " + startDate);
-            System.out.println("The reservation start date is   : " + r.getStartDate());
-
-            System.out.println("The chosen end date is : " + endDate);
-            System.out.println("The reservation end date is   : " + r.getEndDate());
 
             // NO COMMENT LOL
             if(!(endDateAsDate.before(r.getStartDate()) || startDateAsDate.after(r.getEndDate()))){
