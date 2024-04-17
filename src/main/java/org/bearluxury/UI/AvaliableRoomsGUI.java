@@ -146,7 +146,7 @@ public class AvaliableRoomsGUI extends JFrame {
         List<Room> rooms = unsortedRooms.stream().
                 sorted(Comparator.comparing(Room::getNumberOfBeds).
                 thenComparing(Room::getRoomNumber)).
-                collect(Collectors.toList());
+                toList();
         try {
             if(beds > maxBeds){
                 throw new IllegalArgumentException();
