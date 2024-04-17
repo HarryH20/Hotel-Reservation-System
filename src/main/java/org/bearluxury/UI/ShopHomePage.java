@@ -1,6 +1,7 @@
 package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.account.Role;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductCatalog;
 
@@ -42,7 +43,6 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     JLabel totalPriceNumber;
     double totalPrice;
     JButton checkoutButton;
-
     public ShopHomePage(ProductCatalog productCatalog) {
         setTitle("Shop Home");
         setSize(1280, 720);
@@ -110,6 +110,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
 
         checkoutButton = new JButton("Checkout");
         checkoutButton.addActionListener(this);
+        backButton.addActionListener(this);
 
         checkoutPanel.add(cartLabel);
         checkoutPanel.add(fillSpace(15));
@@ -184,6 +185,9 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
                 productScrollPane.revalidate();
                 productScrollPane.repaint();
             }
+        }
+        if(e.getSource() == backButton){
+            HotelManagementSystem.openGuestHomePage();
         }
     }
 
