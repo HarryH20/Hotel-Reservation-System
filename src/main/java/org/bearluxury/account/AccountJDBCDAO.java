@@ -54,6 +54,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
         }
     }
 
+
     @Override
     public Set<Account> list() {
         Set<Account> accounts = new TreeSet<>(Comparator.comparing(Account::getEmail));
