@@ -1,0 +1,31 @@
+name,price,quantity,type
+T-Shirt,15.99,100,clothing
+Jeans,29.99,50,clothing
+Sunglasses,25.50,80,accessory
+Handbag,50.00,30,accessory
+Handcrafted Soap,8.99,120,artesian good
+Handwoven Basket,19.99,60,artesian good
+Shampoo,12.49,90,toiletry
+Toothpaste,4.99,150,toiletry
+Aspirin,6.99,200,pharmaceutical
+Bandages,3.50,300,pharmaceutical
+Scarf,18.75,70,clothing
+Dress Shirt,34.99,40,clothing
+Earrings,12.50,100,accessory
+Necklace,40.00,60,accessory
+Hand-painted Mug,14.99,80,artesian good
+Wooden Sculpture,39.99,20,artesian good
+Conditioner,9.99,110,toiletry
+Soap Bar,2.99,200,toiletry
+Ibuprofen,8.49,180,pharmaceutical
+Antibiotic Ointment,5.75,250,pharmaceutical
+Sweater,24.99,60,clothing
+Skirt,21.50,35,clothing
+Bracelet,17.50,90,accessory
+Watch,65.00,25,accessory
+Handmade Candle,16.49,70,artesian good
+Pottery Bowl,29.99,45,artesian good
+Body Wash,7.99,120,toiletry
+Toothbrush,3.25,180,toiletry
+Paracetamol,5.99,150,pharmaceutical
+Hydrocortisone Cream,7.25,200,pharmaceutical

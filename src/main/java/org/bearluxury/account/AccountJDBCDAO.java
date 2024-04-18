@@ -31,7 +31,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
             }
 
             if (!tableExists) {
-                String createTableSQL = "CREATE TABLE User (" +
+                String createTableSQL = "CREATE TABLE accounts (" +
                         "firstName VARCHAR(50), " +
                         "lastName VARCHAR(50), " +
                         "userName VARCHAR(50) UNIQUE, " +
@@ -79,7 +79,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
 
 
     @Override
-    public void insert(Account account) throws SQLException {
+    public void insert(Account account) {
         String insertSQL = "INSERT INTO accounts (firstName, lastName, userName, email, phoneNumber, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
             pstmt.setString(1, account.getFirstName());
@@ -90,6 +90,9 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
             pstmt.setString(6, account.getPassword());
             pstmt.setString(7, account.getRole().toString());
             pstmt.executeUpdate();
+        }
+        catch (SQLException exc){
+            exc.printStackTrace();
         }
     }
 
@@ -111,6 +114,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
                     Role role = Role.valueOf(roleStr.toUpperCase());
                     account.setRole(role);
                     return Optional.of(account);
+
                 }
             }
         } catch (SQLException e) {
