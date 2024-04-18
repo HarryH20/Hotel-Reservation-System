@@ -29,6 +29,7 @@ public class HotelManagementSystem  {
             exc.printStackTrace();
         }
     }
+    ///
 
     //added homepages for user role
     /*
