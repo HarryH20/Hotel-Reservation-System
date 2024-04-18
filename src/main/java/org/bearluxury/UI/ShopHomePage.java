@@ -13,6 +13,10 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
+/*
+    User Interface for store. Uses ProductCard component class to create product cards that
+    show on screen
+ */
 public class ShopHomePage extends JFrame implements ActionListener, ListSelectionListener {
 
     ProductCatalog productCatalog;
@@ -30,6 +34,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     JLabel sortLabel;
     JComboBox sortDropDown;
 
+    List<ProductCard> productCards;
     JScrollPane productScrollPane;
     String productFilter;
 
@@ -75,7 +80,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
 
         sortLabel = new JLabel("Sort By");
         sortLabel.putClientProperty(FlatClientProperties.STYLE, "" + "font:bold +10");
-        String[] sortTypes = {"None", "Price: High to Low", "Price: Low to High"};
+        String[] sortTypes = {"A-Z", "Price: High to Low", "Price: Low to High"};
         sortDropDown = new JComboBox(sortTypes);
         sortDropDown.addActionListener(this);
 
@@ -88,7 +93,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         sideBar.add(sortLabel);
         sideBar.add(sortDropDown);
 
-        loadProductCards(productFilter);
+        initProductCards();
         productScrollPane = new JScrollPane(itemPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         cartLabel = new JLabel("Cart");
@@ -125,16 +130,28 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         add(checkoutPanel, BorderLayout.EAST);
     }
 
-    private void loadProductCards(String filter) {
-        for (Product product : this.productCatalog.getProducts()) {
-            if (!filter.equals("All items")) {
-                if (product.getProductType().toString().equalsIgnoreCase(filter)) {
-                    itemPanel.add(new ProductCard(product, this));
+    private void initProductCards() {
+        productCards = new ArrayList<>();
+        // Create product cards from product catalog
+        productCatalog.getProducts().forEach(product -> productCards.add(new ProductCard(product, this)));
+        // Add cards to panel
+        productCards.forEach(productCard -> itemPanel.add(productCard));
+    }
+
+    private void reloadProductCards(String filter) {
+        itemPanel.removeAll();
+        // Re-add products to panel if it matches the filter
+        if (!filter.equals("All items")) {
+            productCards.forEach(productCard -> {
+                if (productCard.getProduct().getProductType().toString().equalsIgnoreCase(filter)) {
+                    itemPanel.add(productCard);
                 }
-            } else {
-                itemPanel.add(new ProductCard(product, this));
-            }
+            });
+        } else {
+            productCards.forEach(productCard -> itemPanel.add(productCard));
         }
+        productScrollPane.revalidate();
+        productScrollPane.repaint();
     }
 
     public void updateCart(Product product, int quantity) {
@@ -159,6 +176,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         this.setVisible(true);
     }
 
+    // Used for wrapping
     private JLabel fillSpace(int whitespace) {
         StringBuilder filler = new StringBuilder();
         for (int i = 0; i < whitespace; ++i) {
@@ -170,31 +188,47 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == sortDropDown) {
-            if (sortDropDown.getSelectedIndex() != 0) {
-                switch (sortDropDown.getSelectedIndex()) {
-                    case 1:
-                        productCatalog.sortByPriceHighToLow();
-                        break;
-                    case 2:
-                        productCatalog.sortByPriceLowToHigh();
-                        break;
-                }
-                itemPanel.removeAll();
-                loadProductCards(productFilter);
-                productScrollPane.revalidate();
-                productScrollPane.repaint();
+            switch (sortDropDown.getSelectedIndex()) {
+                case 0:
+                    productCards.sort(ProductPriceComparator.A_TO_Z);
+                    break;
+                case 1:
+                    productCards.sort(ProductPriceComparator.HIGH_TO_LOW);
+                    break;
+                case 2:
+                    productCards.sort(ProductPriceComparator.LOW_TO_HIGH);
+                    break;
             }
+            reloadProductCards(productFilter);
         }
     }
 
     @Override
     public void valueChanged(ListSelectionEvent e) {
         if (!e.getValueIsAdjusting()) {
-            itemPanel.removeAll();
             productFilter = categories.getSelectedValue();
-            loadProductCards(productFilter);
-            productScrollPane.revalidate();
-            productScrollPane.repaint();
+            reloadProductCards(productFilter);
+        }
+    }
+
+    public enum ProductPriceComparator implements Comparator<ProductCard>{
+        LOW_TO_HIGH {
+            @Override
+            public int compare(ProductCard o1, ProductCard o2) {
+                return Double.compare(o1.getProduct().getPrice(), o2.getProduct().getPrice());
+            }
+        },
+        HIGH_TO_LOW {
+            @Override
+            public int compare(ProductCard o1, ProductCard o2) {
+                return Double.compare(o2.getProduct().getPrice(), o1.getProduct().getPrice());
+            }
+        },
+        A_TO_Z {
+            @Override
+            public int compare(ProductCard o1, ProductCard o2) {
+                return o1.getProduct().getName().compareTo(o2.getProduct().getName());
+            }
         }
     }
 }

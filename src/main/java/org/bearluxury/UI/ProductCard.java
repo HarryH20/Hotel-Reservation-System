@@ -69,6 +69,10 @@ public class ProductCard extends JPanel implements ActionListener {
         itemQuantity = 0;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == plusButton) {
