@@ -69,10 +69,10 @@ public class HotelManagementSystem  {
         window.setVisible(true);
     }
 
-    public static void openRegisterPane() {
+    /*public static void openRegisterPane() {
         RegisterPane register = new RegisterPane();
         register.setVisible(true);
-    }
+    }*/
 
     public static void openShopHomePage() {
         ProductBuilder productBuilder = new ProductBuilder("src/main/resources/ProductList.csv");

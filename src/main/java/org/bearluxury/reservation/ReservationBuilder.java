@@ -2,10 +2,6 @@ package org.bearluxury.reservation;
 
 import org.bearluxury.reservation.Reservation;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.text.ParseException;
@@ -15,7 +11,6 @@ import java.util.Date;
 
 public class ReservationBuilder {
 
-    private JdbcTemplate jdbcTemplate;
 
     ArrayList<Reservation> reservationList;
 

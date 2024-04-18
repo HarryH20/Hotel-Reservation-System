@@ -10,7 +10,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:mem:accountdb";
+    private static String JDBC_URL = "jdbc:h2:~/account";
 
     public AccountJDBCDAO() {
         try {
@@ -32,6 +32,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
 
             if (!tableExists) {
                 String createTableSQL = "CREATE TABLE accounts (" +
+                        "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "firstName VARCHAR(50), " +
                         "lastName VARCHAR(50), " +
                         "userName VARCHAR(50) UNIQUE, " +
@@ -76,6 +77,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
         }
         return accounts;
     }
+
 
 
     @Override

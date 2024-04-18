@@ -87,12 +87,13 @@ public class Account {
 
     @Override
     public String toString() {
-        return firstName            +
-                "," + lastName      +
-                "," + userName      +
-                "," + email         +
-                "," + phoneNumber   +
-                "," + password      +
+        return firstName +
+                "," + lastName +
+                "," + userName +
+                "," + email +
+                "," + phoneNumber +
+                "," + password +
                 '\n';
     }
 }
+
