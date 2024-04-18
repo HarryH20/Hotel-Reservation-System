@@ -2,6 +2,8 @@ package org.bearluxury.account;
 
 public class Account {
     private String firstName;
+
+    private int id;
     private String lastName;
     private String userName;
     private String email;
@@ -94,6 +96,14 @@ public class Account {
                 "," + phoneNumber +
                 "," + password +
                 '\n';
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
 

@@ -112,6 +112,7 @@ public class AccountTableGUI extends JFrame {
     private void fillTableRows(Set<Account> accounts, DefaultTableModel model) {
         // Fill the table rows with account information
         accounts.forEach(account -> model.addRow(new Object[]{
+                String.valueOf(account.getId()),
                 account.getFirstName(),
                 account.getLastName(),
                 account.getUserName(),
