@@ -23,6 +23,8 @@ public class BookedReservationsGUI extends JFrame {
     private final Color tableHeaderColor = new Color(184, 134, 11);
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 14);
+    protected JTable table;
+    protected DefaultTableModel model;
 
     public BookedReservationsGUI(ReservationCatalog reservationCatalog, Role role) {
         setTitle("Booked Reservations");
@@ -30,9 +32,9 @@ public class BookedReservationsGUI extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        DefaultTableModel model = createTableModel();
+        model = createTableModel();
 
-        JTable table = createTable(model);
+        table = createTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
 
         JPanel panel = createPanel(scrollPane);
@@ -43,10 +45,14 @@ public class BookedReservationsGUI extends JFrame {
 
         JButton backButton = createBackButton(role);
 
+
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(backgroundColor);
+        topPanel.setBackground(Style.backgroundColor);
         topPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
         topPanel.add(backButton, BorderLayout.WEST);
+
+
+
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(topPanel, BorderLayout.NORTH);

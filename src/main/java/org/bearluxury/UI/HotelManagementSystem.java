@@ -6,6 +6,7 @@ import org.bearluxury.account.Role;
 import org.bearluxury.controllers.RoomController;
 import org.bearluxury.product.ProductBuilder;
 import org.bearluxury.product.ProductCatalog;
+import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.room.RoomCatalog;
 import org.bearluxury.room.RoomJDBCDAO;
 
@@ -89,4 +90,5 @@ public class HotelManagementSystem  {
         FlatLightLaf.setup();
         openLoginPage();
     }
+
 }
