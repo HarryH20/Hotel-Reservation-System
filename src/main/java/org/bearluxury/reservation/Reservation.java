@@ -1,6 +1,8 @@
 package org.bearluxury.reservation;
 
 
+import org.bearluxury.account.Account;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,6 +19,7 @@ public class Reservation {
     private Date endDate;
 
 
+
     public Reservation(){}
     public Reservation(int roomNumber, String firstName,
                        String lastName, String email,
@@ -29,6 +32,7 @@ public class Reservation {
         this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
+
     }
 
     @Override

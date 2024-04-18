@@ -1,6 +1,8 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.AccountController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.room.Room;
@@ -15,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -60,7 +63,7 @@ public class BookedReservationsGUI extends JFrame {
     }
 
     private DefaultTableModel createTableModel() {
-        String[] columnNames = {"Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date"};
+        String[] columnNames = {"Account ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date"};
         return new DefaultTableModel(columnNames, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -134,11 +137,14 @@ public class BookedReservationsGUI extends JFrame {
 
         // format output dates
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-
+        AccountController controller = new AccountController(new AccountJDBCDAO());
 
         // room number,first name,last name,email,number of guests,start date,end date
         reservations
                 .forEach(reservation -> model.addRow(new Object[]{
+                        controller.getAccount(reservation.getEmail()).
+                                orElseThrow(()-> new NoSuchElementException("Reservation not found")).
+                                getId(),
                         reservation.getRoomNumber(),
                         reservation.getFirstName(),
                         reservation.getLastName(),

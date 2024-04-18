@@ -108,6 +108,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     Account account = new Account();
+                    account.setId(rs.getInt("id"));
                     account.setFirstName(rs.getString("firstName"));
                     account.setLastName(rs.getString("lastName"));
                     account.setUserName(rs.getString("userName"));

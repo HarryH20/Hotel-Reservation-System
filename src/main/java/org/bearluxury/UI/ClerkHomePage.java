@@ -61,6 +61,9 @@ public class ClerkHomePage extends HotelHomePage{
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
 
+        reservePanel.setLayout(new GridLayout(3, 2, 10, 20));
+
+
         reservePanel.add(addUser);
         reservePanel.add(addRoom);
     }

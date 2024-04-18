@@ -49,7 +49,7 @@ public class AccountTableGUI extends JFrame {
     }
 
     private DefaultTableModel createTableModel() {
-        String[] columnNames = {"ID","First Name", "Last Name", "Username", "Email", "Phone Number", "Role"};
+        String[] columnNames = {"Account ID","First Name", "Last Name", "Username", "Email", "Phone Number", "Role"};
         return new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
