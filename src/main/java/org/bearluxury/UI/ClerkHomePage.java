@@ -22,6 +22,7 @@ public class ClerkHomePage extends HotelHomePage{
         super(role);
 
 
+        reservePanel.setLayout(new GridLayout(3, 2, 10, 10));
 
         JButton reserveButton = new JButton("Get A Room");
         reserveButton.setFont(font);
@@ -49,22 +50,17 @@ public class ClerkHomePage extends HotelHomePage{
         reservePanel.add(viewAccountsButton);
         reservePanel.add(seeReservations);
 
-        JButton addUser = new JButton("Register");
         JButton addRoom = new JButton("Add Room");
 
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
-        addUser.setFont(font);
         addRoom.addActionListener(new openAddRoomPane());
-        addUser.addActionListener(new openRegistration());
-        addUser.setForeground(Color.BLACK);
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
 
-        reservePanel.setLayout(new GridLayout(3, 2, 10, 20));
 
 
-        reservePanel.add(addUser);
+
         reservePanel.add(addRoom);
     }
     private class openHotelManagmentPane implements ActionListener {
@@ -220,13 +216,7 @@ public class ClerkHomePage extends HotelHomePage{
             AddRoomPane.openAddRoomPane();
         }
     }
-    private class openRegistration implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            RegisterPane pane = new RegisterPane();
-            pane.setVisible(true);
-        }
-    }
+
 
 
 

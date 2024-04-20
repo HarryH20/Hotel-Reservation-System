@@ -64,8 +64,13 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
             int selectedRow = table.getSelectedRow();
             if(selectedRow != -1){
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                controller.deleteReservation(Integer.parseInt(table.getValueAt(selectedRow,0).toString()));
-                model.removeRow(selectedRow);
+                if(controller.deleteReservation(Integer.parseInt(table.getValueAt(selectedRow,0).toString()))){
+                    model.removeRow(selectedRow);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Reservation not found");
+                }
+
             }
             else{
                 JOptionPane.showMessageDialog(null, "Please select a row first.");
