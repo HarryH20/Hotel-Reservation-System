@@ -1,7 +1,10 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountBuilder;
+import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.AccountController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -122,7 +125,7 @@ public class RegisterPane extends JFrame {
         String guestUsername = userName.getText();
         String userPassword = password.getText();
         //FIXME
-        Role role = Role.GUEST;
+        Role role = Role.CLERK;
 
         if (userFirstName.isEmpty() || userLastName.isEmpty() || userPhone.isEmpty() ||
                 userEmail.isEmpty() || guestUsername.isEmpty() || userPassword.isEmpty()) {
@@ -131,11 +134,9 @@ public class RegisterPane extends JFrame {
         }
 
         try {
-            AccountBuilder accountBuilder = new AccountBuilder(csvFile);
+            AccountController controller = new AccountController(new AccountJDBCDAO());
             //FIXME
-            accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role);
-
-            accountBuilder.writeAccount(csvFile);
+            controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
 
             JOptionPane.showMessageDialog(this, "Account registered.");
             dispose();
