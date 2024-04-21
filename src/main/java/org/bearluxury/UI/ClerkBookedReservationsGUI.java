@@ -43,7 +43,7 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
             int selectedRow = table.getSelectedRow();
             if(selectedRow != -1){
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                Optional<Reservation> opReservation = controller.getReservation(Integer.parseInt(table.getValueAt(selectedRow,0).toString()));
+                Optional<Reservation> opReservation = controller.getReservation(Integer.parseInt(table.getValueAt(selectedRow,1).toString()));
                 Reservation reservation = opReservation.orElseThrow(() -> new NoSuchElementException("Reservation not found"));
                 EditReservationPane pane = new EditReservationPane(reservation,model, table);
                 pane.setVisible(true);
@@ -64,7 +64,7 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
             int selectedRow = table.getSelectedRow();
             if(selectedRow != -1){
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                if(controller.deleteReservation(Integer.parseInt(table.getValueAt(selectedRow,0).toString()))){
+                if(controller.deleteReservation(Integer.parseInt(table.getValueAt(selectedRow,1).toString()))){
                     model.removeRow(selectedRow);
                 }
                 else{

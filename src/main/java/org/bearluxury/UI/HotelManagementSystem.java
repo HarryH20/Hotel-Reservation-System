@@ -6,10 +6,12 @@ import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.AccountController;
+import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.controllers.RoomController;
 import org.bearluxury.product.ProductBuilder;
 import org.bearluxury.product.ProductCatalog;
 import org.bearluxury.reservation.ReservationCatalog;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
 import org.bearluxury.room.RoomJDBCDAO;
 

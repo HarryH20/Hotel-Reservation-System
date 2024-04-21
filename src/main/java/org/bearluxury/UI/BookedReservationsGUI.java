@@ -139,11 +139,12 @@ public class BookedReservationsGUI extends JFrame {
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
         AccountController controller = new AccountController(new AccountJDBCDAO());
 
+
         // room number,first name,last name,email,number of guests,start date,end date
         reservations
                 .forEach(reservation -> model.addRow(new Object[]{
                         controller.getAccount(reservation.getEmail()).
-                                orElseThrow(()-> new NoSuchElementException("Reservation not found")).
+                                orElseThrow(()-> new NoSuchElementException("Account not found")).
                                 getId(),
                         reservation.getRoomNumber(),
                         reservation.getFirstName(),

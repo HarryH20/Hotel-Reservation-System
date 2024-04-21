@@ -138,6 +138,8 @@ public class RegisterPane extends JFrame {
             //FIXME
             controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
 
+
+
             JOptionPane.showMessageDialog(this, "Account registered.");
             dispose();
         } catch (RuntimeException e) {

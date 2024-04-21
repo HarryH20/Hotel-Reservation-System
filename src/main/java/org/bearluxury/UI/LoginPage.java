@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.SessionManager;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountBuilder;
 
@@ -118,10 +119,12 @@ public class LoginPage extends JFrame implements ActionListener {
         if (e.getSource() == loginButton) {
             Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
             if (account != null) {
+                SessionManager.getInstance().setCurrentUserEmail(account.getEmail());
                 dispose();
                 if (account.getRole().equals(Role.GUEST)) {
                     System.out.println(account.getRole());
                     HotelManagementSystem.openGuestHomePage();
+
                 } else if (account.getRole().equals(Role.CLERK)) {
                     HotelManagementSystem.openClerkHomePage();
                 } else if (account.getRole().equals(Role.ADMIN)) {
