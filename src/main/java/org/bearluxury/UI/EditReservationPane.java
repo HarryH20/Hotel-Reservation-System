@@ -92,7 +92,7 @@ public class EditReservationPane extends JFrame{
                         java.sql.Date.valueOf(startDate),
                         java.sql.Date.valueOf(endDate));
 
-                controller.updateRoom(res,toChange.getRoomNumber());
+                controller.updateRoom(res,toChange.getId());
 
 
                 model.removeRow(table.getSelectedRow());

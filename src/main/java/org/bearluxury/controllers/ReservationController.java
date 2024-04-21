@@ -17,20 +17,20 @@ public class ReservationController {
         reservationDAO.insert(reservation);
     }
 
-    public Optional<Reservation> getReservation(int roomNumber) {
-        return reservationDAO.get(roomNumber);
+    public Optional<Reservation> getReservation(int id) {
+        return reservationDAO.get(id);
     }
 
     public Set<Reservation> listReservations() {
         return reservationDAO.list();
     }
 
-    public void updateRoom(Reservation reservation, int roomNumber) {
-        reservationDAO.update(reservation, roomNumber);
+    public void updateRoom(Reservation reservation, int id) {
+        reservationDAO.update(reservation, id);
     }
 
-    public boolean deleteReservation(int roomNumber) {
-        return reservationDAO.delete(roomNumber);
+    public boolean deleteReservation(int id) {
+        return reservationDAO.delete(id);
     }
 
     public void clearReservation() {
