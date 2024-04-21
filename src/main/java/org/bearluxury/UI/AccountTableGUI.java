@@ -3,6 +3,8 @@ package org.bearluxury.UI;
 
 import org.bearluxury.account.Account;
 import org.bearluxury.account.Role;
+import org.bearluxury.state.SessionManager;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +21,7 @@ public class AccountTableGUI extends JFrame {
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 14);
 
-    public AccountTableGUI(Set<Account> accounts, Role role) {
+    public AccountTableGUI(Set<Account> accounts) {
         setTitle("Account Information");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -36,7 +38,7 @@ public class AccountTableGUI extends JFrame {
 
         fillTableRows(accounts, model);
 
-        JButton backButton = createBackButton(role);
+        JButton backButton = createBackButton();
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(backgroundColor);
@@ -58,19 +60,19 @@ public class AccountTableGUI extends JFrame {
         };
     }
 
-    private JButton createBackButton(Role role) {
+    private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 try {
-                    System.out.println("This is my role: " + role);
-                    if (role == Role.GUEST) {
+                    System.out.println("This is my role: " + SessionManager.getInstance().getCurrentAccount().getRole());
+                    if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST) {
                         HotelManagementSystem.openGuestHomePage();
-                    } else if (role == Role.CLERK) {
+                    } else if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.CLERK) {
                         HotelManagementSystem.openClerkHomePage();
-                    } else if (role == Role.ADMIN) {
+                    } else if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.ADMIN) {
                         HotelManagementSystem.openAdminHomePage();
                     } else {
                         throw new RuntimeException();

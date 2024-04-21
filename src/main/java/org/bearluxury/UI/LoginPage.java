@@ -117,7 +117,7 @@ public class LoginPage extends JFrame implements ActionListener {
         if (e.getSource() == loginButton) {
             Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
             if (account != null) {
-                SessionManager.getInstance().setCurrentUserEmail(account.getEmail());
+                SessionManager.getInstance().setCurrentAccount(account);
                 dispose();
                 if (account.getRole().equals(Role.GUEST)) {
                     System.out.println(account.getRole());

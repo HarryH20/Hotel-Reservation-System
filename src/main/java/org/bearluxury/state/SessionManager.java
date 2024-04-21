@@ -1,8 +1,11 @@
 package org.bearluxury.state;
 
+import org.bearluxury.account.Account;
+import org.bearluxury.controllers.AccountController;
+
 public class SessionManager {
     private static SessionManager instance;
-    private String currentUserEmail;
+    private Account account;
 
     private SessionManager() {}
 
@@ -13,12 +16,12 @@ public class SessionManager {
         return instance;
     }
 
-    public String getCurrentUserEmail() {
-        return currentUserEmail;
+    public Account getCurrentAccount() {
+        return account;
     }
 
-    public void setCurrentUserEmail(String email) {
-        currentUserEmail = email;
+    public void setCurrentAccount(Account account) {
+        this.account = account;
     }
 }
 

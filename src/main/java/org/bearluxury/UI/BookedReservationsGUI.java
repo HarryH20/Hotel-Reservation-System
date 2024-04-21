@@ -6,6 +6,7 @@ import org.bearluxury.controllers.AccountController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.room.Room;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -29,7 +30,7 @@ public class BookedReservationsGUI extends JFrame {
     protected JTable table;
     protected DefaultTableModel model;
 
-    public BookedReservationsGUI(ReservationCatalog reservationCatalog, Role role) {
+    public BookedReservationsGUI(ReservationCatalog reservationCatalog) {
         setTitle("Booked Reservations");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -46,7 +47,7 @@ public class BookedReservationsGUI extends JFrame {
 
         fillTableRows(reservationCatalog.getReservations(), model);
 
-        JButton backButton = createBackButton(role);
+        JButton backButton = createBackButton();
 
 
         JPanel topPanel = new JPanel(new BorderLayout());
@@ -71,7 +72,7 @@ public class BookedReservationsGUI extends JFrame {
             }
         };
     }
-    private JButton createBackButton(Role role) {
+    private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
            //FIXME: NEED TO FIX ACTION
@@ -79,14 +80,14 @@ public class BookedReservationsGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 try {
-                    System.out.println("This is my role: " + role);
-                    if (role == Role.GUEST) {
+                    System.out.println("This is my role: " + SessionManager.getInstance().getCurrentAccount().getRole());
+                    if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST) {
                         HotelManagementSystem.openGuestHomePage();
                     }
-                    else if (role == Role.CLERK) {
+                    else if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.CLERK) {
                         HotelManagementSystem.openClerkHomePage();
                     }
-                    else if (role == Role.ADMIN) {
+                    else if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.ADMIN) {
                         HotelManagementSystem.openAdminHomePage();
                     }
                     else{

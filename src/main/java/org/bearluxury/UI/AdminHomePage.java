@@ -8,8 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AdminHomePage extends HotelHomePage{
-    AdminHomePage(Role role) {
-        super(role);
+    AdminHomePage() {
         JButton addUser = new JButton("Register New Clerk");
         addUser.setFont(font);
         addUser.addActionListener(new openRegistration());

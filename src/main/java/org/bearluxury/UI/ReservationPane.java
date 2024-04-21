@@ -75,7 +75,8 @@ public class ReservationPane extends JFrame {
         firstName = new JTextField();
         firstName.setFont(new Font("Arial", Font.PLAIN, 15));
         firstName.setBounds(170, 60, 190, 20);
-        String firstNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentUserEmail()).
+        String firstNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentAccount().
+                        getFirstName()).
                 orElseThrow(() -> new NoSuchElementException("Reservation not found")).
                 getFirstName();
         firstName.setText(firstNameInfo);
@@ -88,7 +89,9 @@ public class ReservationPane extends JFrame {
         lastName = new JTextField();
         lastName.setFont(new Font("Arial", Font.PLAIN, 15));
         lastName.setBounds(170, 90, 190, 20);
-        String lastNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentUserEmail()).
+        String lastNameInfo = controller.getAccount(SessionManager.getInstance().
+                        getCurrentAccount().
+                        getLastName()).
                 orElseThrow(() -> new NoSuchElementException("Reservation not found")).
                 getLastName();
         lastName.setText(lastNameInfo);
@@ -101,7 +104,9 @@ public class ReservationPane extends JFrame {
         email = new JTextField();
         email.setFont(new Font("Arial", Font.PLAIN, 15));
         email.setBounds(170, 120, 190, 20);
-        String emailInfo = controller.getAccount(SessionManager.getInstance().getCurrentUserEmail()).
+        String emailInfo = controller.getAccount(SessionManager.getInstance().
+                        getCurrentAccount().
+                        getEmail()).
                 orElseThrow(() -> new NoSuchElementException("Reservation not found")).
                 getEmail();
         email.setText(emailInfo);
