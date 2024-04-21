@@ -97,11 +97,11 @@ public class AddRoomPane extends JFrame {
                     Integer.parseInt(bedNumber.getValue().toString())
 
             ));
-
             showConfirmationDialog();
-        }catch (Exception exc){
+        } catch (SQLException e) {
             showFailureDialog();
         }
+
     }
     private double getPriceSelection() {
         double priceSelection = 0;
