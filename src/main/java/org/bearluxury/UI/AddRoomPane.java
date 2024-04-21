@@ -85,7 +85,6 @@ public class AddRoomPane extends JFrame {
     }
 
     private void saveRoom(double priceSelection) {
-
         try {
             RoomController controller = new RoomController(new RoomJDBCDAO());
             controller.insertRoom(new Room(

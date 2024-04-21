@@ -64,13 +64,16 @@ public abstract class HotelHomePage extends JFrame {
 
         //moved variable declaration for use in child classes
         //JPanel reservePanel = new JPanel();
+
         reservePanel.setBackground(backgroundColor);
+
 
 
         setLayout(new BorderLayout());
         add(logoPanel, BorderLayout.CENTER);
         add(welcomePanel, BorderLayout.NORTH);
         add(reservePanel, BorderLayout.SOUTH);
+
     }
 }
 

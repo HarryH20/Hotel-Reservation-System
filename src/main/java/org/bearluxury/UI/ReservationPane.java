@@ -1,9 +1,11 @@
 package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import org.bearluxury.state.SessionManager;
+import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.controllers.AccountController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
-import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 /*
  * This is the class for the reservation pane is not completed.
@@ -58,6 +61,8 @@ public class ReservationPane extends JFrame {
         roomId = new JTextField();
         roomId.setText(String.valueOf(id));
         roomId.setEditable(false);
+        AccountController controller = new AccountController(new AccountJDBCDAO());
+
         roomId.setFont(new Font("Arial", Font.PLAIN, 15));
         roomId.setBounds(170, 30, 190, 20);
         reservationPanel.add(roomId);
@@ -70,6 +75,10 @@ public class ReservationPane extends JFrame {
         firstName = new JTextField();
         firstName.setFont(new Font("Arial", Font.PLAIN, 15));
         firstName.setBounds(170, 60, 190, 20);
+        String firstNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentUserEmail()).
+                orElseThrow(() -> new NoSuchElementException("Reservation not found")).
+                getFirstName();
+        firstName.setText(firstNameInfo);
         reservationPanel.add(firstName);
 
         JLabel lastNameLabel = new JLabel("Last Name:");
@@ -79,6 +88,10 @@ public class ReservationPane extends JFrame {
         lastName = new JTextField();
         lastName.setFont(new Font("Arial", Font.PLAIN, 15));
         lastName.setBounds(170, 90, 190, 20);
+        String lastNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentUserEmail()).
+                orElseThrow(() -> new NoSuchElementException("Reservation not found")).
+                getLastName();
+        lastName.setText(lastNameInfo);
         reservationPanel.add(lastName);
 
         JLabel emailLabel = new JLabel("Email:");
@@ -88,6 +101,10 @@ public class ReservationPane extends JFrame {
         email = new JTextField();
         email.setFont(new Font("Arial", Font.PLAIN, 15));
         email.setBounds(170, 120, 190, 20);
+        String emailInfo = controller.getAccount(SessionManager.getInstance().getCurrentUserEmail()).
+                orElseThrow(() -> new NoSuchElementException("Reservation not found")).
+                getEmail();
+        email.setText(emailInfo);
         reservationPanel.add(email);
 
         JLabel guestsNumberLabel = new JLabel("Guests Number:");

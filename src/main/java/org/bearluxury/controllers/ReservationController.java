@@ -21,7 +21,7 @@ public class ReservationController {
         return reservationDAO.get(roomNumber);
     }
 
-    public Set<Reservation> listRooms() {
+    public Set<Reservation> listReservations() {
         return reservationDAO.list();
     }
 
@@ -29,11 +29,11 @@ public class ReservationController {
         reservationDAO.update(reservation, roomNumber);
     }
 
-    public boolean deleteRoom(int roomNumber) {
+    public boolean deleteReservation(int roomNumber) {
         return reservationDAO.delete(roomNumber);
     }
 
-    public void clearRooms() {
+    public void clearReservation() {
        reservationDAO.clear();
     }
     public void closeConnection() {

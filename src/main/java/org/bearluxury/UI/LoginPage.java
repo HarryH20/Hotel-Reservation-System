@@ -1,7 +1,7 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.state.SessionManager;
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountBuilder;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -13,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class LoginPage extends JFrame implements ActionListener {
 
@@ -118,10 +117,12 @@ public class LoginPage extends JFrame implements ActionListener {
         if (e.getSource() == loginButton) {
             Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
             if (account != null) {
+                SessionManager.getInstance().setCurrentUserEmail(account.getEmail());
                 dispose();
                 if (account.getRole().equals(Role.GUEST)) {
                     System.out.println(account.getRole());
                     HotelManagementSystem.openGuestHomePage();
+
                 } else if (account.getRole().equals(Role.CLERK)) {
                     HotelManagementSystem.openClerkHomePage();
                 } else if (account.getRole().equals(Role.ADMIN)) {

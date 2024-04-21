@@ -2,6 +2,7 @@ package org.bearluxury.reservation;
 
 import org.bearluxury.reservation.Reservation;
 
+
 import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class ReservationBuilder {
+
 
     ArrayList<Reservation> reservationList;
 
@@ -61,6 +63,8 @@ public class ReservationBuilder {
                 numberOfGuests,
                 startDate,
                 endDate);
+
+
         return reservationList.add(reservation);
     }
     public void writeReservation(String csvName){
