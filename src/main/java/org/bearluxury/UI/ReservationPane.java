@@ -75,10 +75,10 @@ public class ReservationPane extends JFrame {
         firstName = new JTextField();
         firstName.setFont(new Font("Arial", Font.PLAIN, 15));
         firstName.setBounds(170, 60, 190, 20);
-        String firstNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentAccount().
-                        getFirstName()).
-                orElseThrow(() -> new NoSuchElementException("Reservation not found")).
+        String firstNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentAccount().getEmail()).
+                orElseThrow(() -> new NoSuchElementException("Account not found")).
                 getFirstName();
+        System.out.println(firstNameInfo);
         firstName.setText(firstNameInfo);
         reservationPanel.add(firstName);
 
@@ -91,7 +91,7 @@ public class ReservationPane extends JFrame {
         lastName.setBounds(170, 90, 190, 20);
         String lastNameInfo = controller.getAccount(SessionManager.getInstance().
                         getCurrentAccount().
-                        getLastName()).
+                        getEmail()).
                 orElseThrow(() -> new NoSuchElementException("Reservation not found")).
                 getLastName();
         lastName.setText(lastNameInfo);
