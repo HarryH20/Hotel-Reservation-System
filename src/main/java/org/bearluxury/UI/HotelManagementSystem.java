@@ -2,11 +2,16 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import org.bearluxury.account.Account;
+import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.AccountController;
+import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.controllers.RoomController;
 import org.bearluxury.product.ProductBuilder;
 import org.bearluxury.product.ProductCatalog;
 import org.bearluxury.reservation.ReservationCatalog;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
 import org.bearluxury.room.RoomJDBCDAO;
 
@@ -19,12 +24,12 @@ import java.time.LocalDate;
 //Window
 public class HotelManagementSystem  {
 
-    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut, Role role){
+    public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
         try {
             RoomController rooms = new RoomController(new RoomJDBCDAO());
             RoomCatalog roomCatalog = new RoomCatalog();
             roomCatalog.setRooms(rooms.listRooms());
-            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut, role);
+            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut);
             catalogPane.setVisible(true);
         }catch (SQLException exc){
             exc.printStackTrace();
@@ -42,17 +47,17 @@ public class HotelManagementSystem  {
      */
 
     public static void openGuestHomePage() {
-        GuestHomePage guestHomePage = new GuestHomePage(Role.GUEST);
+        GuestHomePage guestHomePage = new GuestHomePage();
         guestHomePage.setVisible(true);
     }
 
     public static void openClerkHomePage() {
-        ClerkHomePage clerkHomePage = new ClerkHomePage(Role.CLERK);
+        ClerkHomePage clerkHomePage = new ClerkHomePage();
         clerkHomePage.setVisible(true);
     }
 
     public static void openAdminHomePage() {
-        AdminHomePage adminHomePage = new AdminHomePage(Role.ADMIN);
+        AdminHomePage adminHomePage = new AdminHomePage();
         adminHomePage.setVisible(true);
     }
 
@@ -66,8 +71,8 @@ public class HotelManagementSystem  {
         registerPage.setVisible(true);
     }
 
-    public static void openHotelManagmentSystem(Role role){
-        InfoFilterPane window = new InfoFilterPane(role);
+    public static void openHotelManagmentSystem(){
+        InfoFilterPane window = new InfoFilterPane();
         window.setVisible(true);
     }
 
@@ -88,7 +93,9 @@ public class HotelManagementSystem  {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
-        openShopHomePage();
+        openLoginPage();
+
     }
+
 
 }

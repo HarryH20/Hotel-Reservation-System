@@ -4,6 +4,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
+import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.controllers.AccountController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationJDBCDAO;
@@ -17,6 +19,7 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.NoSuchElementException;
 
 public class EditReservationPane extends JFrame{
 
@@ -38,15 +41,6 @@ public class EditReservationPane extends JFrame{
         setSize(600, 300);
         setLocationRelativeTo(null);
         setLayout(new GridLayout(9, 2));
-
-        JLabel firstNameLabel = new JLabel("First Name");
-        JTextField firstNameField = new JTextField();
-
-        JLabel lastNameLabel = new JLabel("Last Name");
-        JTextField lastNameField = new JTextField();
-
-        JLabel emailLabel = new JLabel("Email");
-        JTextField emailField = new JTextField();
 
         JLabel guestLabel = new JLabel("Number of Guests");
         SpinnerModel spinnerModel = new SpinnerNumberModel(1, 1, 8, 1);
@@ -91,18 +85,22 @@ public class EditReservationPane extends JFrame{
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
                 SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
                 Reservation res = new Reservation(toChange.getRoomNumber(),
-                        firstNameField.getText(),
-                        lastNameField.getText(),
-                        emailField.getText(),
+                        toChange.getFirstName(),
+                        toChange.getLastName(),
+                        toChange.getEmail(),
                         Integer.parseInt(guestNumber.getValue().toString()),
                         java.sql.Date.valueOf(startDate),
                         java.sql.Date.valueOf(endDate));
 
                 controller.updateRoom(res,toChange.getRoomNumber());
 
+
                 model.removeRow(table.getSelectedRow());
 
                 model.addRow(new Object[]{
+                        new AccountController(new AccountJDBCDAO()).getAccount(res.getEmail()).
+                                orElseThrow(()-> new NoSuchElementException("No active accounts with reservations")).
+                                getId(),
                         res.getRoomNumber(),
                         res.getFirstName(),
                         res.getLastName(),
@@ -111,16 +109,15 @@ public class EditReservationPane extends JFrame{
                         formatter.format(res.getStartDate()),
                         formatter.format(res.getEndDate())
                 });
+                JOptionPane.showMessageDialog(null, "Reservation updated");
+                dispose();
+
             }
+
 
         });
 
-        add(firstNameLabel);
-        add(firstNameField);
-        add(lastNameLabel);
-        add(lastNameField);
-        add(emailLabel);
-        add(emailField);
+
         add(guestLabel);
         add(guestNumber);
         add(startLabel);

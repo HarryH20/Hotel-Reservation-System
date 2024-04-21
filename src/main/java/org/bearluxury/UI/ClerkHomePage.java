@@ -18,21 +18,21 @@ import java.util.Optional;
 public class ClerkHomePage extends HotelHomePage{
 
 
-    public ClerkHomePage(Role role) {
-        super(role);
+    public ClerkHomePage() {
 
 
+        reservePanel.setLayout(new GridLayout(3, 2, 10, 10));
 
         JButton reserveButton = new JButton("Get A Room");
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
-        reserveButton.addActionListener(new openHotelManagmentPane(role));
+        reserveButton.addActionListener(new openHotelManagmentPane());
         reservePanel.add(reserveButton);
 
         JButton infoButton = new JButton("Modify Personal Information");
         infoButton.setFont(font);
         infoButton.setForeground(Color.BLACK);
-        infoButton.addActionListener(new openModifyPersonalInfoPane(role));
+        infoButton.addActionListener(new openModifyPersonalInfoPane());
         reservePanel.add(infoButton);
 
 
@@ -40,70 +40,52 @@ public class ClerkHomePage extends HotelHomePage{
         JButton seeReservations = new JButton("See All Reservations");
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
-        seeReservations.addActionListener(new openViewReservationPane(role));
+        seeReservations.addActionListener(new openViewReservationPane());
 
         JButton viewAccountsButton = new JButton("View Accounts");
         viewAccountsButton.setFont(font);
         viewAccountsButton.setForeground(Color.BLACK);
-        viewAccountsButton.addActionListener(new openViewAccountsPane(role));
+        viewAccountsButton.addActionListener(new openViewAccountsPane());
         reservePanel.add(viewAccountsButton);
         reservePanel.add(seeReservations);
 
-        JButton addUser = new JButton("Register");
         JButton addRoom = new JButton("Add Room");
 
         seeReservations.setFont(font);
         seeReservations.setForeground(Color.BLACK);
-        addUser.setFont(font);
         addRoom.addActionListener(new openAddRoomPane());
-        addUser.addActionListener(new openRegistration());
-        addUser.setForeground(Color.BLACK);
         addRoom.setFont(font);
         addRoom.setForeground(Color.BLACK);
 
-        reservePanel.setLayout(new GridLayout(3, 2, 10, 20));
 
 
-        reservePanel.add(addUser);
+
         reservePanel.add(addRoom);
     }
     private class openHotelManagmentPane implements ActionListener {
-        Role role;
-
-        public openHotelManagmentPane(Role role){
-            this.role = role;
-        }
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
-            HotelManagementSystem.openHotelManagmentSystem(role);
+            HotelManagementSystem.openHotelManagmentSystem();
         }
     }
 
     private class openViewReservationPane implements ActionListener{
 
-        Role role;
 
-        public openViewReservationPane(Role role){
-            this.role = role;
-        }
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
             ReservationCatalog reservations = new ReservationCatalog();
             ReservationController controller = new ReservationController(new ReservationJDBCDAO());
             reservations.setReservations(controller.listReservations());
-            ClerkBookedReservationsGUI catalogPane = new ClerkBookedReservationsGUI(reservations, role);
+            ClerkBookedReservationsGUI catalogPane = new ClerkBookedReservationsGUI(reservations);
             catalogPane.setVisible(true);
         }
     }
 
     private class openModifyPersonalInfoPane implements ActionListener {
-        Role role;
 
-        public openModifyPersonalInfoPane(Role role) {
-            this.role = role;
-        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -200,17 +182,12 @@ public class ClerkHomePage extends HotelHomePage{
 
 
     private class openViewAccountsPane implements ActionListener {
-        Role role;
-
-        public openViewAccountsPane(Role role) {
-            this.role = role;
-        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             dispose();
             AccountController accountController = new AccountController(new AccountJDBCDAO());
-            AccountTableGUI accountTableGUI = new AccountTableGUI(accountController.listAccounts(), role);
+            AccountTableGUI accountTableGUI = new AccountTableGUI(accountController.listAccounts());
             accountTableGUI.setVisible(true);
         }
     }
@@ -220,13 +197,7 @@ public class ClerkHomePage extends HotelHomePage{
             AddRoomPane.openAddRoomPane();
         }
     }
-    private class openRegistration implements ActionListener{
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            RegisterPane pane = new RegisterPane();
-            pane.setVisible(true);
-        }
-    }
+
 
 
 

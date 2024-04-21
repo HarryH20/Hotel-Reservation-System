@@ -12,13 +12,11 @@ import java.io.File;
 import java.io.IOException;
 
 public abstract class HotelHomePage extends JFrame {
-    Role role;
     Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
     JPanel reservePanel = new JPanel();
 
 
-    public HotelHomePage(Role role) {
-        this.role = role;
+    public HotelHomePage() {
         setTitle("Baylor Bear Luxury");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1000, 720);

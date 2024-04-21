@@ -19,8 +19,8 @@ import java.util.Optional;
 public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
     
     private Timer timer;
-    public ClerkBookedReservationsGUI(ReservationCatalog reservationCatalog, Role role) {
-        super(reservationCatalog, role);
+    public ClerkBookedReservationsGUI(ReservationCatalog reservationCatalog) {
+        super(reservationCatalog);
         JButton editButton = new JButton("Edit Reservation");
         JButton deleteButton = new JButton("Delete Reservation");
         editButton.setFont(Style.defaultFont);
@@ -43,7 +43,7 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
             int selectedRow = table.getSelectedRow();
             if(selectedRow != -1){
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                Optional<Reservation> opReservation = controller.getReservation(Integer.parseInt(table.getValueAt(selectedRow,0).toString()));
+                Optional<Reservation> opReservation = controller.getReservation(Integer.parseInt(table.getValueAt(selectedRow,1).toString()));
                 Reservation reservation = opReservation.orElseThrow(() -> new NoSuchElementException("Reservation not found"));
                 EditReservationPane pane = new EditReservationPane(reservation,model, table);
                 pane.setVisible(true);
@@ -64,8 +64,13 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
             int selectedRow = table.getSelectedRow();
             if(selectedRow != -1){
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                controller.deleteReservation(Integer.parseInt(table.getValueAt(selectedRow,0).toString()));
-                model.removeRow(selectedRow);
+                if(controller.deleteReservation(Integer.parseInt(table.getValueAt(selectedRow,1).toString()))){
+                    model.removeRow(selectedRow);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Reservation not found");
+                }
+
             }
             else{
                 JOptionPane.showMessageDialog(null, "Please select a row first.");
