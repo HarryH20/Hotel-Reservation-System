@@ -1,8 +1,7 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.SessionManager;
+import org.bearluxury.state.SessionManager;
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountBuilder;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -14,7 +13,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class LoginPage extends JFrame implements ActionListener {
 

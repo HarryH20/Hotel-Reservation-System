@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.state;
 
 public class SessionManager {
     private static SessionManager instance;

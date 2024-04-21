@@ -1,12 +1,11 @@
 package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import org.bearluxury.SessionManager;
+import org.bearluxury.state.SessionManager;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.controllers.AccountController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
-import org.bearluxury.reservation.ReservationBuilder;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 
 import javax.swing.*;
