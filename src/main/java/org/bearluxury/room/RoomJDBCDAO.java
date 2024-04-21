@@ -102,6 +102,9 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         if (rowsInserted > 0) {
             System.out.println("A new room was inserted successfully!");
         }
+        if(rowsInserted <= 0 ){
+            throw new SQLException();
+        }
     }
 
     @Override
