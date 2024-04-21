@@ -60,11 +60,9 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
     private int numBeds;
     private int numRooms;
 
-    Role role;
 
 
-    public InfoFilterPane(Role role) {
-        this.role = role;
+    public InfoFilterPane() {
         setTitle("Bear Luxury");
         setSize(1280, 720);
         setLocationRelativeTo(null);
@@ -230,7 +228,7 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
             System.out.println("Number of beds: " + numBeds);
             System.out.println("Number of rooms: " + numRooms);
             dispose();
-            HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate, role);
+            HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate);
         }
 
     }

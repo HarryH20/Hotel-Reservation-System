@@ -19,8 +19,8 @@ import java.util.Optional;
 public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
     
     private Timer timer;
-    public ClerkBookedReservationsGUI(ReservationCatalog reservationCatalog, Role role) {
-        super(reservationCatalog, role);
+    public ClerkBookedReservationsGUI(ReservationCatalog reservationCatalog) {
+        super(reservationCatalog);
         JButton editButton = new JButton("Edit Reservation");
         JButton deleteButton = new JButton("Delete Reservation");
         editButton.setFont(Style.defaultFont);
