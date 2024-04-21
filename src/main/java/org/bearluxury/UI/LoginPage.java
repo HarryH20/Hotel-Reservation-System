@@ -5,7 +5,9 @@ import org.bearluxury.account.AccountBuilder;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.AccountController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -102,9 +104,8 @@ public class LoginPage extends JFrame implements ActionListener {
     }
 
     private Account doesAccountExist(String email, String password) {
-        AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
-        ArrayList<Account> accounts = accountBuilder.getAccountList();
-        for (Account account : accounts) {
+        AccountController controller = new AccountController(new AccountJDBCDAO());
+        for (Account account : controller.listAccounts()) {
             if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
                 return account;
             }
