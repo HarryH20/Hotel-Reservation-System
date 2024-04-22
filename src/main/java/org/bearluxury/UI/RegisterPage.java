@@ -5,7 +5,9 @@ import org.bearluxury.account.Account;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.AccountController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +53,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
+        //accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
@@ -152,8 +154,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
-        AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
-        ArrayList<Account> accounts = accountBuilder.getAccountList();
+        AccountController controller = new AccountController(new AccountJDBCDAO());
 
         // Check if fields are empty
         int addedComponentCount = 0;
@@ -176,7 +177,7 @@ public class RegisterPage extends JFrame implements ActionListener {
             registerPanel.remove(emailInUseLabel);
 
             // Check if email is in use
-            for (Account account : accounts) {
+            for (Account account : controller.listAccounts()) {
                 if (account.getEmail().equalsIgnoreCase(emailTextField.getText())) {
                     registerPanel.add(emailInUseLabel, 9 + addedComponentCount);
                     validCredentials = false;
@@ -192,7 +193,7 @@ public class RegisterPage extends JFrame implements ActionListener {
             registerPanel.remove(phoneInUseLabel);
 
             // Check if phone is in use
-            for (Account account : accounts) {
+            for (Account account : controller.listAccounts()) {
                 if (account.getPhoneNumber() == Long.parseLong(phoneTextField.getText())) {
                     registerPanel.add(phoneInUseLabel, 11 + addedComponentCount);
                     validCredentials = false;
@@ -227,6 +228,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     /////TEMP FIX: MADE ACCOUNT BUILDER ROLE GUEST
     private void registerAccount() {
+        AccountController controller = new AccountController(new AccountJDBCDAO());
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
         String email = emailTextField.getText();
@@ -236,8 +238,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         String password = passwordTextField.getText();
         //FIXME
         Role role = Role.GUEST;
-        accountBuilder.addAccount(firstName, lastName, email, userName, phoneNumber, password, role);
-        accountBuilder.writeAccount("AccountList.csv");
+        controller.insertAccount(new Account(firstName,lastName, userName, email,phoneNumber,password, role));
     }
 
     @Override

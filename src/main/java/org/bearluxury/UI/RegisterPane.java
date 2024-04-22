@@ -1,7 +1,10 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountBuilder;
+import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.AccountController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -131,11 +134,11 @@ public class RegisterPane extends JFrame {
         }
 
         try {
-            AccountBuilder accountBuilder = new AccountBuilder(csvFile);
+            AccountController controller = new AccountController(new AccountJDBCDAO());
             //FIXME
-            accountBuilder.addAccount(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role);
+            controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
 
-            accountBuilder.writeAccount(csvFile);
+
 
             JOptionPane.showMessageDialog(this, "Account registered.");
             dispose();
