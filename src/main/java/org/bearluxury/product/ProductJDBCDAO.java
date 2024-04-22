@@ -11,7 +11,7 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
 
     private Connection connection;
 
-    private static final String JDBC_URL = "jdbc:h2:mem:hello";
+    private static final String JDBC_URL = "jdbc:h2:~/products22";
 
     public ProductJDBCDAO() {
         try {

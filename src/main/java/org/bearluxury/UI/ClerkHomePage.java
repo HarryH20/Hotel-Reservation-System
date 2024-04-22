@@ -89,26 +89,21 @@ public class ClerkHomePage extends HotelHomePage{
 
             // Create a ProductController instance
             ProductController productController;
-            Set<Product> products;
             try {
                 productController = new ProductController(new ProductJDBCDAO());
             } catch (SQLException ex) {
                 throw new RuntimeException(ex);
             }
 
-
-
-
             // Retrieve products from the database
-            products = productController.listProducts();
+            Set<Product> products = productController.listProducts();
 
             // If the product list is empty, load products from CSV
             if (products.isEmpty()) {
                 // Load products from CSV
                 try {
-
                     productController.preFillProducts();
-                    products = productController.listProducts();
+                    products = productController.listProducts(); // Refresh the product list
                 } catch (SQLException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -121,7 +116,8 @@ public class ClerkHomePage extends HotelHomePage{
         }
     }
 
-        private class openViewReservationPane implements ActionListener {
+
+    private class openViewReservationPane implements ActionListener {
 
 
             @Override
