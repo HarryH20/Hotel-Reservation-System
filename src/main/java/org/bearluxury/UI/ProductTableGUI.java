@@ -200,6 +200,19 @@ public class ProductTableGUI extends JFrame {
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }
+            refreshTable();
+        }
+    }
+
+    private void refreshTable() {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0); // Clear the table
+        try {
+            ProductController productController = new ProductController(new ProductJDBCDAO());
+            Set<Product> products = productController.listProducts();
+            fillTableRows(products, model);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         }
     }
 
