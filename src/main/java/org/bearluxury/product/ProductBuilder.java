@@ -14,7 +14,7 @@ public class ProductBuilder {
     Set<Product> productList;
 
     public ProductBuilder(String csvName) {
-        productList = new TreeSet<>(Comparator.comparing(Product::getName));
+        productList = new TreeSet<>(Comparator.comparing(Product::getId));
         File file = new File(csvName);
         BufferedReader reader = null;
         try {
