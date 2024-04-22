@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ProductController;
+import org.bearluxury.product.PRODUCT_TYPE;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductJDBCDAO;
 import org.bearluxury.state.SessionManager;
@@ -118,12 +119,45 @@ public class ProductTableGUI extends JFrame {
                 }
             }
         });
-        topPanel.add(removeStockButton, BorderLayout.CENTER);
+        topPanel.add(removeStockButton, BorderLayout.WEST);
+
+        JButton deleteButton = new JButton("Delete");
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    DefaultTableModel model = (DefaultTableModel) table.getModel();
+                    int id = (int) model.getValueAt(selectedRow, 0);
+                    model.removeRow(selectedRow);
+                    try {
+                        ProductController productController = new ProductController(new ProductJDBCDAO());
+                        productController.deleteProduct(id);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        topPanel.add(deleteButton, BorderLayout.SOUTH);
+
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addProduct();
+            }
+        });
+        topPanel.add(addButton, BorderLayout.EAST);
 
 
         // Add the "Back" button
-        topPanel.add(createBackButton(), BorderLayout.EAST);
+        topPanel.add(createBackButton(), BorderLayout.NORTH);
     }
+
+
 
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Product ID", "Name", "Price", "Quantity", "Type"};
@@ -134,6 +168,42 @@ public class ProductTableGUI extends JFrame {
             }
         };
     }
+
+    private void addProduct() {
+        JTextField nameField = new JTextField(10);
+        JTextField priceField = new JTextField(5);
+        JTextField quantityField = new JTextField(5);
+        JComboBox<String> typeField = new JComboBox<>(new String[]{"TYPE1", "TYPE2", "TYPE3"}); // Modify as needed
+
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        panel.add(new JLabel("Name:"));
+        panel.add(nameField);
+        panel.add(new JLabel("Price:"));
+        panel.add(priceField);
+        panel.add(new JLabel("Quantity:"));
+        panel.add(quantityField);
+        panel.add(new JLabel("Type:"));
+        panel.add(typeField);
+
+        int result = JOptionPane.showConfirmDialog(null, panel, "Add Product", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String name = nameField.getText();
+            double price = Double.parseDouble(priceField.getText());
+            int quantity = Integer.parseInt(quantityField.getText());
+            String selectedType = (String) typeField.getSelectedItem();
+            PRODUCT_TYPE productType = PRODUCT_TYPE.valueOf(selectedType); // Assuming PRODUCT_TYPE is an enum
+            Product newProduct = new Product(name, price, quantity, productType);
+            DefaultTableModel model = (DefaultTableModel) table.getModel();
+            model.addRow(new Object[]{newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getQuantity(), newProduct.getProductType()});
+            try {
+                ProductController productController = new ProductController(new ProductJDBCDAO());
+                productController.insertProduct(newProduct);
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
