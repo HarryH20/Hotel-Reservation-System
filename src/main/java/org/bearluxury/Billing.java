@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Billing {
+    int accountNumber;
     private List<Reservation> reservations;
     //FIXME: Need to make a sale class
     //private List<Sale> sales;
