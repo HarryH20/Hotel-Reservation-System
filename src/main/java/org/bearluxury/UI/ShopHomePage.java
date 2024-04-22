@@ -202,7 +202,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
             }
             reloadProductCards(productFilter);
         } else if (e.getSource() == checkoutButton) {
-            CheckoutDialog checkoutDialog = new CheckoutDialog(this, cartInventory);
+            CheckoutDialog checkoutDialog = new CheckoutDialog(this, cartInventory, totalPrice);
             checkoutDialog.setVisible(true);
         }
         if(e.getSource() == backButton){
