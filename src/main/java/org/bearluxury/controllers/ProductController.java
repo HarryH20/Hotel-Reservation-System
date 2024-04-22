@@ -53,8 +53,11 @@ public class ProductController {
     public void preFillProducts() throws SQLException {
         ProductBuilder builder = new ProductBuilder("src/main/resources/ProductList.csv");
         ProductJDBCDAO productDAO = new ProductJDBCDAO();
+        int i = 0;
         for(Product product : builder.getProductList()){
             productDAO.insert(product);
+            i++;
+            System.out.println("Product Inserted " + i);
 
         }
 
