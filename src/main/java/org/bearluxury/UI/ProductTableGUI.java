@@ -173,7 +173,7 @@ public class ProductTableGUI extends JFrame {
         JTextField nameField = new JTextField(10);
         JTextField priceField = new JTextField(5);
         JTextField quantityField = new JTextField(5);
-        JComboBox<String> typeField = new JComboBox<>(new String[]{"TYPE1", "TYPE2", "TYPE3"}); // Modify as needed
+        JComboBox<PRODUCT_TYPE> typeField = new JComboBox<>(PRODUCT_TYPE.values());
 
         JPanel panel = new JPanel(new GridLayout(0, 1));
         panel.add(new JLabel("Name:"));
@@ -190,8 +190,7 @@ public class ProductTableGUI extends JFrame {
             String name = nameField.getText();
             double price = Double.parseDouble(priceField.getText());
             int quantity = Integer.parseInt(quantityField.getText());
-            String selectedType = (String) typeField.getSelectedItem();
-            PRODUCT_TYPE productType = PRODUCT_TYPE.valueOf(selectedType); // Assuming PRODUCT_TYPE is an enum
+            PRODUCT_TYPE productType = (PRODUCT_TYPE) typeField.getSelectedItem();
             Product newProduct = new Product(name, price, quantity, productType);
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.addRow(new Object[]{newProduct.getId(), newProduct.getName(), newProduct.getPrice(), newProduct.getQuantity(), newProduct.getProductType()});
@@ -203,6 +202,7 @@ public class ProductTableGUI extends JFrame {
             }
         }
     }
+
 
 
     private JTable createTable(DefaultTableModel model) {
