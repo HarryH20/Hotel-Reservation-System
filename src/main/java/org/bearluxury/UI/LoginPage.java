@@ -43,6 +43,7 @@ public class LoginPage extends JFrame implements ActionListener {
         emailTextField = new JTextField();
         passwordTextField = new JPasswordField();
 
+
         loginButton = new JButton("Login");
         loginButton.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]background:darken(@background,10%);" +

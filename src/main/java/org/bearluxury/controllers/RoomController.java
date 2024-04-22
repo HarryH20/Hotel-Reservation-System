@@ -19,11 +19,9 @@ public class RoomController {
         Optional<Room> existingRoom = roomDAO.get(room.getRoomNumber());
 
         if (existingRoom.isPresent()) {
-            // Room already exists, do not insert again
             System.out.println("Room " + room.getRoomNumber() + " already exists in the database.");
             throw new SQLException();
         } else {
-            // Room does not exist, insert it
             roomDAO.insert(room);
         }
     }
@@ -36,8 +34,8 @@ public class RoomController {
                 System.out.println("Room " + room.getRoomNumber() + " already exists in the database.");
 
             } else {
-                // Room does not exist, insert it
                 roomDAO.insert(room);
+
             }
         }
 
