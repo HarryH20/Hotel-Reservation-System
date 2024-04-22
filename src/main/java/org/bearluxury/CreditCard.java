@@ -6,10 +6,10 @@ public class CreditCard {
     private String expDate;
     private String cvv;
 
-    public CreditCard(String cardNumber, String cardHolderName, String expiryDate, String cvv) {
+    public CreditCard(String cardNumber, String cardHolderName, String expDate, String cvv) {
         this.cardNumber = cardNumber;
         this.cardHolderName = cardHolderName;
-        this.expDate = expiryDate;
+        this.expDate = expDate;
         this.cvv = cvv;
     }
 

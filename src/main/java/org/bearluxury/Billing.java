@@ -7,12 +7,13 @@ import java.util.List;
 
 public class Billing {
     private List<Reservation> reservations;
+    //FIXME: Need to make a sale class
+    //private List<Sale> sales;
 
     public Billing() {
         this.reservations = new ArrayList<>();
     }
 
-    // Method to add a reservation to the billing
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
     }
@@ -27,6 +28,7 @@ public class Billing {
     }
 
     // Who will call this method?
+    //FIXME: Only prints to console
     public void generateInvoice() {
         // Generate and print invoice details
         System.out.println("Invoice:");

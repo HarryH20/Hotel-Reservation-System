@@ -12,6 +12,18 @@ public class CreditCardPayment extends Payment {
         this.cvv = cvv;
     }
 
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    public String getExpiryDate() {
+        return expiryDate;
+    }
+
+    public String getCvv() {
+        return cvv;
+    }
+
     @Override
     public void processPayment() {
     }

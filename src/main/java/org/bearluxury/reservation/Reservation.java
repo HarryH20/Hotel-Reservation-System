@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
+//make Reservation take a list of rooms?
 public class Reservation {
     private int roomNumber;
     private String firstName;

@@ -9,7 +9,7 @@ public abstract class Payment {
 
     public Payment(int paymentId, double amount) {
         this.paymentId = paymentId;
-        this.paymentDate = new Date(); // Current date and time
+        this.paymentDate = new Date();
         this.amount = amount;
     }
 
