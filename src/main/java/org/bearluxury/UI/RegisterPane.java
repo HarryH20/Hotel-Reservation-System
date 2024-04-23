@@ -125,7 +125,7 @@ public class RegisterPane extends JFrame {
         String guestUsername = userName.getText();
         String userPassword = password.getText();
         //FIXME
-        Role role = Role.CLERK;
+        Role role = Role.GUEST;
 
         if (userFirstName.isEmpty() || userLastName.isEmpty() || userPhone.isEmpty() ||
                 userEmail.isEmpty() || guestUsername.isEmpty() || userPassword.isEmpty()) {
