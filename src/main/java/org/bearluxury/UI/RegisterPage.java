@@ -31,6 +31,10 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JTextField phoneTextField;
     private JPasswordField passwordTextField;
     private JPasswordField confirmPasswordField;
+    private JTextField cardNumberField;
+    private JTextField monthField;
+    private JTextField yearField;
+    private JPasswordField cvvField;
     private JButton registerButton;
     private JButton cmdRegister;
 
@@ -40,6 +44,10 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JLabel emptyPhoneLabel;
     private JLabel emptyPasswordLabel;
     private JLabel emptyConfirmPasswordLabel;
+    private JLabel emptyCardNumberLabel;
+    private JLabel emptyMonthLabel;
+    private JLabel emptyDateLabel;
+    private JLabel emptyCvvLabel;
 
     private JLabel emailInUseLabel;
     private JLabel phoneInUseLabel;
@@ -53,8 +61,6 @@ public class RegisterPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        //accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
-
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
 
@@ -64,6 +70,10 @@ public class RegisterPage extends JFrame implements ActionListener {
         phoneTextField = new JTextField();
         passwordTextField = new JPasswordField();
         confirmPasswordField = new JPasswordField();
+        cardNumberField = new JTextField();
+        monthField = new JTextField();
+        yearField = new JTextField();
+        cvvField = new JPasswordField();
 
         registerButton = new JButton("Register");
         registerButton.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -84,6 +94,7 @@ public class RegisterPage extends JFrame implements ActionListener {
                 "showRevealButton:true");
         confirmPasswordField.putClientProperty(FlatClientProperties.STYLE, "" +
                 "showRevealButton:true");
+        cvvField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true");
 
         JLabel header = new JLabel("Welcome to Baylor Bear Luxury");
         header.putClientProperty(FlatClientProperties.STYLE, "" + "font:bold +7");
@@ -127,7 +138,9 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.add(new JLabel("Password"), "gapy 6");
         registerPanel.add(passwordTextField);
         registerPanel.add(new JLabel("Confirm password"), "gapy 6");
-        registerPanel.add(confirmPasswordField);
+        registerPanel.add(confirmPasswordField, "gapy 6");
+        registerPanel.add(new JLabel("Card number"));
+        registerPanel.add(cardNumberField);
         registerPanel.add(registerButton, "gapy 10");
         registerPanel.add(createRegisterLabel(), "gapy 10");
 
