@@ -2,7 +2,6 @@ package org.bearluxury.account;
 
 public class Account {
     private String firstName;
-
     private int id;
     private String lastName;
     private String userName;

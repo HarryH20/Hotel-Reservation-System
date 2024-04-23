@@ -132,7 +132,7 @@ public class BookedReservationsGUI extends JFrame {
     }
 
 
-    private void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
+    public void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
         List<Reservation> reservations = unsortedReservations.stream().
                 sorted(Comparator.comparing(Reservation::getFirstName).
                         thenComparing(Reservation::getRoomNumber)).

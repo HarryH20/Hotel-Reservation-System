@@ -83,7 +83,6 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         return rooms;
     }
 
-
     @Override
     public void insert(Room room) throws SQLException {
         String sql = "INSERT INTO rooms(roomNumber, price, canSmoke, roomType, bedType, qualityLevel, numberOfBeds) " +
