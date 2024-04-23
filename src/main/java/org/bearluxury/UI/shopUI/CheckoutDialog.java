@@ -1,6 +1,7 @@
 package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.UI.CreditCardEntryScreen;
 import org.bearluxury.product.Product;
 import org.bearluxury.store.Cart;
 
@@ -119,6 +120,7 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         purchasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         purchaseButton = new JButton("Confirm purchase");
         purchaseButton.setPreferredSize(new Dimension(200, 30));
+        purchaseButton.addActionListener(this);
         purchasePanel.add(purchaseButton);
 
         add(cartPanel, BorderLayout.NORTH);
@@ -129,26 +131,43 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {
-            // Access the cart items using the getCartItems() method of the Cart class
-            Map<Product, Integer> cartItems = cart.getCartItems();
-
-            // Iterate over cart items and perform necessary actions
-            for (Map.Entry<Product, Integer> entry : cartItems.entrySet()) {
-                Product product = entry.getKey();
-                int quantity = entry.getValue();
-
-                // Perform database operations or any other necessary actions
-                // For example:
-                // - Update product inventory
-                // - Record the purchase in the database
-                // - Send confirmation email to the user
-            }
-
-            // After processing the purchase, you might want to clear the cart
-            cart.clearCart();
-
-            // Close the dialog or perform any other necessary actions
-            dispose();
+            // Open credit card entry screen
+            openCreditCardEntryScreen();
         }
+    }
+
+    private void openCreditCardEntryScreen() {
+        // Create a new instance of the credit card entry screen
+        CreditCardEntryScreen creditCardEntryScreen = new CreditCardEntryScreen();
+
+        // Set the parent window of the credit card entry screen
+        creditCardEntryScreen.setLocationRelativeTo(this);
+
+        // Make the credit card entry screen visible
+        creditCardEntryScreen.setVisible(true);
+    }
+
+    // Method to process payment and finalize the purchase
+    public void processPaymentAndFinalizePurchase(String cardNumber, String expirationDate, String cvv, String cardholderName) {
+        // Access the cart items using the getCartItems() method of the Cart class
+        Map<Product, Integer> cartItems = cart.getCartItems();
+
+        // Iterate over cart items and perform necessary actions
+        for (Map.Entry<Product, Integer> entry : cartItems.entrySet()) {
+            Product product = entry.getKey();
+            int quantity = entry.getValue();
+
+            // Perform database operations or any other necessary actions
+            // For example:
+            // - Update product inventory
+            // - Record the purchase in the database
+            // - Send confirmation email to the user
+        }
+
+        // Clear the cart
+        cart.clearCart();
+
+        // Close the checkout dialog
+        dispose();
     }
 }

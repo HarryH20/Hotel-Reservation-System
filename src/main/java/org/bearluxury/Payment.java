@@ -3,18 +3,12 @@ package org.bearluxury;
 import java.util.Date;
 
 public abstract class Payment {
-    private int paymentId;
     private Date paymentDate;
     private double amount;
 
-    public Payment(int paymentId, double amount) {
-        this.paymentId = paymentId;
+    public Payment(double amount) {
         this.paymentDate = new Date();
         this.amount = amount;
-    }
-
-    public int getPaymentId() {
-        return paymentId;
     }
 
     public Date getPaymentDate() {
