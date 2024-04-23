@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.UI.shopUI.ProductTableGUI;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.controllers.AccountController;

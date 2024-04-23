@@ -1,7 +1,8 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import org.bearluxury.product.Product;
+import org.bearluxury.store.Cart;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +15,7 @@ import java.util.Map;
 public class CheckoutDialog extends JDialog implements ActionListener {
     private final double SALES_TAX = 0.0625;
 
-    Map<Product, Integer> cart;
+    Cart cart;
 
     JPanel cartPanel;
     JPanel centerPanel;
@@ -41,12 +42,13 @@ public class CheckoutDialog extends JDialog implements ActionListener {
 
     JButton purchaseButton;
 
-    public CheckoutDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
+    public CheckoutDialog(JFrame parent, Cart cart) {
         super(parent, "Checkout", true);
         //setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
         setLocationRelativeTo(parent);
         setSize(400, 600);
 
+        double totalPrice = cart.calculateTotalPrice();
         this.cart = cart;
 
         // Cart panel
@@ -60,7 +62,11 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         cartList = new JList<>(listModel);
         cartList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         cartList.setFocusable(false);
-        this.cart.forEach((product, quantity) -> listModel.addElement(quantity + "x " + product.getName() + " - $" + (product.getPrice() * quantity)));
+        for (Map.Entry<Product, Integer> entry : cart.getCartItems().entrySet()) {
+            Product product = entry.getKey();
+            int quantity = entry.getValue();
+            listModel.addElement(quantity + "x " + product.getName() + " - $" + (product.getPrice() * quantity));
+        }
 
         cartScrollPane = new JScrollPane(cartList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         cartScrollPane.setPreferredSize(new Dimension(300, 200));
@@ -80,7 +86,7 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         leftPanel = new JPanel(new GridLayout(2, 1));
         rightPanel = new JPanel(new GridLayout(2, 1));
 
-        totalProductsLabel = new JLabel(this.cart.size() + " products");
+        totalProductsLabel = new JLabel(this.cart.getCartItems().size() + " products");
         taxLabel = new JLabel("Sales tax");
         leftPanel.add(totalProductsLabel);
         leftPanel.add(taxLabel);
@@ -95,11 +101,12 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         summaryPanel.add(leftPanel, BorderLayout.WEST);
         summaryPanel.add(rightPanel, BorderLayout.EAST);
 
+        overallTotalCost = totalPrice + (totalPrice * SALES_TAX);
+        overallTotalAmountLabel = new JLabel("$" + String.format("%.2f", overallTotalCost));
+
         totalPanel = new JPanel(new BorderLayout());
         overallTotalLabel = new JLabel("Total:");
         overallTotalLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +8");
-        overallTotalCost = totalPrice + (totalPrice * SALES_TAX);
-        overallTotalAmountLabel = new JLabel("$" + String.format("%.2f", overallTotalCost));
         overallTotalAmountLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +8");
         totalPanel.add(overallTotalLabel, BorderLayout.WEST);
         totalPanel.add(overallTotalAmountLabel, BorderLayout.EAST);
@@ -122,9 +129,26 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {
-            //ADD DATABASE STUFF HERE
+            // Access the cart items using the getCartItems() method of the Cart class
+            Map<Product, Integer> cartItems = cart.getCartItems();
 
+            // Iterate over cart items and perform necessary actions
+            for (Map.Entry<Product, Integer> entry : cartItems.entrySet()) {
+                Product product = entry.getKey();
+                int quantity = entry.getValue();
 
+                // Perform database operations or any other necessary actions
+                // For example:
+                // - Update product inventory
+                // - Record the purchase in the database
+                // - Send confirmation email to the user
+            }
+
+            // After processing the purchase, you might want to clear the cart
+            cart.clearCart();
+
+            // Close the dialog or perform any other necessary actions
+            dispose();
         }
     }
 }

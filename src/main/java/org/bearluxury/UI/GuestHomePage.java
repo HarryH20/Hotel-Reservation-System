@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//FIXME: NEED TO MAKE HOTELHOMEPAGE GENERIC
 public class GuestHomePage extends HotelHomePage {
 
     public GuestHomePage() {
