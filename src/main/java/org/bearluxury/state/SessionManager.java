@@ -9,6 +9,8 @@ public class SessionManager {
 
     private SessionManager() {}
 
+    //
+
     public static SessionManager getInstance() {
         if (instance == null) {
             instance = new SessionManager();

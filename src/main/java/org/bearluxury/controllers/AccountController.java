@@ -26,8 +26,8 @@ public class AccountController {
         return accountDAO.list();
     }
 
-    public void updateAccounts(Account reservation, String email) {
-        accountDAO.update(reservation, email);
+    public void updateAccounts(Account account, String email) {
+        accountDAO.update(account, email);
     }
 
     public boolean deleteAccounts(String email) {

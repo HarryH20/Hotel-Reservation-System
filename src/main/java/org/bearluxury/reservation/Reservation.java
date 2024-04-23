@@ -14,7 +14,7 @@ public class Reservation {
     private int numberOfGuests;
     private Date startDate;
     private Date endDate;
-    private static int id = 1;
+    private static int id;
 
 
 
@@ -30,7 +30,6 @@ public class Reservation {
         this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
-        id++;
 
     }
 

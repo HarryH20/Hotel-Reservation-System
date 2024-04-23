@@ -5,12 +5,13 @@ import java.util.*;
 import java.util.Date;
 import org.bearluxury.DAO;
 import org.bearluxury.RoomResDAO;
+import org.bearluxury.state.SessionManager;
 
 public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservation> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/reservation16";
+    private static String JDBC_URL = "jdbc:h2:~/reservation18";
 
     public ReservationJDBCDAO() {
         try {
@@ -32,7 +33,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
             if (!tableExists) {
                 String createTableSQL = "CREATE TABLE reservations (" +
-                        "id INT AUTO_INCREMENT, " + // Removed PRIMARY KEY constraint
+                        "id INT, " + // Removed PRIMARY KEY constraint
                         "roomNumber INT, " +
                         "firstName VARCHAR(255), " +
                         "lastName VARCHAR(255), " +
@@ -71,7 +72,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 Date endDate = resultSet.getDate("endDate");
 
                 Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
-                reservation.setID(id);
+                reservation.setID(SessionManager.getInstance().getCurrentAccount().getId());
                 reservations.add(reservation);
             }
         } catch (SQLException e) {
