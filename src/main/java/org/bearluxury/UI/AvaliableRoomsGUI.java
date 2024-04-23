@@ -197,6 +197,7 @@ public class AvaliableRoomsGUI extends JFrame {
             }
         }
 
+
         private static void openReservationForm(int roomID, LocalDate checkIn, LocalDate checkOut) {
             ReservationPane pane = new ReservationPane(roomID, checkIn, checkOut);
             pane.setVisible(true);
