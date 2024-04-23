@@ -31,7 +31,10 @@ public class HotelManagementSystem  {
             RoomController rooms = new RoomController(new RoomJDBCDAO());
             RoomCatalog roomCatalog = new RoomCatalog();
             roomCatalog.setRooms(rooms.listRooms());
-            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut);
+            ReservationController reservationController = new ReservationController(new ReservationJDBCDAO());
+            ReservationCatalog reservationCatalog = new ReservationCatalog();
+            reservationCatalog.setReservations(reservationController.listRooms());
+            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut, role, reservationCatalog);
             catalogPane.setVisible(true);
         }catch (SQLException exc){
             exc.printStackTrace();
