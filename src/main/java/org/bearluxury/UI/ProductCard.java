@@ -29,7 +29,6 @@ public class ProductCard extends JPanel implements ActionListener {
     int itemQuantity;
 
     public ProductCard(Product product, ShopHomePage shopHomePage) {
-        putClientProperty(FlatClientProperties.STYLE, "arc:20;");
         setPreferredSize(new Dimension(250, 100));
         setLayout(new BorderLayout(10, 0));
 
@@ -47,6 +46,7 @@ public class ProductCard extends JPanel implements ActionListener {
         productStock = new JLabel("Stock: " + product.getQuantity());
 
         quantityTextField = new JTextField("0", 2);
+        quantityTextField.addActionListener(this);
         minusButton = new JButton("-");
         minusButton.setEnabled(false);
         minusButton.addActionListener(this);
@@ -69,20 +69,39 @@ public class ProductCard extends JPanel implements ActionListener {
         itemQuantity = 0;
     }
 
+    public Product getProduct() {
+        return product;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == plusButton) {
-            itemQuantity++;
+        if (e.getSource() == quantityTextField) {
+            int fieldAmount = Integer.parseInt(quantityTextField.getText());
+            if (fieldAmount <= product.getQuantity() && fieldAmount >= 0) {
+                itemQuantity = fieldAmount;
+                shopHomePage.updateCart(product, itemQuantity);
+            }
             quantityTextField.setText(String.valueOf(itemQuantity));
-            shopHomePage.updateCart(product, itemQuantity);
-            minusButton.setEnabled(true);
+        } else if (e.getSource() == plusButton) {
+            if (itemQuantity != product.getQuantity()) {
+                itemQuantity++;
+                quantityTextField.setText(String.valueOf(itemQuantity));
+                shopHomePage.updateCart(product, itemQuantity);
+            }
         } else if (e.getSource() == minusButton) {
             itemQuantity--;
             quantityTextField.setText(String.valueOf(itemQuantity));
             shopHomePage.updateCart(product, itemQuantity);
-            if (itemQuantity == 0) {
-                minusButton.setEnabled(false);
-            }
+        }
+        if (itemQuantity >= product.getQuantity()) {
+            minusButton.setEnabled(true);
+            plusButton.setEnabled(false);
+        } else if (itemQuantity <= 0) {
+            minusButton.setEnabled(false);
+            plusButton.setEnabled(true);
+        } else {
+            minusButton.setEnabled(true);
+            plusButton.setEnabled(true);
         }
     }
 }
