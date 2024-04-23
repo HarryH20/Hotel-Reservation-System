@@ -6,10 +6,12 @@ import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.AccountController;
+import org.bearluxury.controllers.ProductController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.controllers.RoomController;
 import org.bearluxury.product.ProductBuilder;
 import org.bearluxury.product.ProductCatalog;
+import org.bearluxury.product.ProductJDBCDAO;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
@@ -82,11 +84,14 @@ public class HotelManagementSystem  {
     }*/
 
     public static void openShopHomePage() {
-        ProductBuilder productBuilder = new ProductBuilder("src/main/resources/ProductList.csv");
-        ProductCatalog productCatalog = new ProductCatalog();
-        productCatalog.setProducts(productBuilder.getProductList());
-        ShopHomePage shopHomePage = new ShopHomePage(productCatalog);
-        shopHomePage.setVisible(true);
+        try {
+            ProductJDBCDAO productDAO = new ProductJDBCDAO();
+            ProductController productController = new ProductController(productDAO);
+            ShopHomePage shopHomePage = new ShopHomePage(productController);
+            shopHomePage.setVisible(true);
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
