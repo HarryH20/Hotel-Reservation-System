@@ -3,6 +3,7 @@ import org.bearluxury.account.Role;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.room.Room;
 import org.bearluxury.room.RoomCatalog;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -45,7 +46,7 @@ public class AvaliableRoomsGUI extends JFrame {
 
         fillTableRows(roomCatalog.getRooms(), model, beds, reservationCatalog, checkIn, checkOut);
 
-        JButton backButton = createBackButton(role);
+        JButton backButton = createBackButton();
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(backgroundColor);
@@ -67,21 +68,21 @@ public class AvaliableRoomsGUI extends JFrame {
             }
         };
     }
-    private JButton createBackButton(Role role) {
+    private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 try {
-                    System.out.println("This is my role: " + role);
-                    if (role == Role.GUEST) {
+                    System.out.println("This is my role: " + SessionManager.getInstance().getCurrentAccount().getRole());
+                    if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST) {
                         HotelManagementSystem.openGuestHomePage();
                     }
-                    else if (role == Role.CLERK) {
+                    else if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.CLERK) {
                         HotelManagementSystem.openClerkHomePage();
                     }
-                    else if (role == Role.ADMIN) {
+                    else if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.ADMIN) {
                         HotelManagementSystem.openAdminHomePage();
                     }
                     else{

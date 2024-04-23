@@ -1,17 +1,18 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.state.SessionManager;
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountBuilder;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.AccountController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class LoginPage extends JFrame implements ActionListener {
 
@@ -102,9 +103,8 @@ public class LoginPage extends JFrame implements ActionListener {
     }
 
     private Account doesAccountExist(String email, String password) {
-        AccountBuilder accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
-        ArrayList<Account> accounts = accountBuilder.getAccountList();
-        for (Account account : accounts) {
+        AccountController controller = new AccountController(new AccountJDBCDAO());
+        for (Account account : controller.listAccounts()) {
             if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
                 return account;
             }
@@ -117,10 +117,12 @@ public class LoginPage extends JFrame implements ActionListener {
         if (e.getSource() == loginButton) {
             Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
             if (account != null) {
+                SessionManager.getInstance().setCurrentAccount(account);
                 dispose();
                 if (account.getRole().equals(Role.GUEST)) {
                     System.out.println(account.getRole());
                     HotelManagementSystem.openGuestHomePage();
+
                 } else if (account.getRole().equals(Role.CLERK)) {
                     HotelManagementSystem.openClerkHomePage();
                 } else if (account.getRole().equals(Role.ADMIN)) {

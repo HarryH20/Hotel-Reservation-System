@@ -16,13 +16,29 @@ public class RoomController {
         preFillRooms();
     }
     public void insertRoom(Room room) throws SQLException {
-        roomDAO.insert(room);
+        Optional<Room> existingRoom = roomDAO.get(room.getRoomNumber());
+
+        if (existingRoom.isPresent()) {
+            // Room already exists, do not insert again
+            System.out.println("Room " + room.getRoomNumber() + " already exists in the database.");
+            throw new SQLException();
+        } else {
+            // Room does not exist, insert it
+            roomDAO.insert(room);
+        }
     }
     private void preFillRooms() throws SQLException {
-        roomDAO.clear();
         RoomBuilder builder = new RoomBuilder("src/main/resources/RoomList.csv");
         for(Room room : builder.getRoomList()){
-            roomDAO.insert(room);
+            Optional<Room> existingRoom = roomDAO.get(room.getRoomNumber());
+
+            if (existingRoom.isPresent()) {
+                System.out.println("Room " + room.getRoomNumber() + " already exists in the database.");
+
+            } else {
+                // Room does not exist, insert it
+                roomDAO.insert(room);
+            }
         }
 
     }
