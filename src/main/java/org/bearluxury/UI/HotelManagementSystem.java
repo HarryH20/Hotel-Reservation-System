@@ -12,9 +12,11 @@ import org.bearluxury.controllers.RoomController;
 import org.bearluxury.product.ProductBuilder;
 import org.bearluxury.product.ProductCatalog;
 import org.bearluxury.product.ProductJDBCDAO;
+import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
+
 import org.bearluxury.room.RoomJDBCDAO;
 
 import javax.swing.*;
@@ -33,8 +35,8 @@ public class HotelManagementSystem  {
             roomCatalog.setRooms(rooms.listRooms());
             ReservationController reservationController = new ReservationController(new ReservationJDBCDAO());
             ReservationCatalog reservationCatalog = new ReservationCatalog();
-            reservationCatalog.setReservations(reservationController.listRooms());
-            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut, role, reservationCatalog);
+            reservationCatalog.setReservations(reservationController.listReservations());
+            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut,reservationCatalog);
             catalogPane.setVisible(true);
         }catch (SQLException exc){
             exc.printStackTrace();

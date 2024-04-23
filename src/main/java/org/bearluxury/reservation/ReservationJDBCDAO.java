@@ -71,8 +71,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate = resultSet.getDate("endDate");
 
-                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
-                reservation.setID(SessionManager.getInstance().getCurrentAccount().getId());
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);;
                 reservations.add(reservation);
             }
         } catch (SQLException e) {
@@ -87,8 +86,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             String sql = "INSERT INTO reservations (id, roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
+            int accountId = SessionManager.getInstance().getCurrentAccount().getId();
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, reservation.getId());
+            preparedStatement.setInt(1, accountId);
             preparedStatement.setInt(2, reservation.getRoomNumber());
             preparedStatement.setString(3, reservation.getFirstName());
             preparedStatement.setString(4, reservation.getLastName());
@@ -194,6 +194,33 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             System.out.println("Failed to clear the database!");
             e.printStackTrace();
         }
+    }
+
+    public Set<Reservation> list(int accountId) {
+        Set<Reservation> reservations = new HashSet<>();
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM reservations WHERE id = ?");
+            statement.setInt(1, accountId);
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int roomNumber = resultSet.getInt("roomNumber");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String email = resultSet.getString("email");
+                int numberOfGuests = resultSet.getInt("numberOfGuests");
+                Date startDate = resultSet.getDate("startDate");
+                Date endDate = resultSet.getDate("endDate");
+
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
+                reservation.setID(id);
+                reservations.add(reservation);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservations;
     }
 
 }

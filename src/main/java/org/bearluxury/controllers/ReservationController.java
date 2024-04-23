@@ -39,4 +39,8 @@ public class ReservationController {
     public void closeConnection() {
         reservationDAO.close();
     }
+
+    public Set<Reservation> listReservations(int accountId) {
+        return reservationDAO.list(accountId);
+    }
 }

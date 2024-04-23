@@ -24,7 +24,7 @@ public class AvaliableRoomsGUI extends JFrame {
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 16);
 
-    public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds, LocalDate checkIn, LocalDate checkOut, Role role,
+    public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds, LocalDate checkIn, LocalDate checkOut,
                              ReservationCatalog reservationCatalog) {
         setTitle("Room Catalog");
         setSize(1280, 720);
