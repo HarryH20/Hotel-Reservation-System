@@ -237,7 +237,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         long phoneNumber = Long.parseLong(phoneTextField.getText());
         String password = passwordTextField.getText();
         //FIXME
-        Role role = Role.GUEST;
+        Role role = Role.CLERK;
         controller.insertAccount(new Account(firstName,lastName, userName, email,phoneNumber,password, role));
     }
 
