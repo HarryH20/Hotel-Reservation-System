@@ -173,7 +173,7 @@ public class ReservationPane extends JFrame {
         }
         try {
             ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-            controller.insertReservation(new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate));
+            controller.insertReservation(new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate,false));
             JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
             dispose();
 

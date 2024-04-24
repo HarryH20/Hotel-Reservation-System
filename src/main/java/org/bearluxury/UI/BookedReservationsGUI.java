@@ -66,7 +66,7 @@ public class BookedReservationsGUI extends JFrame {
     }
 
     private DefaultTableModel createTableModel() {
-        String[] columnNames = {"Account ID", "Reservation ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date"};
+        String[] columnNames = {"Account ID", "Reservation ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date" ,"Checked In"};
         return new DefaultTableModel(columnNames, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -155,7 +155,8 @@ public class BookedReservationsGUI extends JFrame {
                         reservation.getEmail(),
                         reservation.getNumberOfGuests(),
                         formatter.format(reservation.getStartDate()),
-                        formatter.format(reservation.getEndDate())
+                        formatter.format(reservation.getEndDate()),
+                        reservation.isCheckedIn()
                 }));
     }
 

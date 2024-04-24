@@ -6,13 +6,45 @@ import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.state.SessionManager;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Set;
 
 public class GuestBookedReservationsGUI extends BookedReservationsGUI {
     public GuestBookedReservationsGUI(ReservationCatalog reservationCatalog) {
         super(reservationCatalog);
+
+        JButton editButton = new JButton("Edit Reservation");
+        JButton deleteButton = new JButton("Delete Reservation");
+        JButton checkInButton = new JButton("Check In");
+
+
+        editButton.setFont(Style.defaultFont);
+        deleteButton.setFont(Style.defaultFont);
+        checkInButton.setFont(Style.defaultFont);
+
+
+        deleteButton.addActionListener(new DeleteReservationAction(table, model));
+        editButton.addActionListener(new EditReservationAction(table));
+        checkInButton.addActionListener(new CheckInAction(table, model));
+
+
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0)); // 1 row, 3 columns, with 10px horizontal gap
+        buttonPanel.setBackground(Style.backgroundColor);
+        buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+
+        buttonPanel.add(editButton);
+        buttonPanel.add(deleteButton);
+        buttonPanel.add(checkInButton);
+
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
     }
 
     @Override
@@ -32,7 +64,8 @@ public class GuestBookedReservationsGUI extends BookedReservationsGUI {
                     reservation.getEmail(),
                     reservation.getNumberOfGuests(),
                     formatter.format(reservation.getStartDate()),
-                    formatter.format(reservation.getEndDate())
+                    formatter.format(reservation.getEndDate()),
+                    reservation.isCheckedIn()
             });
         }
     }

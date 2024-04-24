@@ -90,7 +90,8 @@ public class EditReservationPane extends JFrame{
                         toChange.getEmail(),
                         Integer.parseInt(guestNumber.getValue().toString()),
                         java.sql.Date.valueOf(startDate),
-                        java.sql.Date.valueOf(endDate));
+                        java.sql.Date.valueOf(endDate),toChange.isCheckedIn());
+
 
                 res.setReservationID(toChange.getReservationID());
                 controller.updateReservationByReservationId(res,toChange.getReservationID());
@@ -109,7 +110,8 @@ public class EditReservationPane extends JFrame{
                         res.getEmail(),
                         res.getNumberOfGuests(),
                         formatter.format(res.getStartDate()),
-                        formatter.format(res.getEndDate())
+                        formatter.format(res.getEndDate()),
+                        res.isCheckedIn()
                 });
                 JOptionPane.showMessageDialog(null, "Reservation updated");
                 dispose();
