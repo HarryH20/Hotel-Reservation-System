@@ -17,6 +17,7 @@ public class SessionManager {
     }
 
     public Account getCurrentAccount() {
+        System.out.println("Session Manager: Account type is " + account.getClass());
         return account;
     }
 

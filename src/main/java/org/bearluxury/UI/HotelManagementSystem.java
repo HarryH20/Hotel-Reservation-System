@@ -73,6 +73,7 @@ public class HotelManagementSystem  {
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
         openLoginPage();
+        //openShopHomePage();
 
     }
 }

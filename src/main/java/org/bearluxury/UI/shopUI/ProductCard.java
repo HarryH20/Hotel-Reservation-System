@@ -1,4 +1,4 @@
-package org.bearluxury.UI.shopUI;
+package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
@@ -80,19 +80,19 @@ public class ProductCard extends JPanel implements ActionListener {
             int fieldAmount = Integer.parseInt(quantityTextField.getText());
             if (fieldAmount <= product.getQuantity() && fieldAmount >= 0) {
                 itemQuantity = fieldAmount;
-                shopHomePage.updateCart(product);
+                shopHomePage.updateCart(product, itemQuantity);
             }
             quantityTextField.setText(String.valueOf(itemQuantity));
         } else if (e.getSource() == plusButton) {
             if (itemQuantity != product.getQuantity()) {
                 itemQuantity++;
                 quantityTextField.setText(String.valueOf(itemQuantity));
-                shopHomePage.updateCart(product);
+                shopHomePage.updateCart(product, itemQuantity);
             }
         } else if (e.getSource() == minusButton) {
             itemQuantity--;
             quantityTextField.setText(String.valueOf(itemQuantity));
-            shopHomePage.updateCart(product);
+            shopHomePage.updateCart(product, itemQuantity);
         }
         if (itemQuantity >= product.getQuantity()) {
             minusButton.setEnabled(true);

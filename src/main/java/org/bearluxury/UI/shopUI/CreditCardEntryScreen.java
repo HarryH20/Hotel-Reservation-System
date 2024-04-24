@@ -1,4 +1,9 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
+
+import org.bearluxury.CreditCard;
+import org.bearluxury.CreditCardPayment;
+import org.bearluxury.Payment;
+import org.bearluxury.account.Guest;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +18,15 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
 
     private JButton submitButton;
 
-    public CreditCardEntryScreen() {
+    Guest guest;
+    CreditCard card;
+    double charge;
+
+    public CreditCardEntryScreen(Guest guest, double charge) {
+        this.guest = guest;
+        this.card = guest.getCreditCard();
+        this.charge = charge;
+
         setTitle("Credit Card Information");
         setSize(400, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,6 +48,13 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
 
         submitButton = new JButton("Submit");
         submitButton.addActionListener(this);
+
+        if (card != null) {
+            cardNumberField.setText(card.getCardNumber());
+            expirationDateField.setText(card.getExpDate());
+            cvvField.setText(card.getCvv());
+            cardholderNameField.setText(card.getCardHolderName());
+        }
 
         panel.add(cardNumberLabel);
         panel.add(cardNumberField);
@@ -60,12 +80,16 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
             String cvv = cvvField.getText();
             String cardholderName = cardholderNameField.getText();
 
-            // Do something with the credit card information (e.g., validate, process payment)
-            // For example:
-            // - Validate the credit card details
-            // - Process the payment
-            // - Close the credit card entry screen
-            // - Display a message to the user indicating success or failure
+            CreditCard tempCard = new CreditCard(cardNumber, cardholderName,expirationDate, cvv);
+            if (!card.equals(tempCard)) {
+                card = tempCard;
+            }
+            Payment payment = new CreditCardPayment(this.charge, this.card);
+            if (payment.processPayment()) {
+                System.out.println("payment successful");
+            } else {
+                System.out.println("payment unsuccessful");
+            }
         }
     }
 }

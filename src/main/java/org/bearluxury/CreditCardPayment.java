@@ -1,3 +1,5 @@
+package org.bearluxury;
+
 import org.bearluxury.CreditCard;
 import org.bearluxury.Payment;
 
@@ -10,6 +12,13 @@ public class CreditCardPayment extends Payment {
     }
 
     @Override
-    public void processPayment() {
+    public boolean processPayment() {
+        double balance = card.getBalance();
+        double amount = getAmount();
+        if (amount < balance) {
+            card.chargeCard(amount);
+            return true;
+        }
+        return false;
     }
 }
