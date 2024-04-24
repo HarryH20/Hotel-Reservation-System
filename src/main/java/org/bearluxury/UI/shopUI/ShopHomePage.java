@@ -3,9 +3,10 @@ package org.bearluxury.UI.shopUI;
 import com.formdev.flatlaf.FlatClientProperties;
 import org.bearluxury.UI.HotelManagementSystem;
 import org.bearluxury.UI.Style;
+import org.bearluxury.UI.shopUI.ProductCard;
+import org.bearluxury.account.Role;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductCatalog;
-import org.bearluxury.store.Cart;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -44,7 +45,6 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     JLabel cartLabel;
     Map<Product, Integer> cartInventory;
     JList<String> cartList;
-    Cart cart;
     JScrollPane cartScrollPane;
 
     JLabel totalPriceLabel;
@@ -58,7 +58,6 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Style.backgroundColor);
 
-        cart = new Cart();
         this.productCatalog = productCatalog;
 
         sideBar = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
@@ -159,40 +158,26 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         productScrollPane.repaint();
     }
 
-    public void updateCart(Product product) {
-        // Update the cart with the given product and quantity
-        cart.addItem(product);
-
-        // Refresh the cart display
-        updateCartDisplay();
-    }
-
-    private void updateCartDisplay() {
-        // Retrieve cart contents
-        Map<Product, Integer> cartInventory = cart.getCartItems();
-        List<String> cartItems = new ArrayList<>();
-
-        // Populate cart items list
-        for (Map.Entry<Product, Integer> entry : cartInventory.entrySet()) {
-            Product product = entry.getKey();
-            int quantity = entry.getValue();
-            cartItems.add(quantity + "x " + product.getName());
+    public void updateCart(Product product, int quantity) {
+        //This code kinda goofy, but it works (for now)
+        cartInventory.put(product, quantity);
+        if (cartInventory.get(product) == 0) {
+            cartInventory.remove(product);
         }
-
-        // If cart is empty, add an "Empty" message
-        if (cartItems.isEmpty()) {
-            cartItems.add("Empty");
+        List<String> newProducts = new ArrayList<>();
+        totalPrice = 0;
+        if (cartInventory.isEmpty()) {
+            newProducts.add("Empty");
+        } else {
+            cartInventory.forEach((key, value) -> newProducts.add(value + "x " + key.getName()));
+            cartInventory.forEach((key, value) -> totalPrice += (key.getPrice() * value));
         }
-
-        // Update the cart list
-        cartList.setListData(cartItems.toArray(new String[0]));
-
-        // Update total price label
-        totalPriceNumber.setText("$" + String.format("%.2f", cart.calculateTotalPrice()));
-
-        // Refresh the frame
-        this.revalidate();
-        this.repaint();
+        checkoutPanel.remove(cartScrollPane);
+        cartScrollPane = new JScrollPane(new JList<>(newProducts.toArray()));
+        cartScrollPane.setPreferredSize(new Dimension(140, 200));
+        checkoutPanel.add(cartScrollPane, 2);
+        totalPriceNumber.setText("$" + String.format("%.2f", totalPrice));
+        this.setVisible(true);
     }
 
     // Used for wrapping
@@ -220,7 +205,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
             }
             reloadProductCards(productFilter);
         } else if (e.getSource() == checkoutButton) {
-            CheckoutDialog checkoutDialog = new CheckoutDialog(this, cart);
+            CheckoutDialog checkoutDialog = new CheckoutDialog(this, cartInventory, totalPrice);
             checkoutDialog.setVisible(true);
         }
         if(e.getSource() == backButton){
