@@ -25,7 +25,7 @@ public class GuestBookedReservationsGUI extends BookedReservationsGUI {
         for (Reservation reservation : guestReservations) {
             model.addRow(new Object[]{
                     accountId,
-                    reservation.getId(),
+                    reservation.getReservationID(),
                     reservation.getRoomNumber(),
                     reservation.getFirstName(),
                     reservation.getLastName(),

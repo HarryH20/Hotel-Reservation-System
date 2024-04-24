@@ -148,7 +148,7 @@ public class BookedReservationsGUI extends JFrame {
                         controller.getAccount(reservation.getEmail()).
                                 orElseThrow(()-> new NoSuchElementException("Account not found")).
                                 getId(),
-                        reservation.getId(),
+                        reservation.getReservationID(),
                         reservation.getRoomNumber(),
                         reservation.getFirstName(),
                         reservation.getLastName(),

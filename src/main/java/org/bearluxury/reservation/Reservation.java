@@ -15,9 +15,9 @@ public class Reservation {
     private int numberOfGuests;
     private Date startDate;
     private Date endDate;
-    private static int id;
+    private int id;
 
-
+    private int reservationID;
 
     public Reservation(){}
     public Reservation(int roomNumber, String firstName,
@@ -128,4 +128,12 @@ public class Reservation {
         return Objects.hash(id, startDate, endDate, roomNumber);
     }
 
+
+    public int getReservationID() {
+        return reservationID;
+    }
+
+    public void setReservationID(int reservationID) {
+        this.reservationID = reservationID;
+    }
 }

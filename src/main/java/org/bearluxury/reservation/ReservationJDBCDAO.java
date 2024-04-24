@@ -11,7 +11,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/reservation18";
+    private static String JDBC_URL = "jdbc:h2:~/reservation22";
 
     public ReservationJDBCDAO() {
         try {
@@ -33,7 +33,8 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
             if (!tableExists) {
                 String createTableSQL = "CREATE TABLE reservations (" +
-                        "id INT, " + // Removed PRIMARY KEY constraint
+                        "reservationId INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "id INT, " +
                         "roomNumber INT, " +
                         "firstName VARCHAR(255), " +
                         "lastName VARCHAR(255), " +
@@ -44,15 +45,16 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                         ")";
 
                 stmt.executeUpdate(createTableSQL);
-                System.out.println("table made");
+                System.out.println("Table created successfully.");
             } else {
-                System.out.println("Employee table already exists.");
+                System.out.println("Reservation table already exists.");
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public Set<Reservation> list() {
@@ -62,6 +64,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             ResultSet resultSet = statement.executeQuery("SELECT * FROM reservations");
 
             while (resultSet.next()) {
+                int reservationId = resultSet.getInt("reservationId");
                 int id = resultSet.getInt("id");
                 int roomNumber = resultSet.getInt("roomNumber");
                 String firstName = resultSet.getString("firstName");
@@ -71,7 +74,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate = resultSet.getDate("endDate");
 
-                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);;
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
+                reservation.setID(id);
+                reservation.setReservationID(reservationId);
                 reservations.add(reservation);
             }
         } catch (SQLException e) {
@@ -87,7 +92,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             int accountId = SessionManager.getInstance().getCurrentAccount().getId();
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, accountId);
             preparedStatement.setInt(2, reservation.getRoomNumber());
             preparedStatement.setString(3, reservation.getFirstName());
@@ -99,7 +104,12 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
-                System.out.println("A new reservation was inserted successfully!");
+                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    int reservationId = generatedKeys.getInt(1);
+                    reservation.setReservationID(reservationId);
+                    System.out.println("A new reservation was inserted successfully with ID: " + reservationId);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +119,8 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
     public Optional<Reservation> get(int id) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservations WHERE id = ?");
-            preparedStatement.setInt(1, id);
+            int accountId = SessionManager.getInstance().getCurrentAccount().getId();
+            preparedStatement.setInt(1,accountId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -122,7 +133,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 Date endDate = resultSet.getDate("endDate");
 
                 Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
-                reservation.setID(resultSet.getInt("id"));
+                reservation.setID(accountId);
                 return Optional.of(reservation);
             }
         } catch (SQLException e) {
@@ -136,7 +147,11 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         try {
             String sql = "UPDATE reservations SET roomNumber = ?, firstName = ?, lastName = ?, email = ?, numberOfGuests = ?, startDate = ?, endDate = ? WHERE id = ?";
 
+            int accountId = SessionManager.getInstance().getCurrentAccount().getId();
+
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, accountId);
             preparedStatement.setInt(1, reservation.getRoomNumber());
             preparedStatement.setString(2, reservation.getFirstName());
             preparedStatement.setString(3, reservation.getLastName());
@@ -204,6 +219,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
+                int reservationId = resultSet.getInt("reservationId");
                 int id = resultSet.getInt("id");
                 int roomNumber = resultSet.getInt("roomNumber");
                 String firstName = resultSet.getString("firstName");
@@ -215,6 +231,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
                 Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
                 reservation.setID(id);
+                reservation.setReservationID(reservationId);
                 reservations.add(reservation);
             }
         } catch (SQLException e) {
@@ -222,5 +239,71 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
         return reservations;
     }
+    public Optional<Reservation> getByReservationId(int reservationId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservations WHERE reservationId = ?");
+            preparedStatement.setInt(1, reservationId);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                int roomNumber = resultSet.getInt("roomNumber");
+                String firstName = resultSet.getString("firstName");
+                String lastName = resultSet.getString("lastName");
+                String email = resultSet.getString("email");
+                int numberOfGuests = resultSet.getInt("numberOfGuests");
+                Date startDate = resultSet.getDate("startDate");
+                Date endDate = resultSet.getDate("endDate");
+
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
+                reservation.setID(id);
+                reservation.setReservationID(reservationId);
+                return Optional.of(reservation);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    public boolean deleteByReservationId(int reservationId) {
+        try {
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM reservations WHERE reservationId = ?");
+            statement.setInt(1, reservationId);
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void updateByReservationId(Reservation reservation, int reservationId) {
+        try {
+            String sql = "UPDATE reservations SET roomNumber = ?, firstName = ?, lastName = ?, email = ?, numberOfGuests = ?, startDate = ?, endDate = ? WHERE reservationId = ?";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+            preparedStatement.setInt(1, reservation.getRoomNumber());
+            preparedStatement.setString(2, reservation.getFirstName());
+            preparedStatement.setString(3, reservation.getLastName());
+            preparedStatement.setString(4, reservation.getEmail());
+            preparedStatement.setInt(5, reservation.getNumberOfGuests());
+            preparedStatement.setDate(6, new java.sql.Date(reservation.getStartDate().getTime()));
+            preparedStatement.setDate(7, new java.sql.Date(reservation.getEndDate().getTime()));
+            preparedStatement.setInt(8, reservationId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            if (rowsUpdated > 0) {
+                System.out.println("Reservation updated successfully!");
+            } else {
+                System.out.println("No reservation found with reservationId: " + reservationId);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
