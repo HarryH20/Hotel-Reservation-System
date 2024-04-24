@@ -3,8 +3,8 @@ package org.bearluxury.reservation;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
-import org.bearluxury.DAO;
-import org.bearluxury.RoomResDAO;
+import org.bearluxury.database.DAO;
+import org.bearluxury.database.RoomResDAO;
 
 public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservation> {
 

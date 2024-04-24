@@ -1,5 +1,6 @@
-package org.bearluxury;
+package org.bearluxury.account;
 
+import org.bearluxury.shop.Payment;
 import org.bearluxury.reservation.Reservation;
 
 import java.util.ArrayList;

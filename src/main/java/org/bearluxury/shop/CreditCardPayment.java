@@ -1,7 +1,6 @@
-package org.bearluxury;
+package org.bearluxury.shop;
 
-import org.bearluxury.CreditCard;
-import org.bearluxury.Payment;
+import org.bearluxury.account.CreditCard;
 
 public class CreditCardPayment extends Payment {
    CreditCard card;

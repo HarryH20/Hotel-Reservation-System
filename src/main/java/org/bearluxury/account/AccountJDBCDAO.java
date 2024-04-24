@@ -1,7 +1,7 @@
 package org.bearluxury.account;
 
-import org.bearluxury.AccountDAO;
-import org.bearluxury.DAO;
+import org.bearluxury.database.AccountDAO;
+import org.bearluxury.database.DAO;
 
 import java.sql.*;
 import java.util.*;

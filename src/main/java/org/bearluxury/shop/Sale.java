@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.shop;
 
 import org.bearluxury.product.Product;
 

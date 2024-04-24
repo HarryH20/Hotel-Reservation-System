@@ -1,11 +1,8 @@
 package org.bearluxury.controllers;
 
-import org.bearluxury.ProductDAO;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductBuilder;
 import org.bearluxury.product.ProductJDBCDAO;
-import org.bearluxury.room.Room;
-import org.bearluxury.room.RoomBuilder;
 
 import java.sql.SQLException;
 import java.util.Optional;

@@ -1,7 +1,5 @@
 package org.bearluxury.account;
 
-import org.bearluxury.Billing;
-import org.bearluxury.CreditCard;
 import org.bearluxury.reservation.Reservation;
 
 import java.util.ArrayList;

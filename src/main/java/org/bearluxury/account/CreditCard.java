@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.account;
 
 import java.util.Objects;
 

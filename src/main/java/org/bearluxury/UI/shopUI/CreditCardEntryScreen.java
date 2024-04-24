@@ -1,8 +1,8 @@
 package org.bearluxury.UI.shopUI;
 
-import org.bearluxury.CreditCard;
-import org.bearluxury.CreditCardPayment;
-import org.bearluxury.Payment;
+import org.bearluxury.account.CreditCard;
+import org.bearluxury.shop.CreditCardPayment;
+import org.bearluxury.shop.Payment;
 import org.bearluxury.account.Guest;
 
 import javax.swing.*;
