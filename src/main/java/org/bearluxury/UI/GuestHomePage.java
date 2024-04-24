@@ -1,7 +1,5 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.Role;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,7 +12,20 @@ public class GuestHomePage extends HotelHomePage {
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
         reserveButton.addActionListener(new openHotelManagmentPane());
-        JButton shopButton = shopButton = new JButton("Shop");
+
+        JButton billButton = new JButton("Check Bill");
+        billButton.setFont(font);
+        billButton.setForeground(Color.BLACK);
+        billButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                HotelManagementSystem.openBillingPage();
+            }
+        });
+
+
+        JButton shopButton = new JButton("Shop");
         shopButton.setFont(font);
         shopButton.setForeground(Color.BLACK);
         shopButton.addActionListener(new ActionListener() {
@@ -24,8 +35,10 @@ public class GuestHomePage extends HotelHomePage {
                 HotelManagementSystem.openShopHomePage();
             }
         });
+
         reservePanel.add(reserveButton);
         reservePanel.add(shopButton);
+        reservePanel.add(billButton);
     }
     private class openHotelManagmentPane implements ActionListener {
 

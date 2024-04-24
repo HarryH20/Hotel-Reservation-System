@@ -67,6 +67,9 @@ public class HotelManagementSystem  {
         ShopHomePage shopHomePage = new ShopHomePage(productCatalog);
         shopHomePage.setVisible(true);
     }
+    public static void openBillingPage() {
+        BillingPage billPage = new BillingPage();
+    }
 
     public static void main(String[] args) {
         FlatRobotoFont.install();
