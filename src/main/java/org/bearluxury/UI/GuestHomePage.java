@@ -28,6 +28,7 @@ public class GuestHomePage extends HotelHomePage {
         shopButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                // check to see if the user's reservation is today
                 if(isValidDateForShop()) {
                     dispose();
                     HotelManagementSystem.openShopHomePage();
@@ -53,10 +54,12 @@ public class GuestHomePage extends HotelHomePage {
 
         ReservationController rc = new ReservationController(new ReservationJDBCDAO());
         Set<Reservation> reservationSet = rc.listReservations(accountId);
+        // create a new data with today's date instance
         Date today = new Date();
 
         boolean isValid = false;
 
+        // checks for all the user's reservations if any are today
         for(Reservation r : reservationSet) {
             if (!(today.before(r.getStartDate()) || today.after(r.getEndDate()))) {
                 isValid = true;
