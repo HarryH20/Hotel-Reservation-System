@@ -54,7 +54,6 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         setTitle("Shop Home");
         setSize(1280, 720);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Style.backgroundColor);
 
         this.productController = productController;
@@ -203,6 +202,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
             checkoutDialog.setVisible(true);
         }
         if(e.getSource() == backButton){
+            dispose();
             HotelManagementSystem.openGuestHomePage();
         }
     }

@@ -47,7 +47,7 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
 
                 stmt.executeUpdate(createTableSQL);
             } else {
-                System.out.println("Employee table already exists.");
+                System.out.println("Room table already exists.");
             }
 
         } catch (SQLException e) {

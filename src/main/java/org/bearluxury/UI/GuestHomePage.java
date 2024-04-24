@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.account.Guest;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;

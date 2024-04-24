@@ -4,6 +4,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.Guest;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.AccountController;
 import org.bearluxury.controllers.ProductController;
@@ -15,6 +16,7 @@ import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
 
 import org.bearluxury.room.RoomJDBCDAO;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -101,9 +103,7 @@ public class HotelManagementSystem  {
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
         AccountController controller = new AccountController(new AccountJDBCDAO());
-
         openLoginPage();
-
     }
 
 
