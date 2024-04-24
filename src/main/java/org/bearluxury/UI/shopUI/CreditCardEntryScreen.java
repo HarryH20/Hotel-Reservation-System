@@ -81,9 +81,15 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
             String cardholderName = cardholderNameField.getText();
 
             CreditCard tempCard = new CreditCard(cardNumber, cardholderName,expirationDate, cvv);
-            if (!card.equals(tempCard)) {
-                card = tempCard;
+
+            if (this.card != null) {
+                if (!this.card.equals(tempCard)) {
+                    this.card = tempCard;
+                }
+            } else {
+                this.card = tempCard;
             }
+
             Payment payment = new CreditCardPayment(this.charge, this.card);
             if (payment.processPayment()) {
                 System.out.println("payment successful");
