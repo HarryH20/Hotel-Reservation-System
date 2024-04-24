@@ -6,6 +6,7 @@ import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -150,7 +151,8 @@ class CheckInAction implements ActionListener{
                             formatter.format(res.getEndDate()),
                             res.isCheckedIn()
                     });
-                    JOptionPane.showMessageDialog(null, "Reservation updated");
+                    JOptionPane.showMessageDialog(null,  res.getFirstName() + " " +
+                            res.getLastName() + " has successfully checked in");
                 }
 
             }

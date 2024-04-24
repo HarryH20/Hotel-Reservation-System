@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.account.Account;
 import org.bearluxury.account.Guest;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ReservationController;
@@ -59,6 +60,8 @@ public class GuestHomePage extends HotelHomePage {
         Date today = new Date();
 
         boolean isValid = false;
+
+
 
         // checks for all the user's reservations if any are today
         for(Reservation r : reservationSet) {
