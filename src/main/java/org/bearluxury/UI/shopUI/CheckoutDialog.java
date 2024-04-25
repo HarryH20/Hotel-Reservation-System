@@ -7,6 +7,7 @@ import org.bearluxury.controllers.SaleController;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductJDBCDAO;
 import org.bearluxury.shop.Sale;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -137,7 +138,9 @@ public class CheckoutDialog extends JDialog implements ActionListener {
                     int quantity = entry.getValue();
                     // Decrease the quantity of the product in the database
                     productController.removeStock(product.getId(), quantity);
-                    controller.insertSale(new Sale(new Date(),product.getName(),product.getPrice(),product.getQuantity()));
+                    Sale sale = new Sale(new Date(),product.getName(),product.getPrice(),product.getQuantity());
+                    sale.setAccountId(SessionManager.getInstance().getCurrentAccount().getId());
+                    controller.insertSale(sale);
 
                 }
                 // Close the dialog
