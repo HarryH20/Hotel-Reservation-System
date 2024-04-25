@@ -1,14 +1,15 @@
 package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.Product;
+import org.bearluxury.product.ProductJDBCDAO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class CheckoutDialog extends JDialog implements ActionListener {
@@ -43,7 +44,6 @@ public class CheckoutDialog extends JDialog implements ActionListener {
 
     public CheckoutDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
         super(parent, "Checkout", true);
-        //setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
         setLocationRelativeTo(parent);
         setSize(400, 600);
 
@@ -112,6 +112,7 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         purchasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         purchaseButton = new JButton("Confirm purchase");
         purchaseButton.setPreferredSize(new Dimension(200, 30));
+        purchaseButton.addActionListener(this); // Add ActionListener to the purchaseButton
         purchasePanel.add(purchaseButton);
 
         add(cartPanel, BorderLayout.NORTH);
@@ -122,9 +123,23 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {
-            //ADD DATABASE STUFF HERE
-
-
+            // Update database quantities
+            ProductController productController = null;
+            try {
+                productController = new ProductController(new ProductJDBCDAO());
+                for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
+                    Product product = entry.getKey();
+                    int quantity = entry.getValue();
+                    // Decrease the quantity of the product in the database
+                    productController.removeStock(product.getId(), quantity);
+                }
+                // Close the dialog
+                dispose();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
         }
     }
 }
+
