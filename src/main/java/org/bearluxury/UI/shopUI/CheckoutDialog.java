@@ -1,15 +1,19 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.Billing.SaleJDBCDAO;
 import org.bearluxury.controllers.ProductController;
+import org.bearluxury.controllers.SaleController;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductJDBCDAO;
+import org.bearluxury.shop.Sale;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Map;
 
 public class CheckoutDialog extends JDialog implements ActionListener {
@@ -127,11 +131,13 @@ public class CheckoutDialog extends JDialog implements ActionListener {
             ProductController productController = null;
             try {
                 productController = new ProductController(new ProductJDBCDAO());
+                SaleController controller = new SaleController(new SaleJDBCDAO());
                 for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
                     Product product = entry.getKey();
                     int quantity = entry.getValue();
                     // Decrease the quantity of the product in the database
                     productController.removeStock(product.getId(), quantity);
+                    controller.insertSale(new Sale(new Date(),product.getName(),product.getPrice(),product.getQuantity()));
 
                 }
                 // Close the dialog

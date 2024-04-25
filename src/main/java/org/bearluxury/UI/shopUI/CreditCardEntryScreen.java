@@ -97,8 +97,8 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
                 this.card = tempCard;
             }
 
-            Payment payment = new CreditCardPayment(this.charge, this.card);
-            ShopHomePage.makePayment(payment, guest);
+//            Payment payment = new CreditCardPayment(this.charge, this.card);
+//            ShopHomePage.makePayment(payment, guest);
         }
     }
     public CreditCard getCard() {

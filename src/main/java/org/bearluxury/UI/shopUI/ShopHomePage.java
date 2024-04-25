@@ -1,6 +1,10 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.UI.shopUI.CheckoutDialog;
+import org.bearluxury.UI.HotelManagementSystem;
+import org.bearluxury.UI.Style;
+import org.bearluxury.UI.shopUI.ProductCard;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.Product;

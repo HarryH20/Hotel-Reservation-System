@@ -7,22 +7,25 @@ import java.util.Date;
 import java.util.List;
 
 public class Sale {
-    private static int lastSaleId = 0; // Static variable to track the last assigned sale ID
     private int saleId;
     private int accountId;
     private Date saleDate;
     private String productName;
     private double price;
-    private boolean isPaid;
+    //private boolean isPaid;
 
     private int quantity;
 
     // Constructor
-    public Sale() {
-        this.saleId = ++lastSaleId; // Increment the last assigned sale ID and assign it to the current sale
-        this.saleDate = new Date(); // Current date and time
-        this.price = 0.0;
+
+    public Sale(){}
+    public Sale(Date saleDate, String productName, double price, int quantity) {
+        this.saleDate = saleDate;
+        this.productName = productName;
+        this.price = price;
+        this.quantity = quantity;
     }
+
 
 //    // Method to add a product to the sale
 //    public void addProduct(SaleLineItem lineItem) {
@@ -45,19 +48,6 @@ public class Sale {
         return saleDate;
     }
 
-
-    public void setIsPaid() {
-        this.isPaid = true;
-    }
-
-    public static int getLastSaleId() {
-        return lastSaleId;
-    }
-
-    public static void setLastSaleId(int lastSaleId) {
-        Sale.lastSaleId = lastSaleId;
-    }
-
     public void setSaleId(int saleId) {
         this.saleId = saleId;
     }
@@ -70,13 +60,6 @@ public class Sale {
         this.price = price;
     }
 
-    public boolean isPaid() {
-        return isPaid;
-    }
-
-    public void setPaid(boolean paid) {
-        isPaid = paid;
-    }
 
     public int getAccountId() {
         return accountId;

@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import org.bearluxury.UI.shopUI.ShopHomePage;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
