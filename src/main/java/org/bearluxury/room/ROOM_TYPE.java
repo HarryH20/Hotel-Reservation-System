@@ -5,6 +5,12 @@ public enum ROOM_TYPE{
     URBAN,
     NATURE;
 
+    /**
+     * Converts a room type enum to a string
+     * and overrides the toString method
+     * @return room type enum
+     */
+
     public String toString(){
         if(this == VINTAGE){
             return "Vintage Charm";
@@ -17,6 +23,11 @@ public enum ROOM_TYPE{
         }
         return "EMPTY";
     }
+
+    /**
+     * converts a room type enum to a string
+     * @return string
+     */
     public String csvFormat(){
         if(this == VINTAGE){
             return "vintage";
