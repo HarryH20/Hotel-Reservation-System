@@ -9,6 +9,8 @@ import org.bearluxury.account.CreditCard;
 import org.bearluxury.account.Guest;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductCatalog;
+import org.bearluxury.shop.Payment;
+import org.bearluxury.shop.Sale;
 import org.bearluxury.shop.Shop;
 import org.bearluxury.state.SessionManager;
 
@@ -226,22 +228,25 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     }
 
     static public void openCreditCardEntryScreen(Map<Product, Integer> cart, double cost) {
-        //this is weird
-
         Account currentAccount = SessionManager.getInstance().getCurrentAccount();
         if (currentAccount instanceof Guest guest) {
             // Proceed with using the guest object
             CreditCardEntryScreen creditCardEntryScreen = new CreditCardEntryScreen(guest, cost, cart);
             //this.card = CreditCardEntryScreen.getCard();
             //getCard(creditCardEntryScreen);
-            creditCardEntryScreen.setLocationRelativeTo(this);
+            creditCardEntryScreen.setLocationRelativeTo(null);
             creditCardEntryScreen.setVisible(true);
+        }
+    }
 
+    static public void makePayment(Payment payment, Guest guest) {
+        Sale sale;
+        if (payment.processPayment()) {
+            System.out.println("payment successful");
+            sale = new Sale();
 
         } else {
-            // Handle the case where the current account is not a Guest
-            // For example, display an error message or perform a different action
-            JOptionPane.showMessageDialog(this, "Current account is not a Guest.");
+            System.out.println("payment unsuccessful");
         }
     }
 

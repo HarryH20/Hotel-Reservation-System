@@ -98,13 +98,7 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
             }
 
             Payment payment = new CreditCardPayment(this.charge, this.card);
-            if (payment.processPayment()) {
-                System.out.println("payment successful");
-                sale = new Sale();
-
-            } else {
-                System.out.println("payment unsuccessful");
-            }
+            ShopHomePage.makePayment(payment, guest);
         }
     }
     public CreditCard getCard() {
