@@ -1,6 +1,7 @@
 package org.bearluxury.UI;
 
 import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.Bill;
 import org.bearluxury.controllers.AccountController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
@@ -120,19 +121,22 @@ class CheckInAction implements ActionListener{
         ReservationController controller = new ReservationController(new ReservationJDBCDAO());
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
 
-
         if(selectedRow != -1) {
             Reservation res = controller.
                     getReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString())).
                     orElseThrow(() -> new NoSuchElementException("Reservation Doesn't exist"));
+
             LocalDate currentDate = LocalDate.now();
+
             LocalDate reservationStartDate = Instant.ofEpochMilli(res.getStartDate().getTime())
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate();
+
             if(reservationStartDate.equals(currentDate)) {
                 if(res.isCheckedIn()){
                     JOptionPane.showMessageDialog(null, "You are already checked in!");
                 }
+
                 else{
                     res.setCheckedIn(true);
                     controller.updateReservationByReservationId(res, res.getReservationID());
@@ -151,6 +155,7 @@ class CheckInAction implements ActionListener{
                             formatter.format(res.getEndDate()),
                             res.isCheckedIn()
                     });
+
                     JOptionPane.showMessageDialog(null,  res.getFirstName() + " " +
                             res.getLastName() + " has successfully checked in");
                 }

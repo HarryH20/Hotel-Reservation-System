@@ -12,11 +12,8 @@ public class Sale {
     private Date saleDate;
     private String productName;
     private double price;
-    //private boolean isPaid;
-
     private int quantity;
 
-    // Constructor
 
     public Sale(){}
     public Sale(Date saleDate, String productName, double price, int quantity) {

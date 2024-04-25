@@ -1,11 +1,18 @@
 package org.bearluxury.UI;
 
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.ReservationController;
+import org.bearluxury.reservation.Reservation;
+import org.bearluxury.reservation.ReservationCatalog;
+import org.bearluxury.reservation.ReservationJDBCDAO;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+import java.util.Set;
 
 //FIXME: NEED TO MAKE HOTELHOMEPAGE GENERIC
 public class GuestHomePage extends HotelHomePage {
@@ -51,6 +58,7 @@ public class GuestHomePage extends HotelHomePage {
         seeReservations.setForeground(Color.BLACK);
         seeReservations.addActionListener(new GuestHomePage.openViewReservationPane());
 
+        reservePanel.add(billButton);
         reservePanel.add(reserveButton);
         reservePanel.add(shopButton);
         reservePanel.add(seeReservations);

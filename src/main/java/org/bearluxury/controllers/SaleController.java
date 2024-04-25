@@ -22,14 +22,13 @@ public class SaleController {
         }
     }
 
-
-
     public Set<Sale> listSale() {
         return saleDAO.list();
     }
 
-
-
+    public Set<Sale> listSale(int acctId) {
+        return saleDAO.listSalesByAccountId(acctId);
+    }
     public void clearReservation() {
         saleDAO.clear();
     }

@@ -111,4 +111,27 @@ public class SaleJDBCDAO implements DAO<Sale> {
         }
     }
 
+    public Set<Sale> listSalesByAccountId(int accountId) {
+        Set<Sale> sales = new TreeSet<>(Comparator.comparing(Sale::getSaleId));
+        String query = "SELECT * FROM sale WHERE acctId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, accountId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    Sale sale = new Sale();
+                    sale.setSaleId(rs.getInt("id"));
+                    sale.setAccountId(rs.getInt("acctId"));
+                    sale.setProductName(rs.getString("productName"));
+                    sale.setPrice(rs.getDouble("price"));
+                    sale.setQuantity(rs.getInt("quantity"));
+                    sales.add(sale);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sales;
+    }
+
+
 }

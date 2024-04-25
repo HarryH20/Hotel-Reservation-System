@@ -5,14 +5,14 @@ import org.bearluxury.reservation.Reservation;
 import java.util.ArrayList;
 
 public class Guest extends Account{
-    ArrayList<Reservation> reservationList;
     CreditCard card;
     Billing bill;
 
     public Guest(String firstName, String lastName, String userName,
-                 String email, long phoneNumber, String password, Role role) {
+                 String email, long phoneNumber, String password, Role role, CreditCard card) {
         super(firstName, lastName, userName, email, phoneNumber, password, role);
-        reservationList = new ArrayList<>();
+        this.card = card;
+
     }
 
     public void setCreditCard (CreditCard card) {
