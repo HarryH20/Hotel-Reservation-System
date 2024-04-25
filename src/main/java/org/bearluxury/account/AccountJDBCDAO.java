@@ -10,7 +10,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/account1";
+    private static String JDBC_URL = "jdbc:h2:~/account25";
 
     public AccountJDBCDAO() {
         try {
@@ -46,7 +46,7 @@ public class AccountJDBCDAO implements DAO<Account>, AccountDAO<Account> {
 
                 stmt.executeUpdate(createTableSQL);
             } else {
-                System.out.println("Employee table already exists.");
+                System.out.println("Account Table Already Exists.");
             }
 
         } catch (SQLException e) {

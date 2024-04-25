@@ -63,7 +63,7 @@ public class BookedReservationsGUI extends JFrame {
     }
 
     private DefaultTableModel createTableModel() {
-        String[] columnNames = {"Account ID", "Reservation ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date"};
+        String[] columnNames = {"Account ID", "Reservation ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date" ,"Checked In"};
         return new DefaultTableModel(columnNames, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -129,7 +129,7 @@ public class BookedReservationsGUI extends JFrame {
     }
 
 
-    private void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
+    public void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
         List<Reservation> reservations = unsortedReservations.stream().
                 sorted(Comparator.comparing(Reservation::getFirstName).
                         thenComparing(Reservation::getRoomNumber)).
@@ -145,14 +145,15 @@ public class BookedReservationsGUI extends JFrame {
                         controller.getAccount(reservation.getEmail()).
                                 orElseThrow(()-> new NoSuchElementException("Account not found")).
                                 getId(),
-                        reservation.getId(),
+                        reservation.getReservationID(),
                         reservation.getRoomNumber(),
                         reservation.getFirstName(),
                         reservation.getLastName(),
                         reservation.getEmail(),
                         reservation.getNumberOfGuests(),
                         formatter.format(reservation.getStartDate()),
-                        formatter.format(reservation.getEndDate())
+                        formatter.format(reservation.getEndDate()),
+                        reservation.isCheckedIn()
                 }));
     }
 

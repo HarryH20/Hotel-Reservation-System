@@ -90,9 +90,11 @@ public class EditReservationPane extends JFrame{
                         toChange.getEmail(),
                         Integer.parseInt(guestNumber.getValue().toString()),
                         java.sql.Date.valueOf(startDate),
-                        java.sql.Date.valueOf(endDate));
+                        java.sql.Date.valueOf(endDate),toChange.isCheckedIn());
 
-                controller.updateRoom(res,toChange.getId());
+
+                res.setReservationID(toChange.getReservationID());
+                controller.updateReservationByReservationId(res,toChange.getReservationID());
 
 
                 model.removeRow(table.getSelectedRow());
@@ -101,13 +103,15 @@ public class EditReservationPane extends JFrame{
                         new AccountController(new AccountJDBCDAO()).getAccount(res.getEmail()).
                                 orElseThrow(()-> new NoSuchElementException("No active accounts with reservations")).
                                 getId(),
+                        res.getReservationID(),
                         res.getRoomNumber(),
                         res.getFirstName(),
                         res.getLastName(),
                         res.getEmail(),
                         res.getNumberOfGuests(),
                         formatter.format(res.getStartDate()),
-                        formatter.format(res.getEndDate())
+                        formatter.format(res.getEndDate()),
+                        res.isCheckedIn()
                 });
                 JOptionPane.showMessageDialog(null, "Reservation updated");
                 dispose();
