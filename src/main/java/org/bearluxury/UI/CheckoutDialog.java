@@ -132,6 +132,7 @@ public class CheckoutDialog extends JDialog implements ActionListener {
                     int quantity = entry.getValue();
                     // Decrease the quantity of the product in the database
                     productController.removeStock(product.getId(), quantity);
+
                 }
                 // Close the dialog
                 dispose();
