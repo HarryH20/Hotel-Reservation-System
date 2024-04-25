@@ -10,8 +10,9 @@ public class Sale {
     private static int lastSaleId = 0; // Static variable to track the last assigned sale ID
     private int saleId;
     private Date saleDate;
-    private List<Product> productsSold;
+    private List<SaleLineItem> productsSold;
     private double totalPrice;
+    private boolean isPaid;
 
     // Constructor
     public Sale() {
@@ -22,9 +23,9 @@ public class Sale {
     }
 
     // Method to add a product to the sale
-    public void addProduct(Product product) {
-        productsSold.add(product);
-        totalPrice += product.getPrice();
+    public void addProduct(SaleLineItem lineItem) {
+        productsSold.add(lineItem);
+        //totalPrice += lineItem.getPrice();
     }
 
     // Method to remove a product from the sale
@@ -42,11 +43,15 @@ public class Sale {
         return saleDate;
     }
 
-    public List<Product> getProductsSold() {
+    public List<SaleLineItem> getProductsSold() {
         return productsSold;
     }
 
     public double getTotalPrice() {
         return totalPrice;
+    }
+
+    public void setIsPaid() {
+        this.isPaid = true;
     }
 }

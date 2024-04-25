@@ -2,11 +2,15 @@ package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import org.bearluxury.UI.HotelManagementSystem;
-import org.bearluxury.UI.ProductCard;
 import org.bearluxury.UI.Style;
 
+import org.bearluxury.account.Account;
+import org.bearluxury.account.CreditCard;
+import org.bearluxury.account.Guest;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductCatalog;
+import org.bearluxury.shop.Shop;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -23,6 +27,7 @@ import java.util.List;
  */
 public class ShopHomePage extends JFrame implements ActionListener, ListSelectionListener {
 
+    Shop shop;
     ProductCatalog productCatalog;
 
     JPanel sideBar;
@@ -51,14 +56,16 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     JLabel totalPriceNumber;
     double totalPrice;
     JButton checkoutButton;
-    public ShopHomePage(ProductCatalog productCatalog) {
+    public ShopHomePage(Shop shop) {
+        this.shop = shop;
+
         setTitle("Shop Home");
         setSize(1280, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Style.backgroundColor);
 
-        this.productCatalog = productCatalog;
+        this.productCatalog = shop.getProductCatalog();
 
         sideBar = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
         sideBar.setPreferredSize(new Dimension(230, this.getHeight()));
@@ -205,11 +212,36 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
             }
             reloadProductCards(productFilter);
         } else if (e.getSource() == checkoutButton) {
-            CheckoutDialog checkoutDialog = new CheckoutDialog(this, cartInventory, totalPrice);
-            checkoutDialog.setVisible(true);
+            openCheckDialog(this, cartInventory, totalPrice);
         }
         if(e.getSource() == backButton){
             HotelManagementSystem.openGuestHomePage();
+        }
+    }
+
+    public void openCheckDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
+        CheckoutDialog checkoutDialog = new CheckoutDialog(parent, cart, totalPrice);
+        //checkoutDialog.getCard();
+        checkoutDialog.setVisible(true);
+    }
+
+    static public void openCreditCardEntryScreen(Map<Product, Integer> cart, double cost) {
+        //this is weird
+
+        Account currentAccount = SessionManager.getInstance().getCurrentAccount();
+        if (currentAccount instanceof Guest guest) {
+            // Proceed with using the guest object
+            CreditCardEntryScreen creditCardEntryScreen = new CreditCardEntryScreen(guest, cost, cart);
+            //this.card = CreditCardEntryScreen.getCard();
+            //getCard(creditCardEntryScreen);
+            creditCardEntryScreen.setLocationRelativeTo(this);
+            creditCardEntryScreen.setVisible(true);
+
+
+        } else {
+            // Handle the case where the current account is not a Guest
+            // For example, display an error message or perform a different action
+            JOptionPane.showMessageDialog(this, "Current account is not a Guest.");
         }
     }
 

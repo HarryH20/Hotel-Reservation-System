@@ -8,6 +8,7 @@ import org.bearluxury.product.ProductBuilder;
 import org.bearluxury.product.ProductCatalog;
 import org.bearluxury.room.RoomCatalog;
 import org.bearluxury.room.RoomJDBCDAO;
+import org.bearluxury.shop.Shop;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +65,8 @@ public class HotelManagementSystem  {
         ProductBuilder productBuilder = new ProductBuilder("src/main/resources/ProductList.csv");
         ProductCatalog productCatalog = new ProductCatalog();
         productCatalog.setProducts(productBuilder.getProductList());
-        ShopHomePage shopHomePage = new ShopHomePage(productCatalog);
+        //ShopHomePage shopHomePage = new ShopHomePage(productCatalog);
+        ShopHomePage shopHomePage = new ShopHomePage(new Shop(productCatalog));
         shopHomePage.setVisible(true);
     }
     public static void openBillingPage() {

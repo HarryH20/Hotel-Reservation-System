@@ -2,6 +2,7 @@ package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import org.bearluxury.account.Account;
+import org.bearluxury.account.CreditCard;
 import org.bearluxury.account.Guest;
 import org.bearluxury.product.Product;
 import org.bearluxury.state.SessionManager;
@@ -42,7 +43,10 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     JLabel overallTotalAmountLabel;
     double overallTotalCost;
 
-    JButton purchaseButton;
+    private JButton purchaseButton;
+    private JButton putOnTabButton;
+
+    private CreditCard card;
 
     public CheckoutDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
         super(parent, "Checkout", true);
@@ -115,8 +119,12 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         purchasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         purchaseButton = new JButton("Confirm purchase");
         purchaseButton.addActionListener(this);
-        purchaseButton.setPreferredSize(new Dimension(200, 30));
+        purchasePanel.setPreferredSize(new Dimension(400, 50));
         purchasePanel.add(purchaseButton);
+
+        putOnTabButton = new JButton("Put on Tab");
+        putOnTabButton.addActionListener(this);
+        purchasePanel.add(putOnTabButton); // Add the button to the purchase pan
 
         add(cartPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
@@ -126,24 +134,21 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {
-            // Open credit card entry screen
-            openCreditCardEntryScreen();
+            ShopHomePage.openCreditCardEntryScreen(cart, overallTotalCost);
+        } else if (e.getSource() == putOnTabButton) {
+            // Handle putting the purchase on the tab
+            putOnTab();
         }
     }
 
-    private void openCreditCardEntryScreen() {
-        //this is weird
-        Account currentAccount = SessionManager.getInstance().getCurrentAccount();
-        if (currentAccount instanceof Guest guest) {
-            // Proceed with using the guest object
-            CreditCardEntryScreen creditCardEntryScreen = new CreditCardEntryScreen(guest, overallTotalCost);
-            creditCardEntryScreen.setLocationRelativeTo(this);
-            creditCardEntryScreen.setVisible(true);
-        } else {
-            // Handle the case where the current account is not a Guest
-            // For example, display an error message or perform a different action
-            JOptionPane.showMessageDialog(this, "Current account is not a Guest.");
-        }
+    private void putOnTab() {
+        System.out.println("put on tab");
+    }
+
+
+    public CreditCard getCard(CreditCardEntryScreen creditCardEntryScreen) {
+        this.card = creditCardEntryScreen.getCard();
+        return this.card;
     }
 }
 

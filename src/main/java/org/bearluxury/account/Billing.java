@@ -2,6 +2,7 @@ package org.bearluxury.account;
 
 import org.bearluxury.shop.Payment;
 import org.bearluxury.reservation.Reservation;
+import org.bearluxury.shop.Sale;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ public class Billing {
     int accountNumber;
     private List<Reservation> reservations;
     //FIXME: Need to make a sale class
-    //private List<Sale> sales;
+    private List<Sale> sales;
 
     public Billing() {
         this.reservations = new ArrayList<>();
