@@ -1,18 +1,15 @@
-package org.bearluxury.UI.shopUI;
+package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import org.bearluxury.account.Account;
-import org.bearluxury.account.CreditCard;
-import org.bearluxury.account.Guest;
+import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.Product;
-import org.bearluxury.state.SessionManager;
+import org.bearluxury.product.ProductJDBCDAO;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 import java.util.Map;
 
 public class CheckoutDialog extends JDialog implements ActionListener {
@@ -43,14 +40,10 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     JLabel overallTotalAmountLabel;
     double overallTotalCost;
 
-    private JButton purchaseButton;
-    private JButton putOnTabButton;
-
-    private CreditCard card;
+    JButton purchaseButton;
 
     public CheckoutDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
         super(parent, "Checkout", true);
-        //setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
         setLocationRelativeTo(parent);
         setSize(400, 600);
 
@@ -118,13 +111,9 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         // Checkout panel
         purchasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         purchaseButton = new JButton("Confirm purchase");
-        purchaseButton.addActionListener(this);
-        purchasePanel.setPreferredSize(new Dimension(400, 50));
+        purchaseButton.setPreferredSize(new Dimension(200, 30));
+        purchaseButton.addActionListener(this); // Add ActionListener to the purchaseButton
         purchasePanel.add(purchaseButton);
-
-        putOnTabButton = new JButton("Put on Tab");
-        putOnTabButton.addActionListener(this);
-        purchasePanel.add(putOnTabButton); // Add the button to the purchase pan
 
         add(cartPanel, BorderLayout.NORTH);
         add(centerPanel, BorderLayout.CENTER);
@@ -134,21 +123,24 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {
-            ShopHomePage.openCreditCardEntryScreen(cart, overallTotalCost);
-        } else if (e.getSource() == putOnTabButton) {
-            // Handle putting the purchase on the tab
-            putOnTab();
+            // Update database quantities
+            ProductController productController = null;
+            try {
+                productController = new ProductController(new ProductJDBCDAO());
+                for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
+                    Product product = entry.getKey();
+                    int quantity = entry.getValue();
+                    // Decrease the quantity of the product in the database
+                    productController.removeStock(product.getId(), quantity);
+
+                }
+                // Close the dialog
+                dispose();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
         }
-    }
-
-    private void putOnTab() {
-        System.out.println("put on tab");
-    }
-
-
-    public CreditCard getCard(CreditCardEntryScreen creditCardEntryScreen) {
-        this.card = creditCardEntryScreen.getCard();
-        return this.card;
     }
 }
 

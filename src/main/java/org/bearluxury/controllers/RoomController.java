@@ -29,7 +29,7 @@ public class RoomController {
     }
     private void preFillRooms() throws SQLException {
         RoomBuilder builder = new RoomBuilder("src/main/resources/RoomList.csv");
-        for(Room room : builder.getRoomList()){
+        for(Room room : builder.getRoomSet()){
             Optional<Room> existingRoom = roomDAO.get(room.getRoomNumber());
 
             if (existingRoom.isPresent()) {

@@ -1,18 +1,10 @@
-package org.bearluxury.UI.shopUI;
+package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import org.bearluxury.UI.HotelManagementSystem;
-import org.bearluxury.UI.Style;
-
-import org.bearluxury.account.Account;
-import org.bearluxury.account.CreditCard;
-import org.bearluxury.account.Guest;
+import org.bearluxury.account.Role;
+import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductCatalog;
-import org.bearluxury.shop.Payment;
-import org.bearluxury.shop.Sale;
-import org.bearluxury.shop.Shop;
-import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -20,6 +12,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 
@@ -29,8 +22,7 @@ import java.util.List;
  */
 public class ShopHomePage extends JFrame implements ActionListener, ListSelectionListener {
 
-    Shop shop;
-    ProductCatalog productCatalog;
+    ProductController productController;
 
     JPanel sideBar;
     JPanel itemPanel;
@@ -58,23 +50,21 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     JLabel totalPriceNumber;
     double totalPrice;
     JButton checkoutButton;
-    public ShopHomePage(Shop shop) {
-        this.shop = shop;
-
+    public ShopHomePage(ProductController productController) {
         setTitle("Shop Home");
         setSize(1280, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Style.backgroundColor);
 
-        this.productCatalog = shop.getProductCatalog();
+        this.productController = productController;
 
         sideBar = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
         sideBar.setPreferredSize(new Dimension(230, this.getHeight()));
 
         itemPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 20));
         itemPanel.setBackground(Style.backgroundColor);
-        itemPanel.setPreferredSize(new Dimension(0, 150 * (this.productCatalog.getProducts().size() / 3)));
+        itemPanel.setPreferredSize(new Dimension(0, 150 * (this.productController.listProducts().size() / 3)));
 
         checkoutPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
         checkoutPanel.setPreferredSize(new Dimension(180, this.getHeight()));
@@ -145,24 +135,19 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
 
     private void initProductCards() {
         productCards = new ArrayList<>();
-        // Create product cards from product catalog
-        productCatalog.getProducts().forEach(product -> productCards.add(new ProductCard(product, this)));
+        // Retrieve products from the database
+        productController.listProducts().forEach(product -> productCards.add(new ProductCard(product, this)));
         // Add cards to panel
-        productCards.forEach(productCard -> itemPanel.add(productCard));
+        productCards.forEach(itemPanel::add);
     }
 
     private void reloadProductCards(String filter) {
         itemPanel.removeAll();
-        // Re-add products to panel if it matches the filter
-        if (!filter.equals("All items")) {
-            productCards.forEach(productCard -> {
-                if (productCard.getProduct().getProductType().toString().equalsIgnoreCase(filter)) {
-                    itemPanel.add(productCard);
-                }
-            });
-        } else {
-            productCards.forEach(productCard -> itemPanel.add(productCard));
-        }
+        // Retrieve products from the database based on the filter
+        productController.listProducts().stream()
+                .filter(product -> filter.equals("All items") || product.getProductType().toString().equalsIgnoreCase(filter))
+                .map(product -> new ProductCard(product, this))
+                .forEach(itemPanel::add);
         productScrollPane.revalidate();
         productScrollPane.repaint();
     }
@@ -214,39 +199,11 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
             }
             reloadProductCards(productFilter);
         } else if (e.getSource() == checkoutButton) {
-            openCheckDialog(this, cartInventory, totalPrice);
+            CheckoutDialog checkoutDialog = new CheckoutDialog(this, cartInventory, totalPrice);
+            checkoutDialog.setVisible(true);
         }
         if(e.getSource() == backButton){
             HotelManagementSystem.openGuestHomePage();
-        }
-    }
-
-    public void openCheckDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
-        CheckoutDialog checkoutDialog = new CheckoutDialog(parent, cart, totalPrice);
-        //checkoutDialog.getCard();
-        checkoutDialog.setVisible(true);
-    }
-
-    static public void openCreditCardEntryScreen(Map<Product, Integer> cart, double cost) {
-        Account currentAccount = SessionManager.getInstance().getCurrentAccount();
-        if (currentAccount instanceof Guest guest) {
-            // Proceed with using the guest object
-            CreditCardEntryScreen creditCardEntryScreen = new CreditCardEntryScreen(guest, cost, cart);
-            //this.card = CreditCardEntryScreen.getCard();
-            //getCard(creditCardEntryScreen);
-            creditCardEntryScreen.setLocationRelativeTo(null);
-            creditCardEntryScreen.setVisible(true);
-        }
-    }
-
-    static public void makePayment(Payment payment, Guest guest) {
-        Sale sale;
-        if (payment.processPayment()) {
-            System.out.println("payment successful");
-            sale = new Sale();
-
-        } else {
-            System.out.println("payment unsuccessful");
         }
     }
 
