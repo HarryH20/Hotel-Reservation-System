@@ -1,13 +1,11 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.account.Bill;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.account.ClerkAccountDAO;
+import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
-import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,12 +13,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -142,7 +138,7 @@ class CheckInAction implements ActionListener{
                     controller.updateReservationByReservationId(res, res.getReservationID());
                     model.removeRow(selectedRow);
                     model.addRow(new Object[]{
-                            new AccountController(new AccountJDBCDAO()).getAccount(res.getEmail()).
+                            new ClerkAccountController(new ClerkAccountDAO()).getAccount(res.getEmail()).
                                     orElseThrow(()-> new NoSuchElementException("No active accounts with reservations")).
                                     getId(),
                             res.getReservationID(),

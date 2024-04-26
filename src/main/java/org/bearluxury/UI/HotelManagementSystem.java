@@ -3,11 +3,8 @@ package org.bearluxury.UI;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import org.bearluxury.UI.shopUI.ShopHomePage;
-import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.account.Guest;
-import org.bearluxury.account.Role;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.account.ClerkAccountDAO;
+import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.controllers.RoomController;
@@ -17,7 +14,6 @@ import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
 
 import org.bearluxury.room.RoomJDBCDAO;
-import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,7 +83,7 @@ public class HotelManagementSystem  {
         page.setVisible(true);
     }
 
-    /*public static void openRegisterPane() {
+    /*hpublic static void openRegisterPane() {
         RegisterPane register = new RegisterPane();
         register.setVisible(true);
     }*/
@@ -107,7 +103,7 @@ public class HotelManagementSystem  {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
-        AccountController controller = new AccountController(new AccountJDBCDAO());
+        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
         openLoginPage();
     }
 

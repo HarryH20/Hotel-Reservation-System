@@ -1,17 +1,16 @@
 package org.bearluxury.UI;
 
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountBuilder;
-import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.account.Role;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.controllers.ClerkAccountController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterPane extends JFrame {
+public class ClerkRegisterPain extends JFrame {
     private Container c;
     private JLabel title;
     private JButton submitButton;
@@ -22,7 +21,7 @@ public class RegisterPane extends JFrame {
     private JTextField phoneNumber;
     private JTextField password;
 
-    public RegisterPane() {
+    public ClerkRegisterPain() {
         setTitle("Clerk Registration");
         setBounds(300, 90, 500, 600);
         setResizable(false);
@@ -97,7 +96,7 @@ public class RegisterPane extends JFrame {
         passwordLbl.setFont(new Font("Arial", Font.PLAIN, 15));
         passwordLbl.setBounds(20, 60, 120, 20);
         accountInfoPanel.add(passwordLbl);
-        password = new JTextField();
+        password = new JTextField("defaultpassword");
         password.setFont(new Font("Arial", Font.PLAIN, 15));
         password.setBounds(170, 60, 190, 20);
         accountInfoPanel.add(password);
@@ -108,15 +107,14 @@ public class RegisterPane extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                saveAccountToCSV();
+                saveClerkToDatabase();
             }
         });
         add(submitButton);
     }
 
     //FIXME: SET ROLE TO GUEST
-    public void saveAccountToCSV() {
-        String csvFile = "src/main/resources/AccountList.csv";
+    public void saveClerkToDatabase() {
 
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();
@@ -125,7 +123,7 @@ public class RegisterPane extends JFrame {
         String guestUsername = userName.getText();
         String userPassword = password.getText();
         //FIXME
-        Role role = Role.GUEST;
+        Role role = Role.CLERK;
 
         if (userFirstName.isEmpty() || userLastName.isEmpty() || userPhone.isEmpty() ||
                 userEmail.isEmpty() || guestUsername.isEmpty() || userPassword.isEmpty()) {
@@ -134,7 +132,7 @@ public class RegisterPane extends JFrame {
         }
 
         try {
-            AccountController controller = new AccountController(new AccountJDBCDAO());
+            ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
             //FIXME
             controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
 
