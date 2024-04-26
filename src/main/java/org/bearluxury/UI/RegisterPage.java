@@ -1,14 +1,10 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.AccountBuilder;
-import org.bearluxury.account.Account;
+import org.bearluxury.account.*;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.account.Role;
 import org.bearluxury.controllers.AccountController;
-import org.bearluxury.account.PasswordSpecifier;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -39,6 +35,7 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JLabel emptyFirstNameLabel;
     private JLabel emptyLastNameLabel;
     private JLabel emptyEmailLabel;
+    private JLabel badEmailLabel;
     private JLabel emptyPhoneLabel;
     private JLabel emptyPasswordLabel;
     private JLabel badPasswordLabel;
@@ -108,6 +105,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         emptyLastNameLabel.setForeground(Color.red);
         emptyEmailLabel = new JLabel("Email address is required");
         emptyEmailLabel.setForeground(Color.red);
+        badEmailLabel = new JLabel("Email address not valid.");
+        badEmailLabel.setForeground(Color.red);
         emptyPhoneLabel = new JLabel("Phone number is required");
         emptyPhoneLabel.setForeground(Color.red);
         emptyPasswordLabel = new JLabel("Field cannot be empty");
@@ -186,16 +185,23 @@ public class RegisterPage extends JFrame implements ActionListener {
         } else {
             registerPanel.remove(emptyEmailLabel);
             registerPanel.remove(emailInUseLabel);
+            registerPanel.remove(badEmailLabel);
 
             // Check if email is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getEmail().equalsIgnoreCase(emailTextField.getText())) {
                     registerPanel.add(emailInUseLabel, 9 + addedComponentCount);
                     validCredentials = false;
+
                 }
             }
+            if(!EmailSpecifier.isValidEmail(emailTextField.getText())){
+                registerPanel.add(badEmailLabel, 9 + addedComponentCount);
+                validCredentials = false;
+                addedComponentCount++;
+            }
         }
-        if (phoneTextField.getText().isEmpty()) {
+        if (phoneTextField.getValue() == null) {
             registerPanel.add(emptyPhoneLabel, 11 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
@@ -205,8 +211,11 @@ public class RegisterPage extends JFrame implements ActionListener {
 
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
-                if (account.getPhoneNumber() == Long.parseLong(phoneTextField.getText().replaceAll("-",""))) {
+                if (account.getPhoneNumber() == Long
+                        .parseLong(String.valueOf(phoneTextField.getValue())
+                                .replaceAll("-",""))) {
                     registerPanel.add(phoneInUseLabel, 11 + addedComponentCount);
+                    addedComponentCount++;
                     validCredentials = false;
                 }
             }
