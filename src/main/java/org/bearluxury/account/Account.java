@@ -2,12 +2,15 @@ package org.bearluxury.account;
 
 public class Account {
     private String firstName;
+    private int id;
     private String lastName;
     private String userName;
     private String email;
     private long phoneNumber;
     private String password;
     private Role role;
+
+
 
     public Account(String firstName,
                    String lastName,
@@ -87,12 +90,21 @@ public class Account {
 
     @Override
     public String toString() {
-        return firstName            +
-                "," + lastName      +
-                "," + userName      +
-                "," + email         +
-                "," + phoneNumber   +
-                "," + password      +
+        return firstName +
+                "," + lastName +
+                "," + userName +
+                "," + email +
+                "," + phoneNumber +
+                "," + password +
                 '\n';
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 }
+

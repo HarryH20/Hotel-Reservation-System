@@ -7,6 +7,16 @@ public class Product {
     private int quantity;
     private PRODUCT_TYPE productType;
 
+    private int id;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public Product() {}
     public Product(String name, double price, int quantity, PRODUCT_TYPE productType) {
         this.name = name;

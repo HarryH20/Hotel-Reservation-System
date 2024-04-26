@@ -13,7 +13,7 @@ import java.util.*;
 public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:mem:roomdb";
+    private static String JDBC_URL = "jdbc:h2:~/room";
 
     public RoomJDBCDAO() {
         try {
@@ -83,7 +83,6 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         return rooms;
     }
 
-
     @Override
     public void insert(Room room) throws SQLException {
         String sql = "INSERT INTO rooms(roomNumber, price, canSmoke, roomType, bedType, qualityLevel, numberOfBeds) " +
@@ -101,6 +100,9 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         int rowsInserted = preparedStatement.executeUpdate();
         if (rowsInserted > 0) {
             System.out.println("A new room was inserted successfully!");
+        }
+        if(rowsInserted <= 0 ){
+            throw new SQLException();
         }
     }
 

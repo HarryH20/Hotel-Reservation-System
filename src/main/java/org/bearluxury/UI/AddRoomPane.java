@@ -85,7 +85,6 @@ public class AddRoomPane extends JFrame {
     }
 
     private void saveRoom(double priceSelection) {
-
         try {
             RoomController controller = new RoomController(new RoomJDBCDAO());
             controller.insertRoom(new Room(
@@ -98,11 +97,11 @@ public class AddRoomPane extends JFrame {
                     Integer.parseInt(bedNumber.getValue().toString())
 
             ));
-
             showConfirmationDialog();
-        }catch (Exception exc){
+        } catch (SQLException e) {
             showFailureDialog();
         }
+
     }
     private double getPriceSelection() {
         double priceSelection = 0;

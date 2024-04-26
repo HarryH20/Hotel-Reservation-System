@@ -1,11 +1,11 @@
 package org.bearluxury.reservation;
 
 
+import org.bearluxury.account.Account;
+import org.bearluxury.state.SessionManager;
+
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.*;
 
 public class Reservation {
     private int roomNumber;
@@ -15,7 +15,9 @@ public class Reservation {
     private int numberOfGuests;
     private Date startDate;
     private Date endDate;
+    private int id;
 
+    private int reservationID;
 
     public Reservation(){}
     public Reservation(int roomNumber, String firstName,
@@ -29,6 +31,7 @@ public class Reservation {
         this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
+
     }
 
     @Override
@@ -103,5 +106,34 @@ public class Reservation {
 
     public void setNumberOfGuests(int numberOfGuests) {
         this.numberOfGuests = numberOfGuests;
+    }
+    public void setID(int id){
+        this.id = id;
+    }
+    public int getId(){return id;}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Reservation that = (Reservation) o;
+        return id == that.id &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate) &&
+                roomNumber == that.roomNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, startDate, endDate, roomNumber);
+    }
+
+
+    public int getReservationID() {
+        return reservationID;
+    }
+
+    public void setReservationID(int reservationID) {
+        this.reservationID = reservationID;
     }
 }
