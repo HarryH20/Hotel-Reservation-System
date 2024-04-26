@@ -45,6 +45,17 @@
             <artifactId>h2</artifactId>
             <version>2.2.224</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.10.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>5.11.0</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.simplejavamail/simple-java-mail -->
         <dependency>
             <groupId>org.simplejavamail</groupId>
