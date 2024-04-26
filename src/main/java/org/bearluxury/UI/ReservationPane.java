@@ -1,6 +1,7 @@
 package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import org.bearluxury.account.Role;
 import org.bearluxury.state.SessionManager;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.controllers.AccountController;
@@ -157,28 +158,33 @@ public class ReservationPane extends JFrame {
     public void saveToCSV() {
         String csvFileName = "src/main/resources/ReservationList.csv";
 
-        // Extracting the reservation data from the form
-        int roomNumber = Integer.parseInt(roomId.getText());
-        String guestFirstName = firstName.getText();
-        String guestLastName = lastName.getText();
-        String guestEmail = email.getText();
-        int numberOfGuests = (int) guestNumber.getValue();
+        if(SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST) {
+            // Extracting the reservation data from the form
+            int roomNumber = Integer.parseInt(roomId.getText());
+            String guestFirstName = firstName.getText();
+            String guestLastName = lastName.getText();
+            String guestEmail = email.getText();
+            int numberOfGuests = (int) guestNumber.getValue();
 
-        Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
-        Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
+            Date startDate = java.sql.Date.valueOf(checkInDatePicker.getDate());
+            Date endDate = java.sql.Date.valueOf(checkOutDatePicker.getDate());
 
-        if (guestFirstName.isEmpty() || guestLastName.isEmpty() || guestEmail.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
-            return;
+            if (guestFirstName.isEmpty() || guestLastName.isEmpty() || guestEmail.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+                return;
+            }
+            try {
+                ReservationController controller = new ReservationController(new ReservationJDBCDAO());
+                controller.insertReservation(new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate, false));
+                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+                dispose();
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Reservation failed to save! ");
+            }
         }
-        try {
-            ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-            controller.insertReservation(new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate,false));
-            JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-            dispose();
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Reservation failed to save! ");
+        else{
+            JOptionPane.showMessageDialog(null,"Clerk cannot make reservations, please make a guest account");
         }
     }
     private String formatDate(java.util.Date date) {

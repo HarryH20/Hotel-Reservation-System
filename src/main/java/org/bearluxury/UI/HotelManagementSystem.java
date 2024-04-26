@@ -2,15 +2,10 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import org.bearluxury.Billing.SaleJDBCDAO;
 import org.bearluxury.UI.shopUI.ShopHomePage;
-import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.account.Guest;
-import org.bearluxury.account.Role;
-import org.bearluxury.controllers.AccountController;
-import org.bearluxury.controllers.ProductController;
-import org.bearluxury.controllers.ReservationController;
-import org.bearluxury.controllers.RoomController;
+import org.bearluxury.account.*;
+import org.bearluxury.controllers.*;
 import org.bearluxury.product.ProductJDBCDAO;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
@@ -27,7 +22,6 @@ import java.time.LocalDate;
 
 //Window
 public class HotelManagementSystem  {
-
     public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
         try {
             RoomController rooms = new RoomController(new RoomJDBCDAO());
