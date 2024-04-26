@@ -2,6 +2,7 @@ package org.bearluxury.reservation;
 
 
 import org.bearluxury.account.Account;
+import org.bearluxury.state.SessionManager;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -14,9 +15,9 @@ public class Reservation {
     private int numberOfGuests;
     private Date startDate;
     private Date endDate;
-    private static int id = 1;
+    private int id;
 
-
+    private int reservationID;
 
     public Reservation(){}
     public Reservation(int roomNumber, String firstName,
@@ -30,7 +31,6 @@ public class Reservation {
         this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
-        id++;
 
     }
 
@@ -128,4 +128,12 @@ public class Reservation {
         return Objects.hash(id, startDate, endDate, roomNumber);
     }
 
+
+    public int getReservationID() {
+        return reservationID;
+    }
+
+    public void setReservationID(int reservationID) {
+        this.reservationID = reservationID;
+    }
 }

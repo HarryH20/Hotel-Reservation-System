@@ -1,19 +1,17 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.AccountBuilder;
-import org.bearluxury.account.Account;
+import org.bearluxury.account.*;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.account.Role;
 import org.bearluxury.controllers.AccountController;
 
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.text.ParseException;
 
 public class RegisterPage extends JFrame implements ActionListener {
 
@@ -28,7 +26,7 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField emailTextField;
-    private JTextField phoneTextField;
+    private JFormattedTextField phoneTextField;
     private JPasswordField passwordTextField;
     private JPasswordField confirmPasswordField;
     private JButton registerButton;
@@ -37,13 +35,17 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JLabel emptyFirstNameLabel;
     private JLabel emptyLastNameLabel;
     private JLabel emptyEmailLabel;
+    private JLabel badEmailLabel;
     private JLabel emptyPhoneLabel;
     private JLabel emptyPasswordLabel;
+    private JLabel badPasswordLabel;
     private JLabel emptyConfirmPasswordLabel;
 
     private JLabel emailInUseLabel;
     private JLabel phoneInUseLabel;
     private JLabel passwordNotMatchLabel;
+
+    private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
 
     public RegisterPage() {
         setTitle("Register");
@@ -61,7 +63,11 @@ public class RegisterPage extends JFrame implements ActionListener {
         firstNameField = new JTextField();
         lastNameField = new JTextField();
         emailTextField = new JTextField();
-        phoneTextField = new JTextField();
+        try {
+            MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
+            phoneTextField = new JFormattedTextField(maskFormatter);
+        }catch(ParseException ignored){
+        }
         passwordTextField = new JPasswordField();
         confirmPasswordField = new JPasswordField();
 
@@ -99,10 +105,14 @@ public class RegisterPage extends JFrame implements ActionListener {
         emptyLastNameLabel.setForeground(Color.red);
         emptyEmailLabel = new JLabel("Email address is required");
         emptyEmailLabel.setForeground(Color.red);
+        badEmailLabel = new JLabel("Email address not valid.");
+        badEmailLabel.setForeground(Color.red);
         emptyPhoneLabel = new JLabel("Phone number is required");
         emptyPhoneLabel.setForeground(Color.red);
-        emptyPasswordLabel = new JLabel("Password is required");
+        emptyPasswordLabel = new JLabel("Field cannot be empty");
         emptyPasswordLabel.setForeground(Color.red);
+        badPasswordLabel = new JLabel();
+        badPasswordLabel.setForeground(Color.red);
         emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
         emptyConfirmPasswordLabel.setForeground(Color.red);
 
@@ -175,16 +185,23 @@ public class RegisterPage extends JFrame implements ActionListener {
         } else {
             registerPanel.remove(emptyEmailLabel);
             registerPanel.remove(emailInUseLabel);
+            registerPanel.remove(badEmailLabel);
 
             // Check if email is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getEmail().equalsIgnoreCase(emailTextField.getText())) {
                     registerPanel.add(emailInUseLabel, 9 + addedComponentCount);
                     validCredentials = false;
+
                 }
             }
+            if(!EmailSpecifier.isValidEmail(emailTextField.getText())){
+                registerPanel.add(badEmailLabel, 9 + addedComponentCount);
+                validCredentials = false;
+                addedComponentCount++;
+            }
         }
-        if (phoneTextField.getText().isEmpty()) {
+        if (phoneTextField.getValue() == null) {
             registerPanel.add(emptyPhoneLabel, 11 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
@@ -194,17 +211,35 @@ public class RegisterPage extends JFrame implements ActionListener {
 
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
-                if (account.getPhoneNumber() == Long.parseLong(phoneTextField.getText())) {
+                if (account.getPhoneNumber() == Long
+                        .parseLong(String.valueOf(phoneTextField.getValue())
+                                .replaceAll("-",""))) {
                     registerPanel.add(phoneInUseLabel, 11 + addedComponentCount);
+                    addedComponentCount++;
                     validCredentials = false;
                 }
             }
-        }
+        } // password is empty, show error
         if (passwordTextField.getText().isEmpty()) {
             registerPanel.add(emptyPasswordLabel, 13 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
-        } else { registerPanel.remove(emptyPasswordLabel); }
+        }else{
+            registerPanel.remove(emptyPasswordLabel);
+        }
+        // password does not meet specification, show error
+        if(!passwordSpecifier.checkPassword(passwordTextField.getText())){
+            // if there is a problem with the password, it's not empty
+            registerPanel.remove(emptyPasswordLabel);
+
+            badPasswordLabel.setText(passwordSpecifier.getPasswordProblem());
+            registerPanel.add(badPasswordLabel, 13 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        }else{
+            registerPanel.remove(badPasswordLabel);
+        }
+
         if (confirmPasswordField.getText().isEmpty()) {
             registerPanel.add(emptyConfirmPasswordLabel, 15 + addedComponentCount);
             validCredentials = false;
@@ -234,7 +269,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         String email = emailTextField.getText();
         // username is not needed. Using email for now
         String userName = emailTextField.getText();
-        long phoneNumber = Long.parseLong(phoneTextField.getText());
+        // remove unwanted "-" character from phone number
+        long phoneNumber = Long.parseLong(phoneTextField.getText().replaceAll("-",""));
         String password = passwordTextField.getText();
         //FIXME
         Role role = Role.GUEST;

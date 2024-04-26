@@ -9,12 +9,11 @@ import org.bearluxury.controllers.AccountController;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.controllers.RoomController;
-import org.bearluxury.product.ProductBuilder;
-import org.bearluxury.product.ProductCatalog;
 import org.bearluxury.product.ProductJDBCDAO;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
+
 import org.bearluxury.room.RoomJDBCDAO;
 
 import javax.swing.*;
@@ -31,7 +30,10 @@ public class HotelManagementSystem  {
             RoomController rooms = new RoomController(new RoomJDBCDAO());
             RoomCatalog roomCatalog = new RoomCatalog();
             roomCatalog.setRooms(rooms.listRooms());
-            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut);
+            ReservationController reservationController = new ReservationController(new ReservationJDBCDAO());
+            ReservationCatalog reservationCatalog = new ReservationCatalog();
+            reservationCatalog.setReservations(reservationController.listReservations());
+            AvaliableRoomsGUI catalogPane = new AvaliableRoomsGUI(roomCatalog, beds, checkIn, checkOut,reservationCatalog);
             catalogPane.setVisible(true);
         }catch (SQLException exc){
             exc.printStackTrace();
@@ -98,6 +100,8 @@ public class HotelManagementSystem  {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
+        AccountController controller = new AccountController(new AccountJDBCDAO());
+
         openLoginPage();
 
     }
