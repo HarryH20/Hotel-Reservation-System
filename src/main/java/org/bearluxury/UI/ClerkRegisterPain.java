@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 public class ClerkRegisterPain extends JFrame {
     private Container c;
@@ -115,14 +116,12 @@ public class ClerkRegisterPain extends JFrame {
 
     //FIXME: SET ROLE TO GUEST
     public void saveClerkToDatabase() {
-
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();
         String userPhone = phoneNumber.getText();
         String userEmail = email.getText();
         String guestUsername = userName.getText();
         String userPassword = password.getText();
-        //FIXME
         Role role = Role.CLERK;
 
         if (userFirstName.isEmpty() || userLastName.isEmpty() || userPhone.isEmpty() ||
@@ -133,16 +132,24 @@ public class ClerkRegisterPain extends JFrame {
 
         try {
             ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
-            //FIXME
+
+            // Check if the email is already in use
+            Optional<Account> existingAccount = controller.getAccount(userEmail);
+            if (existingAccount.isPresent()) {
+                JOptionPane.showMessageDialog(this, "Email already in use. Please choose another one.", "Warning", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Insert the clerk into the database
             controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
-
-
-
-            JOptionPane.showMessageDialog(this, "Account registered.");
+            JOptionPane.showMessageDialog(this, "Clerk successfully registered.");
             dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid phone number.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (RuntimeException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
         }
     }
+
 }

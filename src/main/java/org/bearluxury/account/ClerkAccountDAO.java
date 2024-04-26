@@ -10,7 +10,7 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/account25";
+    private static String JDBC_URL = "jdbc:h2:~/testingAccount";
 
     public ClerkAccountDAO() {
         try {
@@ -130,20 +130,22 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
 
     @Override
     public void update(Account account, String email) {
-        String sql = "UPDATE accounts SET firstName = ?, lastName = ?, userName = ?, phoneNumber = ?, password = ?, role = ? WHERE email = ?";
+        String sql = "UPDATE accounts SET firstName = ?, lastName = ?, userName = ?, email = ?, phoneNumber = ?, password = ?, role = ? WHERE email = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, account.getFirstName());
             pstmt.setString(2, account.getLastName());
             pstmt.setString(3, account.getUserName());
-            pstmt.setLong(4, account.getPhoneNumber());
-            pstmt.setString(5, account.getPassword());
-            pstmt.setString(6, account.getRole().toString());
-            pstmt.setString(7, email);
+            pstmt.setString(4, account.getEmail());
+            pstmt.setLong(5, account.getPhoneNumber());
+            pstmt.setString(6, account.getPassword());
+            pstmt.setString(7, account.getRole().toString());
+            pstmt.setString(8, email);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     @Override
     public boolean delete(String email) {

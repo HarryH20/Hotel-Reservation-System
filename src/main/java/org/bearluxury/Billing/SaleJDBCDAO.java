@@ -12,7 +12,7 @@ public class SaleJDBCDAO implements DAO<Sale> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/sale3";
+    private static String JDBC_URL = "jdbc:h2:~/testingSales";
 
     public SaleJDBCDAO() {
         try {

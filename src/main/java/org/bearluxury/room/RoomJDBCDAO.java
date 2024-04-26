@@ -9,7 +9,7 @@ import java.util.*;
 public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/room";
+    private static String JDBC_URL = "jdbc:h2:~/testingRoom";
 
     public RoomJDBCDAO() {
         try {
