@@ -82,6 +82,10 @@ public class HotelManagementSystem  {
         InfoFilterPane window = new InfoFilterPane();
         window.setVisible(true);
     }
+    public static void openBillingPage(){
+        BillingPage page = new BillingPage();
+        page.setVisible(true);
+    }
 
     /*public static void openRegisterPane() {
         RegisterPane register = new RegisterPane();

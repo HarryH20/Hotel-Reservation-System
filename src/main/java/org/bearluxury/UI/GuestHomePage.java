@@ -30,7 +30,7 @@ public class GuestHomePage extends HotelHomePage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                //HotelManagementSystem.openBillingPage();
+                HotelManagementSystem.openBillingPage();
             }
         });
 

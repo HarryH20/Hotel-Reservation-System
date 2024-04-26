@@ -41,6 +41,7 @@ public class GuestBookedReservationsGUI extends BookedReservationsGUI {
         buttonPanel.add(deleteButton);
         buttonPanel.add(checkInButton);
 
+
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

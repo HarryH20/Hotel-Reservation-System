@@ -119,8 +119,6 @@ public class ClerkHomePage extends HotelHomePage{
 
 
     private class openViewReservationPane implements ActionListener {
-
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();

@@ -138,7 +138,7 @@ public class CheckoutDialog extends JDialog implements ActionListener {
                     int quantity = entry.getValue();
                     // Decrease the quantity of the product in the database
                     productController.removeStock(product.getId(), quantity);
-                    Sale sale = new Sale(new Date(),product.getName(),product.getPrice(),product.getQuantity());
+                    Sale sale = new Sale(new Date(),product.getName(),product.getPrice(),quantity);
                     sale.setAccountId(SessionManager.getInstance().getCurrentAccount().getId());
                     controller.insertSale(sale);
 

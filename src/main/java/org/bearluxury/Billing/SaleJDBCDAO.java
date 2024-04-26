@@ -12,7 +12,7 @@ public class SaleJDBCDAO implements DAO<Sale> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/sale1";
+    private static String JDBC_URL = "jdbc:h2:~/sale3";
 
     public SaleJDBCDAO() {
         try {
@@ -36,6 +36,7 @@ public class SaleJDBCDAO implements DAO<Sale> {
                 String createTableSQL = "CREATE TABLE sale (" +
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "acctId INT, " +
+                        "saleDate DATE,"+
                         "productName VARCHAR(50), " +
                         "price DOUBLE PRECISION," +
                         "quantity INT " +
@@ -63,6 +64,7 @@ public class SaleJDBCDAO implements DAO<Sale> {
                 Sale sale = new Sale();
                 sale.setSaleId(rs.getInt("id"));
                 sale.setAccountId(rs.getInt("acctId"));
+                sale.setSaleDate(rs.getDate("saleDate"));
                 sale.setProductName(rs.getString("productName"));
                 sale.setPrice(rs.getDouble("price"));
                 sale.setQuantity(rs.getInt("quantity"));
@@ -77,12 +79,13 @@ public class SaleJDBCDAO implements DAO<Sale> {
 
     @Override
     public void insert(Sale sale) throws SQLException {
-        String insertSQL = "INSERT INTO sale (acctId, productName, price, quantity) VALUES (?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO sale (acctId, saleDate,productName, price, quantity) VALUES (?,?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
             pstmt.setInt(1, sale.getAccountId());
-            pstmt.setString(2, sale.getProductName());
-            pstmt.setDouble(3, sale.getPrice());
-            pstmt.setInt(4, sale.getQuantity());
+            pstmt.setDate(2, new java.sql.Date(sale.getSaleDate().getTime()));
+            pstmt.setString(3, sale.getProductName());
+            pstmt.setDouble(4, sale.getPrice());
+            pstmt.setInt(5, sale.getQuantity());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -121,6 +124,7 @@ public class SaleJDBCDAO implements DAO<Sale> {
                     Sale sale = new Sale();
                     sale.setSaleId(rs.getInt("id"));
                     sale.setAccountId(rs.getInt("acctId"));
+                    sale.setSaleDate(rs.getDate("saleDate"));
                     sale.setProductName(rs.getString("productName"));
                     sale.setPrice(rs.getDouble("price"));
                     sale.setQuantity(rs.getInt("quantity"));

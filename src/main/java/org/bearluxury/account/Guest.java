@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Guest extends Account{
     CreditCard card;
-    Billing bill;
+    Bill bill;
 
     public Guest(String firstName, String lastName, String userName,
                  String email, long phoneNumber, String password, Role role, CreditCard card) {
