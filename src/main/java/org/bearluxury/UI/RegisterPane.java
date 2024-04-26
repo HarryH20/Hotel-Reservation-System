@@ -1,5 +1,7 @@
 package org.bearluxury.UI;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import net.miginfocom.swing.MigLayout;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountBuilder;
 import org.bearluxury.account.AccountJDBCDAO;
@@ -11,140 +13,223 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RegisterPane extends JFrame {
-    private Container c;
-    private JLabel title;
-    private JButton submitButton;
-    private JTextField firstName;
-    private JTextField lastName;
-    private JTextField userName;
-    private JTextField email;
-    private JTextField phoneNumber;
-    private JTextField password;
+public class RegisterPane extends JFrame implements ActionListener{
+    Color backgroundColor = new Color(232,223,185,255);
+
+    AccountBuilder accountBuilder;
+
+    ImageIcon logo;
+
+    private JPanel registerPanel;
+
+    private JTextField firstNameField;
+    private JTextField lastNameField;
+    private JTextField emailTextField;
+    private JTextField phoneTextField;
+    private JPasswordField passwordTextField;
+    private JPasswordField confirmPasswordField;
+    private JButton registerButton;
+    private JButton cmdRegister;
+
+    private JLabel emptyFirstNameLabel;
+    private JLabel emptyLastNameLabel;
+    private JLabel emptyEmailLabel;
+    private JLabel emptyPhoneLabel;
+    private JLabel emptyPasswordLabel;
+    private JLabel emptyConfirmPasswordLabel;
+
+    private JLabel emailInUseLabel;
+    private JLabel phoneInUseLabel;
+    private JLabel passwordNotMatchLabel;
 
     public RegisterPane() {
-        setTitle("Clerk Registration");
-        setBounds(300, 90, 500, 600);
-        setResizable(false);
+        setTitle("Register");
+        setSize(1280, 920);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
+        getContentPane().setBackground(backgroundColor);
 
-        c = getContentPane();
-        c.setLayout(null);
+        //accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
-        title = new JLabel("Clerk Registration");
-        title.setFont(new Font("Arial", Font.PLAIN, 30));
-        title.setSize(300, 30);
-        title.setLocation(100, 30);
-        c.add(title);
+        logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
+        JLabel logoLabel = new JLabel(logo);
 
-        JPanel personalInfoPanel = new JPanel();
-        personalInfoPanel.setBorder(BorderFactory.createTitledBorder("Personal Information"));
-        personalInfoPanel.setBounds(40, 80, 400, 160);
-        personalInfoPanel.setLayout(null);
+        firstNameField = new JTextField();
+        lastNameField = new JTextField();
+        emailTextField = new JTextField();
+        phoneTextField = new JTextField();
+        passwordTextField = new JPasswordField();
+        confirmPasswordField = new JPasswordField();
 
-        JLabel fName = new JLabel("First Name");
-        fName.setFont(new Font("Arial", Font.PLAIN, 15));
-        fName.setBounds(20, 30, 100, 20);
-        personalInfoPanel.add(fName);
-        firstName = new JTextField();
-        firstName.setFont(new Font("Arial", Font.PLAIN, 15));
-        firstName.setBounds(170, 30, 190, 20);
-        personalInfoPanel.add(firstName);
+        registerButton = new JButton("Register");
+        registerButton.putClientProperty(FlatClientProperties.STYLE, "" +
+                "[light]background:darken(@background,10%);" +
+                "[dark]background:lighten(@background,10%);" +
+                "borderWidth:0;" +
+                "focusWidth:0;" +
+                "innerFocusWidth:0");
+        registerButton.addActionListener(this);
 
-        JLabel lName = new JLabel("Last Name");
-        lName.setFont(new Font("Arial", Font.PLAIN, 15));
-        lName.setBounds(20, 60, 100, 20);
-        personalInfoPanel.add(lName);
-        lastName = new JTextField();
-        lastName.setFont(new Font("Arial", Font.PLAIN, 15));
-        lastName.setBounds(170, 60, 190, 20);
-        personalInfoPanel.add(lastName);
+        registerPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
+        registerPanel.setBackground(backgroundColor);
+        registerPanel.putClientProperty(FlatClientProperties.STYLE, "" +
+                "arc:20;" +
+                "background:darken(@background,3%);");
 
-        JLabel phoneNumberLbl = new JLabel("Phone Number");
-        phoneNumberLbl.setFont(new Font("Arial", Font.PLAIN, 15));
-        phoneNumberLbl.setBounds(20, 90, 120, 20);
-        personalInfoPanel.add(phoneNumberLbl);
-        phoneNumber = new JTextField();
-        phoneNumber.setFont(new Font("Arial", Font.PLAIN, 15));
-        phoneNumber.setBounds(170, 90, 190, 20);
-        personalInfoPanel.add(phoneNumber);
+        passwordTextField.putClientProperty(FlatClientProperties.STYLE, "" +
+                "showRevealButton:true");
+        confirmPasswordField.putClientProperty(FlatClientProperties.STYLE, "" +
+                "showRevealButton:true");
 
-        JLabel emailLbl = new JLabel("Email");
-        emailLbl.setFont(new Font("Arial", Font.PLAIN, 15));
-        emailLbl.setBounds(20, 120, 120, 20);
-        personalInfoPanel.add(emailLbl);
-        email = new JTextField();
-        email.setFont(new Font("Arial", Font.PLAIN, 15));
-        email.setBounds(170, 120, 190, 20);
-        personalInfoPanel.add(email);
+        JLabel header = new JLabel("Clerk Registration");
+        header.putClientProperty(FlatClientProperties.STYLE, "" + "font:bold +7");
 
-        c.add(personalInfoPanel);
+        JLabel description = new JLabel("Please fill in the information below to get started");
+        description.putClientProperty(FlatClientProperties.STYLE, "" +
+                "[light]foreground:lighten(@foreground,30%);" +
+                "[dark]foreground:darken(@foreground,30%)");
 
-        JPanel accountInfoPanel = new JPanel();
-        accountInfoPanel.setBorder(BorderFactory.createTitledBorder("Account Information"));
-        accountInfoPanel.setBounds(40, 280, 400, 100);
-        accountInfoPanel.setLayout(null);
+        emptyFirstNameLabel = new JLabel("First name is required");
+        emptyFirstNameLabel.setForeground(Color.red);
+        emptyLastNameLabel = new JLabel("Last name is required");
+        emptyLastNameLabel.setForeground(Color.red);
+        emptyEmailLabel = new JLabel("Email address is required");
+        emptyEmailLabel.setForeground(Color.red);
+        emptyPhoneLabel = new JLabel("Phone number is required");
+        emptyPhoneLabel.setForeground(Color.red);
+        emptyPasswordLabel = new JLabel("Password is required");
+        emptyPasswordLabel.setForeground(Color.red);
+        emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
+        emptyConfirmPasswordLabel.setForeground(Color.red);
 
-        JLabel usernameLbl = new JLabel("Username");
-        usernameLbl.setFont(new Font("Arial", Font.PLAIN, 15));
-        usernameLbl.setBounds(20, 30, 120, 20);
-        accountInfoPanel.add(usernameLbl);
-        userName = new JTextField();
-        userName.setFont(new Font("Arial", Font.PLAIN, 15));
-        userName.setBounds(170, 30, 190, 20);
-        accountInfoPanel.add(userName);
+        emailInUseLabel = new JLabel("This email is already in use");
+        emailInUseLabel.setForeground(Color.red);
+        phoneInUseLabel = new JLabel("This phone number is already in use");
+        phoneInUseLabel.setForeground(Color.red);
+        passwordNotMatchLabel = new JLabel("Passwords do not match");
+        passwordNotMatchLabel.setForeground(Color.red);
 
-        JLabel passwordLbl = new JLabel("Password");
-        passwordLbl.setFont(new Font("Arial", Font.PLAIN, 15));
-        passwordLbl.setBounds(20, 60, 120, 20);
-        accountInfoPanel.add(passwordLbl);
-        password = new JTextField();
-        password.setFont(new Font("Arial", Font.PLAIN, 15));
-        password.setBounds(170, 60, 190, 20);
-        accountInfoPanel.add(password);
-        c.add(accountInfoPanel);
+        registerPanel.add(logoLabel);
+        registerPanel.add(header, "gapy 10");
+        registerPanel.add(description);
+        registerPanel.add(new JLabel("First name"), "gapy 6");
+        registerPanel.add(firstNameField);
+        registerPanel.add(new JLabel("Last name"), "gapy 6");
+        registerPanel.add(lastNameField);
+        registerPanel.add(new JLabel("Email"), "gapy 6");
+        registerPanel.add(emailTextField);
+        registerPanel.add(new JLabel("Phone"), "gapy 6");
+        registerPanel.add(phoneTextField);
+        registerPanel.add(new JLabel("Password"), "gapy 6");
+        registerPanel.add(passwordTextField);
+        registerPanel.add(new JLabel("Confirm password"), "gapy 6");
+        registerPanel.add(confirmPasswordField);
+        registerPanel.add(registerButton, "gapy 10");
 
-        submitButton = new JButton("Submit");
-        submitButton.setBounds(200, 400, 100, 40);
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                saveAccountToCSV();
-            }
-        });
-        add(submitButton);
+        add(registerPanel);
     }
 
-    //FIXME: SET ROLE TO GUEST
-    public void saveAccountToCSV() {
-        String csvFile = "src/main/resources/AccountList.csv";
+    private Boolean checkCredentials() {
+        Boolean validCredentials = true;
+        AccountController controller = new AccountController(new AccountJDBCDAO());
 
-        String userFirstName = firstName.getText();
-        String userLastName = lastName.getText();
-        String userPhone = phoneNumber.getText();
-        String userEmail = email.getText();
-        String guestUsername = userName.getText();
-        String userPassword = password.getText();
-        //FIXME
-        Role role = Role.GUEST;
+        // Check if fields are empty
+        int addedComponentCount = 0;
+        if (firstNameField.getText().isEmpty()) {
+            registerPanel.add(emptyFirstNameLabel, 5 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        } else { registerPanel.remove(emptyFirstNameLabel); }
+        if (lastNameField.getText().isEmpty()) {
+            registerPanel.add(emptyLastNameLabel, 7 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        } else { registerPanel.remove(emptyLastNameLabel); }
+        if (emailTextField.getText().isEmpty()) {
+            registerPanel.add(emptyEmailLabel, 9 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        } else {
+            registerPanel.remove(emptyEmailLabel);
+            registerPanel.remove(emailInUseLabel);
 
-        if (userFirstName.isEmpty() || userLastName.isEmpty() || userPhone.isEmpty() ||
-                userEmail.isEmpty() || guestUsername.isEmpty() || userPassword.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
-            return;
+            // Check if email is in use
+            for (Account account : controller.listAccounts()) {
+                if (account.getEmail().equalsIgnoreCase(emailTextField.getText())) {
+                    registerPanel.add(emailInUseLabel, 9 + addedComponentCount);
+                    validCredentials = false;
+                }
+            }
+        }
+        if (phoneTextField.getText().isEmpty()) {
+            registerPanel.add(emptyPhoneLabel, 11 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        } else {
+            registerPanel.remove(emptyPhoneLabel);
+            registerPanel.remove(phoneInUseLabel);
+
+            // Check if phone is in use
+            for (Account account : controller.listAccounts()) {
+                if (account.getPhoneNumber() == Long.parseLong(phoneTextField.getText())) {
+                    registerPanel.add(phoneInUseLabel, 11 + addedComponentCount);
+                    validCredentials = false;
+                }
+            }
+        }
+        if (passwordTextField.getText().isEmpty()) {
+            registerPanel.add(emptyPasswordLabel, 13 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        } else { registerPanel.remove(emptyPasswordLabel); }
+        if (confirmPasswordField.getText().isEmpty()) {
+            registerPanel.add(emptyConfirmPasswordLabel, 15 + addedComponentCount);
+            validCredentials = false;
+        } else {
+            registerPanel.remove(emptyConfirmPasswordLabel);
+            registerPanel.remove(passwordNotMatchLabel);
+
+            // Check if passwords match
+            if (!passwordTextField.getText().isEmpty()) {
+                if (!passwordTextField.getText().equals(confirmPasswordField.getText())) {
+                    registerPanel.add(passwordNotMatchLabel, 15 + addedComponentCount);
+                    validCredentials = false;
+                }
+            }
         }
 
-        try {
-            AccountController controller = new AccountController(new AccountJDBCDAO());
-            //FIXME
-            controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
+        setVisible(true);
 
+        return validCredentials;
+    }
 
+    private void registerAccount() {
+        AccountController controller = new AccountController(new AccountJDBCDAO());
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailTextField.getText();
+        // username is not needed. Using email for now
+        String userName = emailTextField.getText();
+        long phoneNumber = Long.parseLong(phoneTextField.getText());
+        String password = passwordTextField.getText();
+        //FIXME
+        Role role = Role.CLERK;
+        controller.insertAccount(new Account(firstName,lastName, userName, email,phoneNumber,password, role));
+    }
 
-            JOptionPane.showMessageDialog(this, "Account registered.");
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == cmdRegister) {
             dispose();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            HotelManagementSystem.openLoginPage();
+        } else if (e.getSource() == registerButton) {
+            if (checkCredentials()) {
+                registerAccount();
+                JOptionPane.showMessageDialog(this, "Account successfully registered.");
+                dispose();
+                HotelManagementSystem.openLoginPage();
+            }
         }
     }
 }
