@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 public class Guest extends Account{
     CreditCard card;
-    Bill bill;
 
     public Guest(String firstName, String lastName, String userName,
                  String email, long phoneNumber, String password, Role role, CreditCard card) {
@@ -14,6 +13,7 @@ public class Guest extends Account{
         this.card = card;
 
     }
+    public Guest(){}
 
     public void setCreditCard (CreditCard card) {
         this.card = card;

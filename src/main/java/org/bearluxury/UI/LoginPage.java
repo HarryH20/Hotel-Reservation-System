@@ -1,12 +1,12 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.UI.shopUI.CreditCardEntryScreen;
+import org.bearluxury.account.*;
+import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.state.SessionManager;
-import org.bearluxury.account.Account;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
-import org.bearluxury.account.ClerkAccountDAO;
-import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ClerkAccountController;
 
 import javax.swing.*;
@@ -103,12 +103,14 @@ public class LoginPage extends JFrame implements ActionListener {
     }
 
     private Account doesAccountExist(String email, String password) {
-        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
         for (Account account : controller.listAccounts()) {
             if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
                 return account;
             }
         }
+
+
         return null;
     }
 

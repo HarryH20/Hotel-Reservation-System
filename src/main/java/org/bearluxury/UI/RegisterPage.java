@@ -1,13 +1,12 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.AccountBuilder;
-import org.bearluxury.account.Account;
+import org.bearluxury.UI.shopUI.CreditCardFrame;
+import org.bearluxury.account.*;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
-import org.bearluxury.account.ClerkAccountDAO;
-import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ClerkAccountController;
+import org.bearluxury.controllers.GuestAccountController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +42,11 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JLabel emailInUseLabel;
     private JLabel phoneInUseLabel;
     private JLabel passwordNotMatchLabel;
+
+    private JTextField cardNumberField;
+    private JTextField expDateField;
+    private JTextField cvvField;
+    private JTextField cardHolderNameField;
 
     public RegisterPage() {
         setTitle("Register");
@@ -112,6 +116,15 @@ public class RegisterPage extends JFrame implements ActionListener {
         passwordNotMatchLabel = new JLabel("Passwords do not match");
         passwordNotMatchLabel.setForeground(Color.red);
 
+        cardNumberField = new JTextField();
+        expDateField = new JTextField();
+        cvvField = new JTextField();
+        cardHolderNameField = new JTextField();
+
+        // Add labels and fields for card information
+
+
+
         registerPanel.add(logoLabel);
         registerPanel.add(header, "gapy 10");
         registerPanel.add(description);
@@ -127,6 +140,9 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.add(passwordTextField);
         registerPanel.add(new JLabel("Confirm password"), "gapy 6");
         registerPanel.add(confirmPasswordField);
+
+
+
         registerPanel.add(registerButton, "gapy 10");
         registerPanel.add(createRegisterLabel(), "gapy 10");
 
@@ -153,7 +169,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
-        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
 
         // Check if fields are empty
         int addedComponentCount = 0;
@@ -226,8 +242,8 @@ public class RegisterPage extends JFrame implements ActionListener {
     }
 
     /////TEMP FIX: MADE ACCOUNT BUILDER ROLE GUEST
-    private void registerAccount() {
-        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+    private void registerAccount(String cardNumber, String cardHolderName, String expDate, String cvv) {
+        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
         String email = emailTextField.getText();
@@ -236,8 +252,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         long phoneNumber = Long.parseLong(phoneTextField.getText());
         String password = passwordTextField.getText();
         //FIXME
-        Role role = Role.ADMIN;
-        controller.insertAccount(new Account(firstName,lastName, userName, email,phoneNumber,password, role));
+        Role role = Role.GUEST;
+        controller.insertAccount(new Guest(firstName,lastName, userName, email,phoneNumber,password, role,new CreditCard(cardNumber,cardHolderName, expDate,cvv)));
     }
 
     @Override
@@ -247,10 +263,14 @@ public class RegisterPage extends JFrame implements ActionListener {
             HotelManagementSystem.openLoginPage();
         } else if (e.getSource() == registerButton) {
             if (checkCredentials()) {
-                registerAccount();
-                JOptionPane.showMessageDialog(this, "Account successfully registered.");
-                dispose();
-                HotelManagementSystem.openLoginPage();
+                CreditCardFrame cardFrame = new CreditCardFrame();
+                cardFrame.setVisible(true);
+                registerAccount(cardFrame.getCardNumberField(),
+                        cardFrame.getCardHolderNameField(),
+                        cardFrame.getExpDateField(),
+                        cardFrame.getCvvField());
+                this.dispose();
+
             }
         }
     }

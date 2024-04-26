@@ -1,7 +1,9 @@
 package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import org.bearluxury.account.GuestAccountJDBCDAO;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.state.SessionManager;
 import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.controllers.ClerkAccountController;
@@ -62,7 +64,7 @@ public class ReservationPane extends JFrame {
         roomId = new JTextField();
         roomId.setText(String.valueOf(id));
         roomId.setEditable(false);
-        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
 
         roomId.setFont(new Font("Arial", Font.PLAIN, 15));
         roomId.setBounds(170, 30, 190, 20);
