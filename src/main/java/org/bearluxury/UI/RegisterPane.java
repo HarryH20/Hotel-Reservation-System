@@ -220,10 +220,7 @@ public class RegisterPane extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == cmdRegister) {
-            dispose();
-            HotelManagementSystem.openLoginPage();
-        } else if (e.getSource() == registerButton) {
+        if (e.getSource() == registerButton) {
             if (checkCredentials()) {
                 registerAccount();
                 JOptionPane.showMessageDialog(this, "Account successfully registered.");
