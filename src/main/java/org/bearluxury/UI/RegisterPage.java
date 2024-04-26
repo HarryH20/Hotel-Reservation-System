@@ -287,7 +287,7 @@ public class RegisterPage extends JFrame implements ActionListener {
             if (checkCredentials()) {
                 registerAccount();
                 JOptionPane.showMessageDialog(this, "Account successfully registered.");
-                EmailSender.sendConfirmationEmail("test","nicknolen01@gmail.com");
+                EmailSender.sendConfirmationEmail(firstNameField.getText()+", " + lastNameField.getText(), emailTextField.getText());
                 dispose();
                 HotelManagementSystem.openLoginPage();
             }
