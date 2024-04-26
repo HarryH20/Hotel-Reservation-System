@@ -1,7 +1,6 @@
 package org.bearluxury.state;
 
 import org.bearluxury.account.*;
-import org.bearluxury.controllers.AccountController;
 
 public class SessionManager {
     private static SessionManager instance;

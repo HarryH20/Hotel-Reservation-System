@@ -1,17 +1,15 @@
 package org.bearluxury.controllers;
 
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.reservation.Reservation;
-import org.bearluxury.reservation.ReservationJDBCDAO;
+import org.bearluxury.account.ClerkAccountDAO;
 
 import java.util.Optional;
 import java.util.Set;
 
-public class AccountController {
-    private AccountJDBCDAO accountDAO;
+public class ClerkAccountController {
+    private ClerkAccountDAO accountDAO;
 
-    public AccountController(AccountJDBCDAO accountDAO){
+    public ClerkAccountController(ClerkAccountDAO accountDAO){
         this.accountDAO = accountDAO;
     }
     public void insertAccount(Account account) {

@@ -1,8 +1,8 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.account.Role;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.state.SessionManager;
@@ -137,7 +137,7 @@ public class BookedReservationsGUI extends JFrame {
 
         // format output dates
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-        AccountController controller = new AccountController(new AccountJDBCDAO());
+        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
 
         // room number,first name,last name,email,number of guests,start date,end date
         reservations

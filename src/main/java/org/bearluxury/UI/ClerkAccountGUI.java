@@ -15,13 +15,13 @@ import java.awt.event.ActionListener;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class AccountTableGUI extends JFrame {
+public class ClerkAccountGUI extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
     private final Color tableHeaderColor = new Color(184, 134, 11);
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 14);
 
-    public AccountTableGUI(Set<Account> accounts) {
+    public ClerkAccountGUI(Set<Account> accounts) {
         setTitle("Account Information");
         setSize(1280, 720);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -113,7 +113,7 @@ public class AccountTableGUI extends JFrame {
 
     private void fillTableRows(Set<Account> accounts, DefaultTableModel model) {
         // Fill the table rows with account information
-        accounts.stream().filter(account -> account.getRole() == Role.GUEST).
+        accounts.stream().filter(account -> account.getRole() == Role.CLERK).
                 collect(Collectors.toSet()).
                 forEach(account -> model.addRow(new Object[]{
                 String.valueOf(account.getId()),

@@ -5,15 +5,14 @@ import org.bearluxury.account.Account;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
-import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.account.Role;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.controllers.ClerkAccountController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class RegisterPage extends JFrame implements ActionListener {
 
@@ -154,7 +153,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
-        AccountController controller = new AccountController(new AccountJDBCDAO());
+        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
 
         // Check if fields are empty
         int addedComponentCount = 0;
@@ -228,7 +227,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     /////TEMP FIX: MADE ACCOUNT BUILDER ROLE GUEST
     private void registerAccount() {
-        AccountController controller = new AccountController(new AccountJDBCDAO());
+        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
         String email = emailTextField.getText();
@@ -237,7 +236,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         long phoneNumber = Long.parseLong(phoneTextField.getText());
         String password = passwordTextField.getText();
         //FIXME
-        Role role = Role.GUEST;
+        Role role = Role.ADMIN;
         controller.insertAccount(new Account(firstName,lastName, userName, email,phoneNumber,password, role));
     }
 

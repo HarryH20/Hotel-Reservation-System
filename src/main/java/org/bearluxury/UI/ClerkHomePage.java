@@ -2,8 +2,8 @@ package org.bearluxury.UI;
 
 import org.bearluxury.UI.shopUI.ProductTableGUI;
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.account.ClerkAccountDAO;
+import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.product.Product;
@@ -138,8 +138,8 @@ public class ClerkHomePage extends HotelHomePage{
                 // Retrieve the logged-in account information using the email address
                 String loggedInEmail = JOptionPane.showInputDialog(null, "Please enter your email address:");
                 if (loggedInEmail != null && !loggedInEmail.isEmpty()) {
-                    AccountController accountController = new AccountController(new AccountJDBCDAO());
-                    Optional<Account> loggedInAccountOptional = accountController.getAccount(loggedInEmail);
+                    ClerkAccountController clerkAccountController = new ClerkAccountController(new ClerkAccountDAO());
+                    Optional<Account> loggedInAccountOptional = clerkAccountController.getAccount(loggedInEmail);
 
                     if (loggedInAccountOptional.isPresent()) {
                         Account loggedInAccount = loggedInAccountOptional.get();
@@ -194,7 +194,7 @@ public class ClerkHomePage extends HotelHomePage{
                                 loggedInAccount.setPassword(passwordField.getText());
 
                                 // Call the update method in AccountController to update the account in the database
-                                accountController.updateAccounts(loggedInAccount, loggedInEmail);
+                                clerkAccountController.updateAccounts(loggedInAccount, loggedInEmail);
 
                                 // Close the dialog
                                 dialog.dispose();
@@ -230,9 +230,9 @@ public class ClerkHomePage extends HotelHomePage{
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                AccountController accountController = new AccountController(new AccountJDBCDAO());
-                AccountTableGUI accountTableGUI = new AccountTableGUI(accountController.listAccounts());
-                accountTableGUI.setVisible(true);
+                ClerkAccountController clerkAccountController = new ClerkAccountController(new ClerkAccountDAO());
+                ClerkAccountGUI clerkAccountGUI = new ClerkAccountGUI(clerkAccountController.listAccounts());
+                clerkAccountGUI.setVisible(true);
             }
         }
 

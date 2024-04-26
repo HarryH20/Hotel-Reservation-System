@@ -4,8 +4,8 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.account.ClerkAccountDAO;
+import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationJDBCDAO;
@@ -100,7 +100,7 @@ public class EditReservationPane extends JFrame{
                 model.removeRow(table.getSelectedRow());
 
                 model.addRow(new Object[]{
-                        new AccountController(new AccountJDBCDAO()).getAccount(res.getEmail()).
+                        new ClerkAccountController(new ClerkAccountDAO()).getAccount(res.getEmail()).
                                 orElseThrow(()-> new NoSuchElementException("No active accounts with reservations")).
                                 getId(),
                         res.getReservationID(),
