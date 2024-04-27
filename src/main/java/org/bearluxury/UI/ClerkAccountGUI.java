@@ -14,6 +14,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -80,8 +81,6 @@ public class ClerkAccountGUI extends JFrame {
                     long phoneNumber = (long) model.getValueAt(selectedRow, 5);
                     String password = (String) model.getValueAt(selectedRow, 6);
 
-                    // Create input fields for editing
-
                     JTextField firstNameField = new JTextField(firstName);
                     JTextField lastNameField = new JTextField(lastName);
                     JTextField usernameField = new JTextField(username);
@@ -89,8 +88,8 @@ public class ClerkAccountGUI extends JFrame {
                     JTextField phoneNumberField = new JTextField(String.valueOf(phoneNumber));
                     JTextField passwordField = new JTextField(password);
 
-                    JPanel editPanel = new JPanel(new GridLayout(6, 2));
 
+                    JPanel editPanel = new JPanel(new GridLayout(8, 2));
                     editPanel.add(new JLabel("First Name:"));
                     editPanel.add(firstNameField);
                     editPanel.add(new JLabel("Last Name:"));
@@ -108,13 +107,25 @@ public class ClerkAccountGUI extends JFrame {
                             "Edit Account", JOptionPane.OK_CANCEL_OPTION);
                     if (result == JOptionPane.OK_OPTION) {
                         // Update the row with edited data
+
+
+                        // Check if the email is already in use
+                        ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
+                        String editedEmail = emailField.getText();
+                        String currentEmail = (String) model.getValueAt(selectedRow, 4);
+                        if (!editedEmail.equals(currentEmail)) { // Check if email is edited
+                            Optional<Account> existingAccount = accountController.getAccount(editedEmail);
+                            if (existingAccount.isPresent()) {
+                                JOptionPane.showMessageDialog(null, "Email already in use. Please choose another one.", "Warning", JOptionPane.WARNING_MESSAGE);
+                                return;
+                            }
+                        }
                         model.setValueAt(firstNameField.getText(), selectedRow, 1);
                         model.setValueAt(lastNameField.getText(), selectedRow, 2);
                         model.setValueAt(usernameField.getText(), selectedRow, 3);
                         model.setValueAt(emailField.getText(), selectedRow, 4);
                         model.setValueAt(Long.parseLong(phoneNumberField.getText()), selectedRow, 5);
                         model.setValueAt(passwordField.getText(), selectedRow, 6);
-
 
                         // Create an Account object with updated information
                         Account updatedAccount = new Account(
@@ -125,19 +136,17 @@ public class ClerkAccountGUI extends JFrame {
                                 Long.parseLong(phoneNumberField.getText()),
                                 passwordField.getText(),
                                 Role.CLERK
-
-
                         );
 
                         // Update the account in the database
-                        ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
-                        accountController.updateAccounts(updatedAccount, email);
+                        accountController.updateAccounts(updatedAccount, currentEmail);
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Please select an account to edit.");
                 }
             }
         });
+
 
 
 
