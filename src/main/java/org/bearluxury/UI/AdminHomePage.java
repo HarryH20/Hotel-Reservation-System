@@ -15,11 +15,16 @@ public class AdminHomePage extends HotelHomePage{
         addUser.addActionListener(new openRegistration());
         addUser.setForeground(Color.BLACK);
         reservePanel.add(addUser);
-        JButton viewAccountsButton = new JButton("View Accounts");
-        viewAccountsButton.setFont(font);
-        viewAccountsButton.setForeground(Color.BLACK);
-        viewAccountsButton.addActionListener(new OpenViewAccountsPane());
-        reservePanel.add(viewAccountsButton);
+        JButton viewClerkAccounts = new JButton("View Clerk Accounts");
+        viewClerkAccounts.setFont(font);
+        viewClerkAccounts.setForeground(Color.BLACK);
+        viewClerkAccounts.addActionListener(new OpenViewAccountsPane());
+        reservePanel.add(viewClerkAccounts);
+        JButton viewGuestAccounts = new JButton("View Guest Accounts");
+        viewGuestAccounts.setFont(font);
+        viewGuestAccounts.setForeground(Color.BLACK);
+
+        reservePanel.add(viewGuestAccounts);
     }
     private class openRegistration implements ActionListener {
         @Override
