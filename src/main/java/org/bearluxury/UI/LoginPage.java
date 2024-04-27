@@ -93,7 +93,6 @@ public class LoginPage extends JFrame implements ActionListener {
         // Initially hide the register label
         cmdRegister = createRegisterLabel();
         loginPanel.add(cmdRegister, "gapy 10");
-        cmdRegister.setVisible(false);
     }
 
     private JButton createRegisterLabel() {
@@ -135,8 +134,10 @@ public class LoginPage extends JFrame implements ActionListener {
             // Check if the role is Admin or Clerk
             if (role.equals(Role.ADMIN) || role.equals(Role.CLERK)) {
                 account = doesClerkAccountExist(emailTextField.getText(), passwordTextField.getText());
+                cmdRegister.setVisible(false); // Hide register button for Admin or Clerk
             } else { // For Guest role
                 account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
+                cmdRegister.setVisible(true); // Show register button for Guest
             }
 
             if (account != null && account.getRole().equals(role)) {
@@ -144,7 +145,6 @@ public class LoginPage extends JFrame implements ActionListener {
                 dispose();
                 if (role.equals(Role.GUEST)) {
                     HotelManagementSystem.openGuestHomePage();
-
                 } else if (role.equals(Role.CLERK)) {
                     HotelManagementSystem.openClerkHomePage();
                 } else if (role.equals(Role.ADMIN)) {
