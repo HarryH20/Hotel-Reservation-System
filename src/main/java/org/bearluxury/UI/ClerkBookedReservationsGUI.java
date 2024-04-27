@@ -1,13 +1,16 @@
 package org.bearluxury.UI;
 
 import org.bearluxury.Billing.SaleJDBCDAO;
+import org.bearluxury.account.CreditCard;
 import org.bearluxury.account.GuestAccountJDBCDAO;
 import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.controllers.ReservationController;
+import org.bearluxury.controllers.RoomController;
 import org.bearluxury.controllers.SaleController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
+import org.bearluxury.room.RoomJDBCDAO;
 import org.bearluxury.shop.Sale;
 
 import javax.swing.*;
@@ -16,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -97,12 +101,52 @@ class DeleteReservationAction implements ActionListener {
         int selectedRow = table.getSelectedRow();
         if (selectedRow != -1) {
             ReservationController controller = new ReservationController(new ReservationJDBCDAO());
+            SaleController saleController = new SaleController(new SaleJDBCDAO());
+            RoomController roomController = null;
+            try {
+                roomController = new RoomController(new RoomJDBCDAO());
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
+            int roomNumber = roomController.getRoom(
+                    controller.getReservationByReservationId(
+                            Integer.parseInt(table.getValueAt(
+                                    selectedRow, 1).toString())).
+                            orElseThrow().getRoomNumber()).
+                    orElseThrow().
+                    getRoomNumber();
+
+            Reservation res = controller.
+                    getReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString())).
+                    orElseThrow(() -> new NoSuchElementException("Reservation Doesn't exist"));
+
+            long differenceMillis = new Date().getTime() - res.getEndDate().getTime();
+            long daysApart = differenceMillis / (1000 * 60 * 60 * 24);
+
             if (controller.deleteReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString()))) {
+                Set<Sale> sales = saleController.listSale(Integer.parseInt(table.getValueAt(selectedRow, 0).toString()));
+                for(Sale sale: sales){
+                    if(table.getValueAt(selectedRow, 2).toString().equals(sale.getProductName())){
+                        if(daysApart > 2){
+                            GuestAccountController guestAccountController = new GuestAccountController(new GuestAccountJDBCDAO());
+                            CreditCard card = guestAccountController.getAccount(table.getValueAt(selectedRow,5).toString()).orElseThrow().getCreditCard();
+                            card.chargeCard(0.8 * sale.getPrice() * sale.getQuantity());
+                            JOptionPane.showMessageDialog(null,"Card charged for late cancellation!");
+                        }
+                        saleController.deleteSaleBySaleId(sale.getSaleId());
+                        JOptionPane.showMessageDialog(null,"Reservation Deleted!");
+
+                    }
+
+                }
+
                 model.removeRow(selectedRow);
-            } else {
+            }
+            else {
                 JOptionPane.showMessageDialog(null, "Reservation not found");
             }
-        } else {
+        }
+        else {
             JOptionPane.showMessageDialog(null, "Please select a row first.");
         }
     }
