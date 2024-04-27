@@ -29,6 +29,8 @@ public class LoginPage extends JFrame implements ActionListener {
 
     private JLabel wrongMsg;
 
+    private JComboBox<String> roleDropdown; // Dropdown for role selection
+
     public LoginPage() {
         setTitle("Login");
         setSize(1280, 720);
@@ -52,6 +54,11 @@ public class LoginPage extends JFrame implements ActionListener {
                 "innerFocusWidth:0");
         loginButton.addActionListener(this);
 
+        // Dropdown setup
+        String[] roles = {"Guest", "Clerk", "Admin"};
+        roleDropdown = new JComboBox<>(roles);
+        roleDropdown.addActionListener(this);
+
         loginPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
         loginPanel.setBackground(backgroundColor);
         loginPanel.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -68,7 +75,7 @@ public class LoginPage extends JFrame implements ActionListener {
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
 
-        wrongMsg = new JLabel("Wrong username or password");
+        wrongMsg = new JLabel("Wrong username, password, or login role");
         wrongMsg.setForeground(Color.red);
 
         loginPanel.add(logoLabel);
@@ -78,28 +85,24 @@ public class LoginPage extends JFrame implements ActionListener {
         loginPanel.add(emailTextField);
         loginPanel.add(new JLabel("Password"), "gapy 8");
         loginPanel.add(passwordTextField);
+        loginPanel.add(new JLabel("Login as"), "gapy 8");
+        loginPanel.add(roleDropdown); // Add the dropdown
         loginPanel.add(loginButton, "gapy 10");
-        loginPanel.add(createRegisterLabel(), "gapy 10");
-
         add(loginPanel);
+
+        // Initially hide the register label
+        cmdRegister = createRegisterLabel();
+        loginPanel.add(cmdRegister, "gapy 10");
     }
 
-    private Component createRegisterLabel() {
-        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        panel.putClientProperty(FlatClientProperties.STYLE, "" +
-                "background:null");
-        cmdRegister = new JButton("<html><a href=\"#\">Register now</a></html>");
+    private JButton createRegisterLabel() {
+        JButton cmdRegister = new JButton("<html><a href=\"#\">Don't have an account register now</a></html>");
         cmdRegister.putClientProperty(FlatClientProperties.STYLE, "" +
                 "border:3,3,3,3");
         cmdRegister.setContentAreaFilled(false);
         cmdRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
         cmdRegister.addActionListener(this);
-        JLabel label = new JLabel("Don't have an account?");
-        label.putClientProperty(FlatClientProperties.STYLE, "" +
-                "[light]foreground:lighten(@foreground,30%);");
-        panel.add(label);
-        panel.add(cmdRegister);
-        return panel;
+        return cmdRegister;
     }
 
     private Account doesAccountExist(String email, String password) {
@@ -109,24 +112,42 @@ public class LoginPage extends JFrame implements ActionListener {
                 return account;
             }
         }
-
-
+        return null;
+    }
+    private Account doesClerkAccountExist(String email, String password) {
+        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+        for (Account account : controller.listAccounts()) {
+            if (account.getEmail().equals(email) && account.getPassword().equals(password)) {
+                return account;
+            }
+        }
         return null;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
-            Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
-            if (account != null) {
+            String selectedRole = (String) roleDropdown.getSelectedItem();
+            Role role = Role.valueOf(selectedRole.toUpperCase()); // Convert the selected role to Role enum
+            Account account;
+
+            // Check if the role is Admin or Clerk
+            if (role.equals(Role.ADMIN) || role.equals(Role.CLERK)) {
+                account = doesClerkAccountExist(emailTextField.getText(), passwordTextField.getText());
+                cmdRegister.setVisible(false); // Hide register button for Admin or Clerk
+            } else { // For Guest role
+                account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
+                cmdRegister.setVisible(true); // Show register button for Guest
+            }
+
+            if (account != null && account.getRole().equals(role)) {
                 SessionManager.getInstance().setCurrentAccount(account);
                 dispose();
-                if (account.getRole().equals(Role.GUEST)) {
+                if (role.equals(Role.GUEST)) {
                     HotelManagementSystem.openGuestHomePage();
-
-                } else if (account.getRole().equals(Role.CLERK)) {
+                } else if (role.equals(Role.CLERK)) {
                     HotelManagementSystem.openClerkHomePage();
-                } else if (account.getRole().equals(Role.ADMIN)) {
+                } else if (role.equals(Role.ADMIN)) {
                     HotelManagementSystem.openAdminHomePage();
                 }
             } else {
@@ -136,6 +157,13 @@ public class LoginPage extends JFrame implements ActionListener {
         } else if (e.getSource() == cmdRegister) {
             dispose();
             HotelManagementSystem.openRegisterPage();
+        } else if (e.getSource() == roleDropdown) {
+            String selectedRole = (String) roleDropdown.getSelectedItem();
+            if (selectedRole.equals("Guest")) {
+                cmdRegister.setVisible(true);
+            } else {
+                cmdRegister.setVisible(false);
+            }
         }
     }
 

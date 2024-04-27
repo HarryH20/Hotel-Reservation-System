@@ -15,7 +15,7 @@ import java.util.TreeSet;
 
 public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
     private Connection connection;
-    private static String JDBC_URL = "jdbc:h2:~/guest1";
+    private static String JDBC_URL = "jdbc:h2:~/testingGuest";
     public GuestAccountJDBCDAO(){
         try{
             connection = DriverManager.getConnection(JDBC_URL);

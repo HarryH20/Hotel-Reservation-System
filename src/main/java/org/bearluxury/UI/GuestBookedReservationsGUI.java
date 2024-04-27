@@ -18,7 +18,7 @@ public class GuestBookedReservationsGUI extends BookedReservationsGUI {
         super(reservationCatalog);
 
         JButton editButton = new JButton("Edit Reservation");
-        JButton deleteButton = new JButton("Delete Reservation");
+        JButton deleteButton = new JButton("Cancel Reservation");
         JButton checkInButton = new JButton("Check In");
 
 

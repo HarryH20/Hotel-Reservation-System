@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Optional;
 
 
 //Window
@@ -77,7 +78,7 @@ public class HotelManagementSystem  {
         window.setVisible(true);
     }
     public static void openBillingPage(){
-        BillingPage page = new BillingPage(0);
+        BillingPage page = new BillingPage();
         page.setVisible(true);
     }
 
@@ -102,6 +103,16 @@ public class HotelManagementSystem  {
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
         ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+        Optional<Account> existingAdmin = controller.getAccount("admin@admin.com");
+        if (!existingAdmin.isPresent()) {
+            // Create a Clerk with Admin role
+            Account admin = new Account("Admin", "Admin", "Admin", "admin@admin.com", 1234567890, "adminpassword", Role.ADMIN);
+
+            // Insert the Clerk into the database
+            controller.insertAccount(admin);
+        }
+
+
         openLoginPage();
 
     }
