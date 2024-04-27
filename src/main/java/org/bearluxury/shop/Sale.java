@@ -14,6 +14,8 @@ public class Sale {
     private double price;
     private int quantity;
 
+    private int reservationId;
+
 
     public Sale(){}
     public Sale(Date saleDate, String productName, double price, int quantity) {
@@ -84,5 +86,13 @@ public class Sale {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public int getReservationId() {
+        return reservationId;
+    }
+
+    public void setReservationId(int reservationId) {
+        this.reservationId = reservationId;
     }
 }

@@ -1,7 +1,9 @@
 package org.bearluxury.UI;
 
 import org.bearluxury.Billing.SaleJDBCDAO;
-import org.bearluxury.account.Role;
+import org.bearluxury.account.*;
+import org.bearluxury.controllers.ClerkAccountController;
+import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.shop.Sale;
 import org.bearluxury.controllers.SaleController;
 import org.bearluxury.state.SessionManager;
@@ -13,6 +15,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 public class BillingPage extends JFrame {
@@ -22,21 +26,31 @@ public class BillingPage extends JFrame {
 
     private JTable saleTable;
 
-    public BillingPage() {
+
+    public BillingPage(int rowVal) {
         setTitle("Billing Page");
         setSize(1000, 720);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         getContentPane().setBackground(backgroundColor);
 
-        createComponents();
+        createComponents(rowVal);
 
         setVisible(true);
     }
 
-    private void createComponents() {
+    private void createComponents(int rowVal) {
         SaleController controller = new SaleController(new SaleJDBCDAO());
-        Set<Sale> sales = controller.listSale(SessionManager.getInstance().getCurrentAccount().getId());
+        Set<Sale> sales = new HashSet<>();
+        if(SessionManager.getInstance().getCurrentAccount() != null) {
+            if (SessionManager.getInstance().getCurrentAccount().getRole().equals(Role.GUEST)) {
+                sales = controller.listSale(SessionManager.getInstance().getCurrentAccount().getId());
+
+            }
+            else {
+                sales = controller.listSale(rowVal);
+            }
+        }
         createSaleTable(sales);
         add(createButtonsPanel(), BorderLayout.SOUTH);
     }
@@ -93,7 +107,6 @@ public class BillingPage extends JFrame {
                             HotelManagementSystem.openGuestHomePage();
                             break;
                         case CLERK:
-                            HotelManagementSystem.openClerkHomePage();
                             break;
                         case ADMIN:
                             HotelManagementSystem.openAdminHomePage();
@@ -133,7 +146,29 @@ public class BillingPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Add payment logic here
-                JOptionPane.showMessageDialog(null, "Payment completed successfully!");
+                if(SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST){
+                    GuestAccountController controller= new GuestAccountController(new GuestAccountJDBCDAO());
+                    SaleController saleController = new SaleController(new SaleJDBCDAO());
+                    Guest account = (Guest)SessionManager.getInstance().getCurrentAccount();
+                    CreditCard card = account.getCreditCard();
+                    double billPrice = 0;
+                    for(int i = 0; i < saleTable.getRowCount(); i++) {
+                        double price = Double.parseDouble(saleTable.getValueAt(i, 3).toString());
+                        double quantity = Double.parseDouble(saleTable.getValueAt(i, 4).toString());
+
+                        billPrice += price * quantity;
+                    }
+                    card.chargeCard(billPrice);
+                    account.setCreditCard(card);
+                    controller.updateAccounts(account,account.getEmail());
+                    DefaultTableModel model = (DefaultTableModel) saleTable.getModel();
+                    model.setRowCount(0);
+                    saleController.deleteSaleByAcctId(SessionManager.getInstance().getCurrentAccount().getId());
+                    JOptionPane.showMessageDialog(null,"Your bill has been paid!");
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Only a guest can pay their bill!");
+                }
             }
         });
 
@@ -143,6 +178,9 @@ public class BillingPage extends JFrame {
 
 
         return payBillButton;
+    }
+    public void updatePage(Set<Sale> sales){
+        createSaleTable(sales);
     }
 
 }

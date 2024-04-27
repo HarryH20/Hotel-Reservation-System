@@ -136,6 +136,23 @@ public class SaleJDBCDAO implements DAO<Sale> {
         }
         return sales;
     }
+    public void deleteSalesByAccountId(int accountId) {
+        String deleteSQL = "DELETE FROM sale WHERE acctId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(deleteSQL)) {
+            pstmt.setInt(1, accountId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-
+    public void deleteSaleById(int saleId) {
+        String deleteSQL = "DELETE FROM sale WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(deleteSQL)) {
+            pstmt.setInt(1, saleId);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

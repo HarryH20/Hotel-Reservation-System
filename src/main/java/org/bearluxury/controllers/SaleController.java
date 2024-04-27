@@ -29,6 +29,10 @@ public class SaleController {
     public Set<Sale> listSale(int acctId) {
         return saleDAO.listSalesByAccountId(acctId);
     }
+
+    public void deleteSaleByAcctId(int acctId){saleDAO.deleteSalesByAccountId(acctId);}
+
+    public void deleteSaleBySaleId(int saleId){saleDAO.deleteSaleById(saleId);}
     public void clearReservation() {
         saleDAO.clear();
     }

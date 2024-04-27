@@ -77,7 +77,7 @@ public class HotelManagementSystem  {
         window.setVisible(true);
     }
     public static void openBillingPage(){
-        BillingPage page = new BillingPage();
+        BillingPage page = new BillingPage(0);
         page.setVisible(true);
     }
 
@@ -102,7 +102,6 @@ public class HotelManagementSystem  {
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
         ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
-
         openLoginPage();
 
     }

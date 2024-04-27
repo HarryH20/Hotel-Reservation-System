@@ -1,8 +1,10 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.Billing.SaleJDBCDAO;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.Guest;
 import org.bearluxury.account.Role;
+import org.bearluxury.controllers.SaleController;
 import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
@@ -12,6 +14,8 @@ import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -99,6 +103,19 @@ public class GuestAccountGUI extends JFrame {
 
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
+
+        table.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                SaleController controller = new SaleController(new SaleJDBCDAO());
+                if (evt.getClickCount() == 2) {
+                    Point pnt = evt.getPoint();
+                    int row = table.rowAtPoint(pnt);
+                    BillingPage billingPage = new BillingPage(Integer.parseInt(table.getValueAt(row,0).toString()));
+                    billingPage.updatePage(controller.listSale(Integer.parseInt(table.getValueAt(row,0).toString())));
+                    billingPage.setVisible(true);
+                }
+            }
+        });
 
         return table;
     }
