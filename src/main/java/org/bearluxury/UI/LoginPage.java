@@ -16,8 +16,6 @@ import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame implements ActionListener {
 
-    Color backgroundColor = new Color(232,223,185,255);
-
     ImageIcon logo;
 
     private JPanel loginPanel;
@@ -30,18 +28,22 @@ public class LoginPage extends JFrame implements ActionListener {
     private JLabel wrongMsg;
 
     public LoginPage() {
+        // Set window preferences
         setTitle("Login");
         setSize(1280, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
-        getContentPane().setBackground(backgroundColor);
+        getContentPane().setBackground(Style.backgroundColor);
 
+        // Create components
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
 
         emailTextField = new JTextField();
+        emailTextField.addActionListener(this);
         passwordTextField = new JPasswordField();
+        passwordTextField.addActionListener(this);
 
         loginButton = new JButton("Login");
         loginButton.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -53,7 +55,6 @@ public class LoginPage extends JFrame implements ActionListener {
         loginButton.addActionListener(this);
 
         loginPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
-        loginPanel.setBackground(backgroundColor);
         loginPanel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:20;" +
                 "background:darken(@background,3%);");
@@ -114,7 +115,12 @@ public class LoginPage extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == loginButton) {
+        // move to next field if enter is pressed
+        if (e.getSource() == emailTextField) {
+            passwordTextField.requestFocusInWindow();
+        }
+        // handle login
+        if (e.getSource() == loginButton || e.getSource() == passwordTextField) {
             Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
             if (account != null) {
                 SessionManager.getInstance().setCurrentAccount(account);

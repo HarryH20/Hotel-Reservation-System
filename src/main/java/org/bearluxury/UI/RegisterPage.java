@@ -30,7 +30,7 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JFormattedTextField dateField;
     private JFormattedTextField cvvField;
     private JButton registerButton;
-    private JButton cmdRegister;
+    private JButton cmdLogin;
 
     private JLabel emptyFirstNameLabel;
     private JLabel emptyLastNameLabel;
@@ -49,6 +49,7 @@ public class RegisterPage extends JFrame implements ActionListener {
     private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
 
     public RegisterPage() {
+        // Set window preferences
         setTitle("Register");
         setSize(1280, 920);
         setLocationRelativeTo(null);
@@ -60,21 +61,31 @@ public class RegisterPage extends JFrame implements ActionListener {
         JLabel logoLabel = new JLabel(logo);
 
         firstNameField = new JTextField();
+        firstNameField.addActionListener(this);
         lastNameField = new JTextField();
+        lastNameField.addActionListener(this);
         emailTextField = new JTextField();
+        emailTextField.addActionListener(this);
+        // Create formatted fields
         try {
             MaskFormatter phoneFormatter = new MaskFormatter("###-###-####");
             phoneTextField = new JFormattedTextField(phoneFormatter);
+            phoneTextField.addActionListener(this);
             MaskFormatter dateFormatter = new MaskFormatter("##/##");
             dateField = new JFormattedTextField(dateFormatter);
+            dateField.addActionListener(this);
             MaskFormatter cardFormatter = new MaskFormatter("####-####-####-####");
             cardNumberField = new JFormattedTextField(cardFormatter);
+            cardNumberField.addActionListener(this);
             MaskFormatter cvvFormatter = new MaskFormatter("###");
             cvvField = new JFormattedTextField(cvvFormatter);
+            cvvField.addActionListener(this);
         }catch(ParseException ignored){
         }
         passwordTextField = new JPasswordField();
+        passwordTextField.addActionListener(this);
         confirmPasswordField = new JPasswordField();
+        confirmPasswordField.addActionListener(this);
 
         registerButton = new JButton("Register");
         registerButton.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -156,26 +167,26 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.add(cardNumberField);
         registerPanel.add(cardPanel);
         registerPanel.add(registerButton, "gapy 0");
-        registerPanel.add(createRegisterLabel(), "gapy 0");
+        registerPanel.add(createLoginLabel(), "gapy 0");
 
         add(registerPanel);
     }
 
-    private Component createRegisterLabel() {
+    private Component createLoginLabel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "background:null");
-        cmdRegister = new JButton("<html><a href=\"#\">Log in now</a></html>");
-        cmdRegister.putClientProperty(FlatClientProperties.STYLE, "" +
+        cmdLogin = new JButton("<html><a href=\"#\">Log in now</a></html>");
+        cmdLogin.putClientProperty(FlatClientProperties.STYLE, "" +
                 "border:3,3,3,3");
-        cmdRegister.setContentAreaFilled(false);
-        cmdRegister.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        cmdRegister.addActionListener(this);
+        cmdLogin.setContentAreaFilled(false);
+        cmdLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        cmdLogin.addActionListener(this);
         JLabel label = new JLabel("Already have an account?");
         label.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);");
         panel.add(label);
-        panel.add(cmdRegister);
+        panel.add(cmdLogin);
         return panel;
     }
 
@@ -313,16 +324,34 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == cmdRegister) {
+        if (e.getSource() == cmdLogin) {
             dispose();
             HotelManagementSystem.openLoginPage();
-        } else if (e.getSource() == registerButton) {
+        } else if (e.getSource() == registerButton || e.getSource() == cvvField) {
             if (checkCredentials()) {
                 registerAccount();
                 JOptionPane.showMessageDialog(this, "Account successfully registered.");
                 dispose();
                 HotelManagementSystem.openLoginPage();
             }
+        }
+        // Move to next field when enter is pressed
+        if (e.getSource() == firstNameField) {
+            lastNameField.requestFocusInWindow();
+        } else if (e.getSource() == lastNameField) {
+            emailTextField.requestFocusInWindow();
+        } else if (e.getSource() == emailTextField) {
+            phoneTextField.requestFocusInWindow();
+        } else if (e.getSource() == phoneTextField) {
+            passwordTextField.requestFocusInWindow();
+        } else if (e.getSource() == passwordTextField) {
+            confirmPasswordField.requestFocusInWindow();
+        } else if (e.getSource() == confirmPasswordField) {
+            cardNumberField.requestFocusInWindow();
+        } else if (e.getSource() == cardNumberField) {
+            dateField.requestFocusInWindow();
+        } else if (e.getSource() == dateField) {
+            cvvField.requestFocusInWindow();
         }
     }
 }
