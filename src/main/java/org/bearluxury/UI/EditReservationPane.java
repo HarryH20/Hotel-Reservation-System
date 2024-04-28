@@ -4,8 +4,10 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.account.ClerkAccountDAO;
+import org.bearluxury.account.GuestAccountJDBCDAO;
+import org.bearluxury.controllers.ClerkAccountController;
+import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationJDBCDAO;
@@ -90,7 +92,8 @@ public class EditReservationPane extends JFrame{
                         toChange.getEmail(),
                         Integer.parseInt(guestNumber.getValue().toString()),
                         java.sql.Date.valueOf(startDate),
-                        java.sql.Date.valueOf(endDate));
+                        java.sql.Date.valueOf(endDate),toChange.isCheckedIn());
+
 
                 res.setReservationID(toChange.getReservationID());
                 controller.updateReservationByReservationId(res,toChange.getReservationID());
@@ -99,7 +102,7 @@ public class EditReservationPane extends JFrame{
                 model.removeRow(table.getSelectedRow());
 
                 model.addRow(new Object[]{
-                        new AccountController(new AccountJDBCDAO()).getAccount(res.getEmail()).
+                        new GuestAccountController(new GuestAccountJDBCDAO()).getAccount(res.getEmail()).
                                 orElseThrow(()-> new NoSuchElementException("No active accounts with reservations")).
                                 getId(),
                         res.getReservationID(),
@@ -109,7 +112,8 @@ public class EditReservationPane extends JFrame{
                         res.getEmail(),
                         res.getNumberOfGuests(),
                         formatter.format(res.getStartDate()),
-                        formatter.format(res.getEndDate())
+                        formatter.format(res.getEndDate()),
+                        res.isCheckedIn()
                 });
                 JOptionPane.showMessageDialog(null, "Reservation updated");
                 dispose();

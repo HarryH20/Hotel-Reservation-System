@@ -1,7 +1,8 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.UI.shopUI.ShopHomePage;
 import org.bearluxury.product.Product;
 
 import javax.swing.*;

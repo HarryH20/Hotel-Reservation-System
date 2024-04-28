@@ -38,7 +38,7 @@ public class ReservationBuilder {
                         parsedLine[3],
                         Integer.parseInt(parsedLine[4]),
                         startDate,
-                        endDate);
+                        endDate,false);
                 reservationList.add(reservation);
             }
         } catch (IOException e) {
@@ -62,7 +62,7 @@ public class ReservationBuilder {
                 email,
                 numberOfGuests,
                 startDate,
-                endDate);
+                endDate,false);
 
 
         return reservationList.add(reservation);

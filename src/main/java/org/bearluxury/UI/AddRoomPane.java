@@ -65,8 +65,6 @@ public class AddRoomPane extends JFrame {
             }
         });
 
-
-
         add(roomNumberLabel);
         add(roomNumber);
         add(priceLabel);
@@ -127,6 +125,7 @@ public class AddRoomPane extends JFrame {
             dispose();
         }
     }
+
     private void showFailureDialog() {
         int selection = JOptionPane.showConfirmDialog(null, "Room already exists! " +
                 "Would you like to add another?");
@@ -142,5 +141,4 @@ public class AddRoomPane extends JFrame {
         AddRoomPane pane = new AddRoomPane();
         pane.setVisible(true);
     }
-
 }

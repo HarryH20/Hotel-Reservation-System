@@ -1,8 +1,8 @@
 package org.bearluxury.product;
 
 
-import org.bearluxury.DAO;
-import org.bearluxury.ProductDAO;
+import org.bearluxury.database.DAO;
+import org.bearluxury.database.ProductDAO;
 
 import java.sql.*;
 import java.util.*;
@@ -11,7 +11,7 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
 
     private Connection connection;
 
-    private static final String JDBC_URL = "jdbc:h2:~/products22";
+    private static final String JDBC_URL = "jdbc:h2:~/testingProduct";
 
     public ProductJDBCDAO() {
         try {

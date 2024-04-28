@@ -1,8 +1,8 @@
-package org.bearluxury;
+package org.bearluxury.database;
 
 import java.util.Optional;
 
-public interface RoomResDAO<T> extends DAO<T>{
+public interface ProductDAO<T> extends DAO<T> {
     Optional<T> get(int searchValue);
 
 
