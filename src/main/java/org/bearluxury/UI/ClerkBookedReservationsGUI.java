@@ -38,16 +38,17 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     }
 
-    private class editReservationAction implements ActionListener{
+    class editReservationAction implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
             int selectedRow = table.getSelectedRow();
             if(selectedRow != -1){
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                Optional<Reservation> opReservation = controller.getReservation(Integer.parseInt(table.getValueAt(selectedRow,1).toString()));
+                Optional<Reservation> opReservation = controller.getReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow,1).toString()));
                 Reservation reservation = opReservation.orElseThrow(() -> new NoSuchElementException("Reservation not found"));
                 EditReservationPane pane = new EditReservationPane(reservation,model, table);
                 pane.setVisible(true);
+
 
             }
             else{
@@ -58,14 +59,14 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI{
         }
 
     }
-    private class deleteReservationAction implements ActionListener{
+   class deleteReservationAction implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
             int selectedRow = table.getSelectedRow();
             if(selectedRow != -1){
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                if(controller.deleteReservation(Integer.parseInt(table.getValueAt(selectedRow,1).toString()))){
+                if(controller.deleteReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow,1).toString()))){
                     model.removeRow(selectedRow);
                 }
                 else{

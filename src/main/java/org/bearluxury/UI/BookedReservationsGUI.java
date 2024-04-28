@@ -132,7 +132,7 @@ public class BookedReservationsGUI extends JFrame {
     }
 
 
-    private void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
+    public void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
         List<Reservation> reservations = unsortedReservations.stream().
                 sorted(Comparator.comparing(Reservation::getFirstName).
                         thenComparing(Reservation::getRoomNumber)).
@@ -148,7 +148,7 @@ public class BookedReservationsGUI extends JFrame {
                         controller.getAccount(reservation.getEmail()).
                                 orElseThrow(()-> new NoSuchElementException("Account not found")).
                                 getId(),
-                        reservation.getId(),
+                        reservation.getReservationID(),
                         reservation.getRoomNumber(),
                         reservation.getFirstName(),
                         reservation.getLastName(),
