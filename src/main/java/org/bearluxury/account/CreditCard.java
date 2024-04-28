@@ -7,7 +7,7 @@ public class CreditCard {
     private String cardHolderName;
     private String expDate;
     private String cvv;
-    private double balance = 1000.0;
+    private double balance = 20000.0;
 
     public CreditCard(String cardNumber, String cardHolderName, String expDate, String cvv) {
         this.cardNumber = cardNumber;
