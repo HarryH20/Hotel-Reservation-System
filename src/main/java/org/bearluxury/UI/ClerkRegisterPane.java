@@ -50,29 +50,6 @@ public class ClerkRegisterPane extends JFrame {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        //error checking prompts
-        emptyFirstNameLabel = new JLabel("First name is required");
-        emptyFirstNameLabel.setForeground(Color.red);
-        emptyLastNameLabel = new JLabel("Last name is required");
-        emptyLastNameLabel.setForeground(Color.red);
-        emptyEmailLabel = new JLabel("Email address is required");
-        emptyEmailLabel.setForeground(Color.red);
-        emptyPhoneLabel = new JLabel("Phone number is required");
-        emptyPhoneLabel.setForeground(Color.red);
-        invalidLengthPhoneNumberLbl = new JLabel("Enter a valid phone number");
-        invalidLengthPhoneNumberLbl.setForeground(Color.red);
-        emptyPasswordLabel = new JLabel("Password is required");
-        emptyPasswordLabel.setForeground(Color.red);
-        emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
-        emptyConfirmPasswordLabel.setForeground(Color.red);
-
-        emailInUseLabel = new JLabel("This email is already in use");
-        emailInUseLabel.setForeground(Color.red);
-        phoneInUseLabel = new JLabel("This phone number is already in use");
-        phoneInUseLabel.setForeground(Color.red);
-        passwordNotMatchLabel = new JLabel("Passwords do not match");
-        passwordNotMatchLabel.setForeground(Color.red);
-
         //panel
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
@@ -105,11 +82,40 @@ public class ClerkRegisterPane extends JFrame {
                 "arc:20;" +
                 "background:darken(@background,3%);");
 
+        password.putClientProperty(FlatClientProperties.STYLE, "" +
+                "showRevealButton:true");
+        confirmPassword.putClientProperty(FlatClientProperties.STYLE, "" +
+                "showRevealButton:true");
+
         JLabel description = new JLabel("Please fill in the information below to get started");
         description.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
 
+        //error checking prompts
+        emptyFirstNameLabel = new JLabel("First name is required");
+        emptyFirstNameLabel.setForeground(Color.red);
+        emptyLastNameLabel = new JLabel("Last name is required");
+        emptyLastNameLabel.setForeground(Color.red);
+        emptyEmailLabel = new JLabel("Email address is required");
+        emptyEmailLabel.setForeground(Color.red);
+        emptyPhoneLabel = new JLabel("Phone number is required");
+        emptyPhoneLabel.setForeground(Color.red);
+        invalidLengthPhoneNumberLbl = new JLabel("Enter a valid phone number");
+        invalidLengthPhoneNumberLbl.setForeground(Color.red);
+        emptyPasswordLabel = new JLabel("Password is required");
+        emptyPasswordLabel.setForeground(Color.red);
+        emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
+        emptyConfirmPasswordLabel.setForeground(Color.red);
+
+        emailInUseLabel = new JLabel("This email is already in use");
+        emailInUseLabel.setForeground(Color.red);
+        phoneInUseLabel = new JLabel("This phone number is already in use");
+        phoneInUseLabel.setForeground(Color.red);
+        passwordNotMatchLabel = new JLabel("Passwords do not match");
+        passwordNotMatchLabel.setForeground(Color.red);
+
+        //Adding labels to panel
         ClerkRegisterPanel.add(logoLabel);
         ClerkRegisterPanel.add(description);
         ClerkRegisterPanel.add(new JLabel("First name"), "gapy 6");
