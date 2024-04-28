@@ -141,8 +141,6 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.add(new JLabel("Confirm password"), "gapy 6");
         registerPanel.add(confirmPasswordField);
 
-
-
         registerPanel.add(registerButton, "gapy 10");
         registerPanel.add(createRegisterLabel(), "gapy 10");
 

@@ -34,6 +34,7 @@ public class ClerkRegisterPane extends JFrame {
     private JLabel emptyLastNameLabel;
     private JLabel emptyEmailLabel;
     private JLabel emptyPhoneLabel;
+    private JLabel invalidLengthPhoneNumberLbl;
     private JLabel emptyPasswordLabel;
     private JLabel emptyConfirmPasswordLabel;
 
@@ -58,6 +59,8 @@ public class ClerkRegisterPane extends JFrame {
         emptyEmailLabel.setForeground(Color.red);
         emptyPhoneLabel = new JLabel("Phone number is required");
         emptyPhoneLabel.setForeground(Color.red);
+        invalidLengthPhoneNumberLbl = new JLabel("Enter a valid phone number");
+        invalidLengthPhoneNumberLbl.setForeground(Color.red);
         emptyPasswordLabel = new JLabel("Password is required");
         emptyPasswordLabel.setForeground(Color.red);
         emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
@@ -89,9 +92,10 @@ public class ClerkRegisterPane extends JFrame {
                 "focusWidth:0;" +
                 "innerFocusWidth:0");
         submitButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                saveClerkToDatabase();
+                if (checkCredentials()) {
+                    saveClerkToDatabase();
+                }
             }
         });
 
@@ -128,7 +132,7 @@ public class ClerkRegisterPane extends JFrame {
 
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
-        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
+        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
 
         // Check if fields are empty
         int addedComponentCount = 0;
@@ -162,9 +166,14 @@ public class ClerkRegisterPane extends JFrame {
             ClerkRegisterPanel.add(emptyPhoneLabel, 11 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
+        } else if (phoneNumber.getText().length() != 10) {
+            ClerkRegisterPanel.remove(emptyPhoneLabel);
+            ClerkRegisterPanel.add(invalidLengthPhoneNumberLbl, 12 + addedComponentCount);
+            validCredentials = false;
         } else {
             ClerkRegisterPanel.remove(emptyPhoneLabel);
             ClerkRegisterPanel.remove(phoneInUseLabel);
+            ClerkRegisterPanel.remove(invalidLengthPhoneNumberLbl);
 
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
@@ -210,14 +219,13 @@ public class ClerkRegisterPane extends JFrame {
         String userPassword = password.getText();
         Role role = Role.CLERK;
 
-        if(checkCredentials()) {
-            ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
 
-            // Insert the clerk into the database
-            controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
-            JOptionPane.showMessageDialog(this, "Clerk successfully registered.");
-            dispose();
-        }
+        // Insert the clerk into the database
+        controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
+        JOptionPane.showMessageDialog(this, "Clerk successfully registered.");
+        dispose();
+
     }
 
 }
