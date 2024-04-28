@@ -1,11 +1,7 @@
 package org.bearluxury.room;
 
-import org.bearluxury.DAO;
-import org.bearluxury.RoomResDAO;
-import org.bearluxury.room.BED_TYPE;
-import org.bearluxury.room.QUALITY_LEVEL;
-import org.bearluxury.room.ROOM_TYPE;
-import org.bearluxury.room.Room;
+import org.bearluxury.database.DAO;
+import org.bearluxury.database.RoomResDAO;
 
 import java.sql.*;
 import java.util.*;

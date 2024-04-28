@@ -1,6 +1,10 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.UI.HotelManagementSystem;
+import org.bearluxury.UI.ProductCard;
+import org.bearluxury.UI.Style;
+
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.Product;
@@ -22,7 +26,7 @@ import java.util.List;
  */
 public class ShopHomePage extends JFrame implements ActionListener, ListSelectionListener {
 
-    ProductController productController;
+    ProductCatalog productCatalog;
 
     JPanel sideBar;
     JPanel itemPanel;
@@ -50,21 +54,21 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     JLabel totalPriceNumber;
     double totalPrice;
     JButton checkoutButton;
-    public ShopHomePage(ProductController productController) {
+    public ShopHomePage(ProductCatalog productCatalog) {
         setTitle("Shop Home");
         setSize(1280, 720);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Style.backgroundColor);
 
-        this.productController = productController;
+        this.productCatalog = productCatalog;
 
         sideBar = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
         sideBar.setPreferredSize(new Dimension(230, this.getHeight()));
 
         itemPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 20));
         itemPanel.setBackground(Style.backgroundColor);
-        itemPanel.setPreferredSize(new Dimension(0, 150 * (this.productController.listProducts().size() / 3)));
+        itemPanel.setPreferredSize(new Dimension(0, 150 * (this.productCatalog.getProducts().size() / 3)));
 
         checkoutPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 20, 10));
         checkoutPanel.setPreferredSize(new Dimension(180, this.getHeight()));
@@ -135,19 +139,24 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
 
     private void initProductCards() {
         productCards = new ArrayList<>();
-        // Retrieve products from the database
-        productController.listProducts().forEach(product -> productCards.add(new ProductCard(product, this)));
+        // Create product cards from product catalog
+        productCatalog.getProducts().forEach(product -> productCards.add(new ProductCard(product, this)));
         // Add cards to panel
-        productCards.forEach(itemPanel::add);
+        productCards.forEach(productCard -> itemPanel.add(productCard));
     }
 
     private void reloadProductCards(String filter) {
         itemPanel.removeAll();
-        // Retrieve products from the database based on the filter
-        productController.listProducts().stream()
-                .filter(product -> filter.equals("All items") || product.getProductType().toString().equalsIgnoreCase(filter))
-                .map(product -> new ProductCard(product, this))
-                .forEach(itemPanel::add);
+        // Re-add products to panel if it matches the filter
+        if (!filter.equals("All items")) {
+            productCards.forEach(productCard -> {
+                if (productCard.getProduct().getProductType().toString().equalsIgnoreCase(filter)) {
+                    itemPanel.add(productCard);
+                }
+            });
+        } else {
+            productCards.forEach(productCard -> itemPanel.add(productCard));
+        }
         productScrollPane.revalidate();
         productScrollPane.repaint();
     }

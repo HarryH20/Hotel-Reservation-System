@@ -6,6 +6,7 @@ import org.bearluxury.account.Account;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+//make Reservation take a list of rooms?
 public class Reservation {
     private int roomNumber;
     private String firstName;

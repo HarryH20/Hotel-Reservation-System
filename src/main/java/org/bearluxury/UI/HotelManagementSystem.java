@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import org.bearluxury.UI.shopUI.ShopHomePage;
 import org.bearluxury.account.Account;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
@@ -37,16 +38,6 @@ public class HotelManagementSystem  {
             exc.printStackTrace();
         }
     }
-    ///
-
-    //added homepages for user role
-    /*
-    public static void openHomePage() {
-        HotelHomePage hotelHomePage = new HotelHomePage();
-        hotelHomePage.setVisible(true);
-    }
-
-     */
 
     public static void openGuestHomePage() {
         GuestHomePage guestHomePage = new GuestHomePage();
@@ -78,11 +69,6 @@ public class HotelManagementSystem  {
         window.setVisible(true);
     }
 
-    /*public static void openRegisterPane() {
-        RegisterPane register = new RegisterPane();
-        register.setVisible(true);
-    }*/
-
     public static void openShopHomePage() {
         try {
             ProductJDBCDAO productDAO = new ProductJDBCDAO();
@@ -93,14 +79,16 @@ public class HotelManagementSystem  {
             ex.printStackTrace();
         }
     }
+    public static void openBillingPage() {
+        BillingPage billPage = new BillingPage();
+    }
 
     public static void main(String[] args) {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
         FlatLightLaf.setup();
         openLoginPage();
+        //openShopHomePage();
 
     }
-
-
 }

@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
+import org.bearluxury.UI.shopUI.ShopHomePage;
 import org.bearluxury.product.Product;
 
 import javax.swing.*;

@@ -10,7 +10,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-//FIXME: NEED TO MAKE HOTELHOMEPAGE GENERIC
 public class GuestHomePage extends HotelHomePage {
 
     public GuestHomePage() {
@@ -18,7 +17,20 @@ public class GuestHomePage extends HotelHomePage {
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
         reserveButton.addActionListener(new openHotelManagmentPane());
-        JButton shopButton = shopButton = new JButton("Shop");
+
+        JButton billButton = new JButton("Check Bill");
+        billButton.setFont(font);
+        billButton.setForeground(Color.BLACK);
+        billButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                HotelManagementSystem.openBillingPage();
+            }
+        });
+
+
+        JButton shopButton = new JButton("Shop");
         shopButton.setFont(font);
         shopButton.setForeground(Color.BLACK);
         shopButton.addActionListener(new ActionListener() {
@@ -29,25 +41,9 @@ public class GuestHomePage extends HotelHomePage {
             }
         });
 
-        JButton seeReservations = new JButton("See Reservations");
-        seeReservations.setFont(font);
-        seeReservations.setForeground(Color.BLACK);
-        seeReservations.addActionListener(new GuestHomePage.openViewReservationPane());
-
         reservePanel.add(reserveButton);
         reservePanel.add(shopButton);
-        reservePanel.add(seeReservations);
-    }
-    private class openViewReservationPane implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            dispose();
-            ReservationCatalog reservations = new ReservationCatalog();
-            ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-            reservations.setReservations(controller.listReservations());
-            GuestBookedReservationsGUI catalogPane = new GuestBookedReservationsGUI(reservations);
-            catalogPane.setVisible(true);
-        }
+        reservePanel.add(billButton);
     }
     private class openHotelManagmentPane implements ActionListener {
 

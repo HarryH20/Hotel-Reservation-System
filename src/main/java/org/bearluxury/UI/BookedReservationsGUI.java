@@ -3,11 +3,8 @@ package org.bearluxury.UI;
 import org.bearluxury.account.AccountJDBCDAO;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.AccountController;
-import org.bearluxury.controllers.ReservationController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
-import org.bearluxury.reservation.ReservationJDBCDAO;
-import org.bearluxury.room.Room;
 import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;

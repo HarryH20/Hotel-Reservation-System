@@ -1,7 +1,10 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.account.Account;
+import org.bearluxury.account.Guest;
 import org.bearluxury.product.Product;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,6 +114,7 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         // Checkout panel
         purchasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         purchaseButton = new JButton("Confirm purchase");
+        purchaseButton.addActionListener(this);
         purchaseButton.setPreferredSize(new Dimension(200, 30));
         purchasePanel.add(purchaseButton);
 
@@ -122,9 +126,24 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {
-            //ADD DATABASE STUFF HERE
+            // Open credit card entry screen
+            openCreditCardEntryScreen();
+        }
+    }
 
-
+    private void openCreditCardEntryScreen() {
+        //this is weird
+        Account currentAccount = SessionManager.getInstance().getCurrentAccount();
+        if (currentAccount instanceof Guest guest) {
+            // Proceed with using the guest object
+            CreditCardEntryScreen creditCardEntryScreen = new CreditCardEntryScreen(guest, overallTotalCost);
+            creditCardEntryScreen.setLocationRelativeTo(this);
+            creditCardEntryScreen.setVisible(true);
+        } else {
+            // Handle the case where the current account is not a Guest
+            // For example, display an error message or perform a different action
+            JOptionPane.showMessageDialog(this, "Current account is not a Guest.");
         }
     }
 }
+

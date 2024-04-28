@@ -116,11 +116,11 @@ public class LoginPage extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == loginButton) {
             Account account = doesAccountExist(emailTextField.getText(), passwordTextField.getText());
+            System.out.println(account.getClass());
             if (account != null) {
                 SessionManager.getInstance().setCurrentAccount(account);
                 dispose();
                 if (account.getRole().equals(Role.GUEST)) {
-                    System.out.println(account.getRole());
                     HotelManagementSystem.openGuestHomePage();
 
                 } else if (account.getRole().equals(Role.CLERK)) {

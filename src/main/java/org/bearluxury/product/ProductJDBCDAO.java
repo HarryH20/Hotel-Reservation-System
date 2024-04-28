@@ -1,8 +1,8 @@
 package org.bearluxury.product;
 
 
-import org.bearluxury.DAO;
-import org.bearluxury.ProductDAO;
+import org.bearluxury.database.DAO;
+import org.bearluxury.database.ProductDAO;
 
 import java.sql.*;
 import java.util.*;
