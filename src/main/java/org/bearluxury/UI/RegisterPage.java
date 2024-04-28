@@ -15,13 +15,10 @@ import java.text.ParseException;
 
 public class RegisterPage extends JFrame implements ActionListener {
 
-    Color backgroundColor = new Color(232,223,185,255);
-
-    AccountBuilder accountBuilder;
-
     ImageIcon logo;
 
     private JPanel registerPanel;
+    private JPanel cardPanel;
 
     private JTextField firstNameField;
     private JTextField lastNameField;
@@ -29,10 +26,9 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JFormattedTextField phoneTextField;
     private JPasswordField passwordTextField;
     private JPasswordField confirmPasswordField;
-    private JTextField cardNumberField;
-    private JTextField monthField;
-    private JTextField yearField;
-    private JPasswordField cvvField;
+    private JFormattedTextField cardNumberField;
+    private JFormattedTextField dateField;
+    private JFormattedTextField cvvField;
     private JButton registerButton;
     private JButton cmdRegister;
 
@@ -44,10 +40,7 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JLabel emptyPasswordLabel;
     private JLabel badPasswordLabel;
     private JLabel emptyConfirmPasswordLabel;
-    private JLabel emptyCardNumberLabel;
-    private JLabel emptyMonthLabel;
-    private JLabel emptyDateLabel;
-    private JLabel emptyCvvLabel;
+    private JLabel emptyCardInfoLabel;
 
     private JLabel emailInUseLabel;
     private JLabel phoneInUseLabel;
@@ -61,7 +54,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
-        getContentPane().setBackground(backgroundColor);
+        getContentPane().setBackground(Style.backgroundColor);
 
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
@@ -70,16 +63,18 @@ public class RegisterPage extends JFrame implements ActionListener {
         lastNameField = new JTextField();
         emailTextField = new JTextField();
         try {
-            MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
-            phoneTextField = new JFormattedTextField(maskFormatter);
+            MaskFormatter phoneFormatter = new MaskFormatter("###-###-####");
+            phoneTextField = new JFormattedTextField(phoneFormatter);
+            MaskFormatter dateFormatter = new MaskFormatter("##/##");
+            dateField = new JFormattedTextField(dateFormatter);
+            MaskFormatter cardFormatter = new MaskFormatter("####-####-####-####");
+            cardNumberField = new JFormattedTextField(cardFormatter);
+            MaskFormatter cvvFormatter = new MaskFormatter("###");
+            cvvField = new JFormattedTextField(cvvFormatter);
         }catch(ParseException ignored){
         }
         passwordTextField = new JPasswordField();
         confirmPasswordField = new JPasswordField();
-        cardNumberField = new JTextField();
-        monthField = new JTextField();
-        yearField = new JTextField();
-        cvvField = new JPasswordField();
 
         registerButton = new JButton("Register");
         registerButton.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -91,7 +86,6 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerButton.addActionListener(this);
 
         registerPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
-        registerPanel.setBackground(backgroundColor);
         registerPanel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:20;" +
                 "background:darken(@background,3%);");
@@ -100,7 +94,6 @@ public class RegisterPage extends JFrame implements ActionListener {
                 "showRevealButton:true");
         confirmPasswordField.putClientProperty(FlatClientProperties.STYLE, "" +
                 "showRevealButton:true");
-        cvvField.putClientProperty(FlatClientProperties.STYLE, "showRevealButton:true");
 
         JLabel header = new JLabel("Welcome to Baylor Bear Luxury");
         header.putClientProperty(FlatClientProperties.STYLE, "" + "font:bold +7");
@@ -126,6 +119,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         badPasswordLabel.setForeground(Color.red);
         emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
         emptyConfirmPasswordLabel.setForeground(Color.red);
+        emptyCardInfoLabel = new JLabel("Card information is required");
+        emptyCardInfoLabel.setForeground(Color.red);
 
         emailInUseLabel = new JLabel("This email is already in use");
         emailInUseLabel.setForeground(Color.red);
@@ -134,25 +129,34 @@ public class RegisterPage extends JFrame implements ActionListener {
         passwordNotMatchLabel = new JLabel("Passwords do not match");
         passwordNotMatchLabel.setForeground(Color.red);
 
+        cardPanel = new JPanel(new MigLayout("fillx,insets 0"));
+        cardPanel.putClientProperty(FlatClientProperties.STYLE, "background:darken(@background,3%);");
+        cardPanel.setPreferredSize(new Dimension(0, 50));
+        cardPanel.add(new JLabel("Date"));
+        cardPanel.add(new JLabel("CVV"), "wrap");
+        cardPanel.add(dateField);
+        cardPanel.add(cvvField);
+
         registerPanel.add(logoLabel);
-        registerPanel.add(header, "gapy 10");
+        registerPanel.add(header, "gapy 0");
         registerPanel.add(description);
-        registerPanel.add(new JLabel("First name"), "gapy 6");
+        registerPanel.add(new JLabel("First name"), "gapy 0");
         registerPanel.add(firstNameField);
-        registerPanel.add(new JLabel("Last name"), "gapy 6");
+        registerPanel.add(new JLabel("Last name"), "gapy 0");
         registerPanel.add(lastNameField);
-        registerPanel.add(new JLabel("Email"), "gapy 6");
+        registerPanel.add(new JLabel("Email"), "gapy 0");
         registerPanel.add(emailTextField);
-        registerPanel.add(new JLabel("Phone"), "gapy 6");
+        registerPanel.add(new JLabel("Phone"), "gapy 0");
         registerPanel.add(phoneTextField);
-        registerPanel.add(new JLabel("Password"), "gapy 6");
+        registerPanel.add(new JLabel("Password"), "gapy 0");
         registerPanel.add(passwordTextField);
-        registerPanel.add(new JLabel("Confirm password"), "gapy 6");
-        registerPanel.add(confirmPasswordField, "gapy 6");
+        registerPanel.add(new JLabel("Confirm password"), "gapy 0");
+        registerPanel.add(confirmPasswordField, "gapy 0");
         registerPanel.add(new JLabel("Card number"));
         registerPanel.add(cardNumberField);
-        registerPanel.add(registerButton, "gapy 10");
-        registerPanel.add(createRegisterLabel(), "gapy 10");
+        registerPanel.add(cardPanel);
+        registerPanel.add(registerButton, "gapy 0");
+        registerPanel.add(createRegisterLabel(), "gapy 0");
 
         add(registerPanel);
     }
@@ -175,8 +179,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         return panel;
     }
 
-    private Boolean checkCredentials() {
-        Boolean validCredentials = true;
+    private boolean checkCredentials() {
+        boolean validCredentials = true;
         AccountController controller = new AccountController(new AccountJDBCDAO());
 
         // Check if fields are empty
@@ -239,22 +243,23 @@ public class RegisterPage extends JFrame implements ActionListener {
             validCredentials = false;
         }else{
             registerPanel.remove(emptyPasswordLabel);
-        }
-        // password does not meet specification, show error
-        if(!passwordSpecifier.checkPassword(passwordTextField.getText())){
-            // if there is a problem with the password, it's not empty
-            registerPanel.remove(emptyPasswordLabel);
 
-            badPasswordLabel.setText(passwordSpecifier.getPasswordProblem());
-            registerPanel.add(badPasswordLabel, 13 + addedComponentCount);
-            addedComponentCount++;
-            validCredentials = false;
-        }else{
-            registerPanel.remove(badPasswordLabel);
-        }
+            // password does not meet specification, show error
+            if(!passwordSpecifier.checkPassword(passwordTextField.getText())){
+                // if there is a problem with the password, it's not empty
+                registerPanel.remove(emptyPasswordLabel);
 
+                badPasswordLabel.setText(passwordSpecifier.getPasswordProblem());
+                registerPanel.add(badPasswordLabel, 13 + addedComponentCount);
+                addedComponentCount++;
+                validCredentials = false;
+            }else{
+                registerPanel.remove(badPasswordLabel);
+            }
+        }
         if (confirmPasswordField.getText().isEmpty()) {
             registerPanel.add(emptyConfirmPasswordLabel, 15 + addedComponentCount);
+            addedComponentCount++;
             validCredentials = false;
         } else {
             registerPanel.remove(emptyConfirmPasswordLabel);
@@ -267,6 +272,13 @@ public class RegisterPage extends JFrame implements ActionListener {
                     validCredentials = false;
                 }
             }
+        }
+        // Check if card info is filled
+        if (cardNumberField.getValue() == null || dateField.getValue() == null || cvvField.getValue() == null) {
+            registerPanel.add(emptyCardInfoLabel, 18 + addedComponentCount);
+            validCredentials = false;
+        } else {
+            registerPanel.remove(emptyCardInfoLabel);
         }
 
         setVisible(true);
@@ -285,6 +297,15 @@ public class RegisterPage extends JFrame implements ActionListener {
         // remove unwanted "-" character from phone number
         long phoneNumber = Long.parseLong(phoneTextField.getText().replaceAll("-",""));
         String password = passwordTextField.getText();
+
+        // BILLING INFO
+        String cardNumber = cardNumberField.getText(); // contains "-" remove if needed
+        String date = dateField.getText(); // contains "/"
+        String cvv = dateField.getText();
+        System.out.println(cardNumber);
+        System.out.println(date);
+        System.out.println(cvv);
+
         //FIXME
         Role role = Role.GUEST;
         controller.insertAccount(new Account(firstName,lastName, userName, email,phoneNumber,password, role));
