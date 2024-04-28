@@ -82,7 +82,7 @@ public class ProductTableGUI extends JFrame {
                 }
             }
         });
-        topPanel.add(addStockButton, BorderLayout.WEST);
+        topPanel.add(addStockButton, BorderLayout.CENTER);
 
 
         // Add the "Remove Stock" button
