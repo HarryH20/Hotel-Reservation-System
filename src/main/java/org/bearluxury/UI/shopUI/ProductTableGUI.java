@@ -1,5 +1,6 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
+import org.bearluxury.UI.HotelManagementSystem;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.PRODUCT_TYPE;

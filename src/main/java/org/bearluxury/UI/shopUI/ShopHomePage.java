@@ -1,6 +1,10 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import org.bearluxury.UI.shopUI.CheckoutDialog;
+import org.bearluxury.UI.HotelManagementSystem;
+import org.bearluxury.UI.Style;
+import org.bearluxury.UI.shopUI.ProductCard;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.Product;
@@ -54,7 +58,6 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         setTitle("Shop Home");
         setSize(1280, 720);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Style.backgroundColor);
 
         this.productController = productController;
@@ -203,6 +206,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
             checkoutDialog.setVisible(true);
         }
         if(e.getSource() == backButton){
+            dispose();
             HotelManagementSystem.openGuestHomePage();
         }
     }

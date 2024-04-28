@@ -1,11 +1,7 @@
 package org.bearluxury.room;
 
-import org.bearluxury.DAO;
-import org.bearluxury.RoomResDAO;
-import org.bearluxury.room.BED_TYPE;
-import org.bearluxury.room.QUALITY_LEVEL;
-import org.bearluxury.room.ROOM_TYPE;
-import org.bearluxury.room.Room;
+import org.bearluxury.database.DAO;
+import org.bearluxury.database.RoomResDAO;
 
 import java.sql.*;
 import java.util.*;
@@ -13,7 +9,7 @@ import java.util.*;
 public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/room";
+    private static String JDBC_URL = "jdbc:h2:~/testingRoom";
 
     public RoomJDBCDAO() {
         try {
@@ -47,7 +43,7 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
 
                 stmt.executeUpdate(createTableSQL);
             } else {
-                System.out.println("Employee table already exists.");
+                System.out.println("Room table already exists.");
             }
 
         } catch (SQLException e) {

@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.database;
 import org.bearluxury.account.Account;
 
 import java.sql.SQLException;

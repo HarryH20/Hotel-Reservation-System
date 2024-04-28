@@ -1,19 +1,25 @@
 package org.bearluxury.account;
 
-public class Guest extends Account {
-    private int creditCardNumber;
+import org.bearluxury.reservation.Reservation;
+
+import java.util.ArrayList;
+
+public class Guest extends Account{
+    CreditCard card;
 
     public Guest(String firstName, String lastName, String userName,
-                 String email, long phoneNumber, String password, Role role, int creditCardNumber) {
+                 String email, long phoneNumber, String password, Role role, CreditCard card) {
         super(firstName, lastName, userName, email, phoneNumber, password, role);
-        this.creditCardNumber = creditCardNumber;
+        this.card = card;
+
+    }
+    public Guest(){}
+
+    public void setCreditCard (CreditCard card) {
+        this.card = card;
     }
 
-    public int getCreditCardNumber() {
-        return creditCardNumber;
-    }
-
-    public void setCreditCardNumber(int creditCardNumber) {
-        this.creditCardNumber = creditCardNumber;
+    public CreditCard getCreditCard() {
+        return this.card;
     }
 }
