@@ -32,7 +32,7 @@ public class AdminHomePage extends HotelHomePage{
     private class openRegistration implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ClerkRegisterPain pane = new ClerkRegisterPain();
+            ClerkRegisterPane pane = new ClerkRegisterPane();
             pane.setVisible(true);
         }
     }
