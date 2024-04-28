@@ -19,6 +19,7 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private JPanel registerPanel;
     private JPanel cardPanel;
+    private JScrollPane scrollPane;
 
     private JTextField firstNameField;
     private JTextField lastNameField;
@@ -169,7 +170,12 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.add(registerButton, "gapy 0");
         registerPanel.add(createLoginLabel(), "gapy 0");
 
-        add(registerPanel);
+        scrollPane = new JScrollPane(registerPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.putClientProperty(FlatClientProperties.STYLE,
+                "arc:20;" +
+                "background:darken(@background,3%);");
+
+        add(scrollPane);
     }
 
     private Component createLoginLabel() {
