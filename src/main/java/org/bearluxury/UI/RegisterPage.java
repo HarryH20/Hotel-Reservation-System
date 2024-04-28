@@ -89,7 +89,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         confirmPasswordField.addActionListener(this);
 
         registerButton = new JButton("Register");
-        registerButton.putClientProperty(FlatClientProperties.STYLE, "" +
+        registerButton.putClientProperty(FlatClientProperties.STYLE,
                 "[light]background:darken(@background,10%);" +
                 "[dark]background:lighten(@background,10%);" +
                 "borderWidth:0;" +
@@ -98,20 +98,20 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerButton.addActionListener(this);
 
         registerPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
-        registerPanel.putClientProperty(FlatClientProperties.STYLE, "" +
+        registerPanel.putClientProperty(FlatClientProperties.STYLE,
                 "arc:20;" +
                 "background:darken(@background,3%);");
 
-        passwordTextField.putClientProperty(FlatClientProperties.STYLE, "" +
+        passwordTextField.putClientProperty(FlatClientProperties.STYLE,
                 "showRevealButton:true");
-        confirmPasswordField.putClientProperty(FlatClientProperties.STYLE, "" +
+        confirmPasswordField.putClientProperty(FlatClientProperties.STYLE,
                 "showRevealButton:true");
 
         JLabel header = new JLabel("Welcome to Baylor Bear Luxury");
-        header.putClientProperty(FlatClientProperties.STYLE, "" + "font:bold +7");
+        header.putClientProperty(FlatClientProperties.STYLE, "font:bold +7");
 
         JLabel description = new JLabel("Please fill in the information below to get started");
-        description.putClientProperty(FlatClientProperties.STYLE, "" +
+        description.putClientProperty(FlatClientProperties.STYLE,
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
 
@@ -180,16 +180,16 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private Component createLoginLabel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        panel.putClientProperty(FlatClientProperties.STYLE, "" +
+        panel.putClientProperty(FlatClientProperties.STYLE,
                 "background:null");
         cmdLogin = new JButton("<html><a href=\"#\">Log in now</a></html>");
-        cmdLogin.putClientProperty(FlatClientProperties.STYLE, "" +
+        cmdLogin.putClientProperty(FlatClientProperties.STYLE,
                 "border:3,3,3,3");
         cmdLogin.setContentAreaFilled(false);
         cmdLogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
         cmdLogin.addActionListener(this);
         JLabel label = new JLabel("Already have an account?");
-        label.putClientProperty(FlatClientProperties.STYLE, "" +
+        label.putClientProperty(FlatClientProperties.STYLE,
                 "[light]foreground:lighten(@foreground,30%);");
         panel.add(label);
         panel.add(cmdLogin);
