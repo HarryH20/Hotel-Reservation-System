@@ -1,7 +1,9 @@
 package org.bearluxury.UI;
 
 import org.bearluxury.account.ClerkAccountDAO;
+import org.bearluxury.account.GuestAccountJDBCDAO;
 import org.bearluxury.controllers.ClerkAccountController;
+import org.bearluxury.controllers.GuestAccountController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,6 +25,7 @@ public class AdminHomePage extends HotelHomePage{
         JButton viewGuestAccounts = new JButton("View Guest Accounts");
         viewGuestAccounts.setFont(font);
         viewGuestAccounts.setForeground(Color.BLACK);
+        viewGuestAccounts.addActionListener(new openViewGuestAccountsPane());
 
         reservePanel.add(viewGuestAccounts);
     }
@@ -41,6 +44,15 @@ public class AdminHomePage extends HotelHomePage{
             ClerkAccountController clerkAccountController = new ClerkAccountController(new ClerkAccountDAO());
             ClerkAccountGUI clerkAccountGUI = new ClerkAccountGUI(clerkAccountController.listAccounts());
             clerkAccountGUI.setVisible(true);
+        }
+    }
+
+    private class openViewGuestAccountsPane implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e){
+            dispose();
+            GuestAccountClerkGUI guestAccountClerkGUI = new GuestAccountClerkGUI();
+            guestAccountClerkGUI.setVisible(true);
         }
     }
 }

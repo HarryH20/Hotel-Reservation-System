@@ -61,6 +61,20 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
             e.printStackTrace();
         }
     }
+    public String getCreditCardNumber(String email) {
+        String sql = "SELECT cardNumber FROM guests WHERE email = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("cardNumber");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if no credit card number found for the given email
+    }
 
 
     @Override
