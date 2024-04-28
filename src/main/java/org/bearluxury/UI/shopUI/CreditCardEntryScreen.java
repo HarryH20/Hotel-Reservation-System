@@ -1,14 +1,17 @@
 package org.bearluxury.UI.shopUI;
 
 import org.bearluxury.account.CreditCard;
+import org.bearluxury.product.Product;
 import org.bearluxury.shop.CreditCardPayment;
 import org.bearluxury.shop.Payment;
 import org.bearluxury.account.Guest;
+import org.bearluxury.shop.Sale;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
 
 public class CreditCardEntryScreen extends JFrame implements ActionListener {
     private JTextField cardNumberField;
@@ -19,13 +22,17 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
     private JButton submitButton;
 
     Guest guest;
-    CreditCard card;
+    private CreditCard card;
     double charge;
+    Map<Product, Integer> cart;
+    Sale sale;
 
-    public CreditCardEntryScreen(Guest guest, double charge) {
+
+    public CreditCardEntryScreen(Guest guest, double charge, Map<Product, Integer> cart) {
         this.guest = guest;
         this.card = guest.getCreditCard();
         this.charge = charge;
+        this.cart = cart;
 
         setTitle("Credit Card Information");
         setSize(400, 300);
@@ -90,12 +97,11 @@ public class CreditCardEntryScreen extends JFrame implements ActionListener {
                 this.card = tempCard;
             }
 
-            Payment payment = new CreditCardPayment(this.charge, this.card);
-            if (payment.processPayment()) {
-                System.out.println("payment successful");
-            } else {
-                System.out.println("payment unsuccessful");
-            }
+//            Payment payment = new CreditCardPayment(this.charge, this.card);
+//            ShopHomePage.makePayment(payment, guest);
         }
+    }
+    public CreditCard getCard() {
+        return this.card;
     }
 }

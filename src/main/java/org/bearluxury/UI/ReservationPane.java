@@ -1,10 +1,15 @@
 package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import org.bearluxury.Billing.SaleJDBCDAO;
+import org.bearluxury.account.GuestAccountJDBCDAO;
+import org.bearluxury.account.Role;
+import org.bearluxury.controllers.*;
+import org.bearluxury.room.RoomCatalog;
+import org.bearluxury.room.RoomJDBCDAO;
+import org.bearluxury.shop.Sale;
 import org.bearluxury.state.SessionManager;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.controllers.AccountController;
-import org.bearluxury.controllers.ReservationController;
+import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 
@@ -12,7 +17,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -61,7 +68,7 @@ public class ReservationPane extends JFrame {
         roomId = new JTextField();
         roomId.setText(String.valueOf(id));
         roomId.setEditable(false);
-        AccountController controller = new AccountController(new AccountJDBCDAO());
+        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
 
         roomId.setFont(new Font("Arial", Font.PLAIN, 15));
         roomId.setBounds(170, 30, 190, 20);
@@ -75,11 +82,14 @@ public class ReservationPane extends JFrame {
         firstName = new JTextField();
         firstName.setFont(new Font("Arial", Font.PLAIN, 15));
         firstName.setBounds(170, 60, 190, 20);
-        String firstNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentAccount().getEmail()).
-                orElseThrow(() -> new NoSuchElementException("Account not found")).
-                getFirstName();
-        System.out.println(firstNameInfo);
-        firstName.setText(firstNameInfo);
+        if(SessionManager.getInstance().getCurrentAccount().getRole() ==Role.GUEST) {
+            String firstNameInfo = controller.getAccount(SessionManager.getInstance().getCurrentAccount().getEmail()).
+                    orElseThrow(() -> new NoSuchElementException("Account not found")).
+                    getFirstName();
+
+            System.out.println(firstNameInfo);
+            firstName.setText(firstNameInfo);
+        }
         reservationPanel.add(firstName);
 
         JLabel lastNameLabel = new JLabel("Last Name:");
@@ -89,12 +99,14 @@ public class ReservationPane extends JFrame {
         lastName = new JTextField();
         lastName.setFont(new Font("Arial", Font.PLAIN, 15));
         lastName.setBounds(170, 90, 190, 20);
-        String lastNameInfo = controller.getAccount(SessionManager.getInstance().
-                        getCurrentAccount().
-                        getEmail()).
-                orElseThrow(() -> new NoSuchElementException("Reservation not found")).
-                getLastName();
-        lastName.setText(lastNameInfo);
+        if(SessionManager.getInstance().getCurrentAccount().getRole() ==Role.GUEST) {
+            String lastNameInfo = controller.getAccount(SessionManager.getInstance().
+                            getCurrentAccount().
+                            getEmail()).
+                    orElseThrow(() -> new NoSuchElementException("Reservation not found")).
+                    getLastName();
+            lastName.setText(lastNameInfo);
+        }
         reservationPanel.add(lastName);
 
         JLabel emailLabel = new JLabel("Email:");
@@ -104,12 +116,14 @@ public class ReservationPane extends JFrame {
         email = new JTextField();
         email.setFont(new Font("Arial", Font.PLAIN, 15));
         email.setBounds(170, 120, 190, 20);
-        String emailInfo = controller.getAccount(SessionManager.getInstance().
-                        getCurrentAccount().
-                        getEmail()).
-                orElseThrow(() -> new NoSuchElementException("Reservation not found")).
-                getEmail();
-        email.setText(emailInfo);
+        if(SessionManager.getInstance().getCurrentAccount().getRole() ==Role.GUEST) {
+            String emailInfo = controller.getAccount(SessionManager.getInstance().
+                            getCurrentAccount().
+                            getEmail()).
+                    orElseThrow(() -> new NoSuchElementException("Reservation not found")).
+                    getEmail();
+            email.setText(emailInfo);
+        }
         reservationPanel.add(email);
 
         JLabel guestsNumberLabel = new JLabel("Guests Number:");
@@ -156,7 +170,6 @@ public class ReservationPane extends JFrame {
 
     public void saveToCSV() {
         String csvFileName = "src/main/resources/ReservationList.csv";
-
         // Extracting the reservation data from the form
         int roomNumber = Integer.parseInt(roomId.getText());
         String guestFirstName = firstName.getText();
@@ -173,14 +186,45 @@ public class ReservationPane extends JFrame {
         }
         try {
             ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-            controller.insertReservation(new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate));
-            JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-            dispose();
+            SaleController saleController = new SaleController(new SaleJDBCDAO());
+
+            RoomController roomController = new RoomController(new RoomJDBCDAO());
+
+            GuestAccountController guestAccountController = new GuestAccountController(new GuestAccountJDBCDAO());
+
+
+            Reservation res = new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate, false);
+            controller.insertReservation(res);
+
+
+
+            long differenceMillis = res.getEndDate().getTime() - res.getStartDate().getTime();
+            long daysApart = differenceMillis / (1000 * 60 * 60 * 24);
+
+            Sale sale = new Sale(res.getStartDate(),
+                    String.valueOf(roomController.getRoom(roomNumber).orElseThrow().getRoomNumber()),
+                    roomController.getRoom(roomNumber).orElseThrow().getPrice(), (int) daysApart);
+
+            if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST) {
+                sale.setAccountId(SessionManager.getInstance().getCurrentAccount().getId());
+                saleController.insertSale(sale);
+                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+                dispose();
+            } else {
+                int acctId = guestAccountController.getAccount(guestEmail).orElseThrow(() ->
+                        new NoSuchElementException("Guest not found")).getId();
+                sale.setAccountId(acctId);
+                saleController.insertSale(sale);
+                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+                dispose();
+            }
+
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Reservation failed to save! ");
         }
     }
+
     private String formatDate(java.util.Date date) {
         return new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);
     }

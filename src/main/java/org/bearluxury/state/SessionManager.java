@@ -1,7 +1,6 @@
 package org.bearluxury.state;
 
 import org.bearluxury.account.*;
-import org.bearluxury.controllers.AccountController;
 
 public class SessionManager {
     private static SessionManager instance;
@@ -27,32 +26,35 @@ public class SessionManager {
             if (account instanceof Guest) {
                 return account;
             } else {
-                // Create a new Guest instance based on the account's information
                 Guest guest = new Guest(account.getFirstName(), account.getLastName(),
                         account.getUserName(), account.getEmail(),
-                        account.getPhoneNumber(), account.getPassword(), Role.GUEST); // Setting credit card number to 0
+                        account.getPhoneNumber(), account.getPassword(), Role.GUEST, new CreditCard("123"," ", " ", "123")); // Setting credit card number to 0
+                guest.setId(account.getId());
                 return guest;
             }
         } else if (role == Role.CLERK) {
             if (account instanceof Clerk) {
                 return account;
             } else {
-                // Create a new Clerk instance based on the account's information
-                return new Clerk(account.getFirstName(), account.getLastName(),
+
+                Clerk clerk = new Clerk(account.getFirstName(), account.getLastName(),
                         account.getUserName(), account.getEmail(),
                         account.getPhoneNumber(), account.getPassword(), Role.CLERK);
+                clerk.setId(account.getId());
+                return clerk;
             }
         } else if (role == Role.ADMIN) {
             if (account instanceof Admin) {
                 return account;
             } else {
-                // Create a new Admin instance based on the account's information
-                return new Admin(account.getFirstName(), account.getLastName(),
+                Admin admin = new Admin(account.getFirstName(), account.getLastName(),
                         account.getUserName(), account.getEmail(),
                         account.getPhoneNumber(), account.getPassword(), Role.ADMIN);
+                admin.setId(account.getId());
+                return admin;
             }
         } else {
-            return null;
+            return null; // Unknown role
         }
     }
 
@@ -60,3 +62,4 @@ public class SessionManager {
         this.account = account;
     }
 }
+

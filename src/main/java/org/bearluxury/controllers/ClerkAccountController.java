@@ -1,17 +1,15 @@
 package org.bearluxury.controllers;
 
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountJDBCDAO;
-import org.bearluxury.reservation.Reservation;
-import org.bearluxury.reservation.ReservationJDBCDAO;
+import org.bearluxury.account.ClerkAccountDAO;
 
 import java.util.Optional;
 import java.util.Set;
 
-public class AccountController {
-    private AccountJDBCDAO accountDAO;
+public class ClerkAccountController {
+    private ClerkAccountDAO accountDAO;
 
-    public AccountController(AccountJDBCDAO accountDAO){
+    public ClerkAccountController(ClerkAccountDAO accountDAO){
         this.accountDAO = accountDAO;
     }
     public void insertAccount(Account account) {
@@ -26,8 +24,8 @@ public class AccountController {
         return accountDAO.list();
     }
 
-    public void updateAccounts(Account reservation, String email) {
-        accountDAO.update(reservation, email);
+    public void updateAccounts(Account account, String email) {
+        accountDAO.update(account, email);
     }
 
     public boolean deleteAccounts(String email) {

@@ -1,17 +1,20 @@
 package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
-import org.bearluxury.account.Account;
-import org.bearluxury.account.Guest;
+import org.bearluxury.Billing.SaleJDBCDAO;
+import org.bearluxury.controllers.ProductController;
+import org.bearluxury.controllers.SaleController;
 import org.bearluxury.product.Product;
+import org.bearluxury.product.ProductJDBCDAO;
+import org.bearluxury.shop.Sale;
 import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.Map;
 
 public class CheckoutDialog extends JDialog implements ActionListener {
@@ -46,7 +49,6 @@ public class CheckoutDialog extends JDialog implements ActionListener {
 
     public CheckoutDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
         super(parent, "Checkout", true);
-        //setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
         setLocationRelativeTo(parent);
         setSize(400, 600);
 
@@ -114,8 +116,8 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         // Checkout panel
         purchasePanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         purchaseButton = new JButton("Confirm purchase");
-        purchaseButton.addActionListener(this);
         purchaseButton.setPreferredSize(new Dimension(200, 30));
+        purchaseButton.addActionListener(this); // Add ActionListener to the purchaseButton
         purchasePanel.add(purchaseButton);
 
         add(cartPanel, BorderLayout.NORTH);
@@ -126,23 +128,27 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {
-            // Open credit card entry screen
-            openCreditCardEntryScreen();
-        }
-    }
+            // Update database quantities
+            ProductController productController = null;
+            try {
+                productController = new ProductController(new ProductJDBCDAO());
+                SaleController controller = new SaleController(new SaleJDBCDAO());
+                for (Map.Entry<Product, Integer> entry : cart.entrySet()) {
+                    Product product = entry.getKey();
+                    int quantity = entry.getValue();
+                    // Decrease the quantity of the product in the database
+                    productController.removeStock(product.getId(), quantity);
+                    Sale sale = new Sale(new Date(),product.getName(),product.getPrice(),quantity);
+                    sale.setAccountId(SessionManager.getInstance().getCurrentAccount().getId());
+                    controller.insertSale(sale);
 
-    private void openCreditCardEntryScreen() {
-        //this is weird
-        Account currentAccount = SessionManager.getInstance().getCurrentAccount();
-        if (currentAccount instanceof Guest guest) {
-            // Proceed with using the guest object
-            CreditCardEntryScreen creditCardEntryScreen = new CreditCardEntryScreen(guest, overallTotalCost);
-            creditCardEntryScreen.setLocationRelativeTo(this);
-            creditCardEntryScreen.setVisible(true);
-        } else {
-            // Handle the case where the current account is not a Guest
-            // For example, display an error message or perform a different action
-            JOptionPane.showMessageDialog(this, "Current account is not a Guest.");
+                }
+                // Close the dialog
+                dispose();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                throw new RuntimeException(ex);
+            }
         }
     }
 }

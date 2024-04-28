@@ -3,15 +3,15 @@ package org.bearluxury.UI;
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountBuilder;
-import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.account.Role;
-import org.bearluxury.controllers.AccountController;
+import org.bearluxury.controllers.ClerkAccountController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Optional;
 
 public class RegisterPane extends JFrame implements ActionListener{
     Color backgroundColor = new Color(232,223,185,255);
