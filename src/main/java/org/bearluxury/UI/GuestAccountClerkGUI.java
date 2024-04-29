@@ -138,7 +138,7 @@ public class GuestAccountClerkGUI extends JFrame {
     }
     private void editAccountDialog(int selectedRow, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
-        String email = (String) model.getValueAt(selectedRow, 4); // Assuming email is at index 4
+        String email = (String) model.getValueAt(selectedRow, 3); // Assuming email is at index 4
 
         Guest oldGuest = controller.getAccount(email).orElse(null);
 
@@ -198,10 +198,10 @@ public class GuestAccountClerkGUI extends JFrame {
                     // Update row in table
                     model.setValueAt(oldGuest.getFirstName(), selectedRow, 1);
                     model.setValueAt(oldGuest.getLastName(), selectedRow, 2);
-                    model.setValueAt(oldGuest.getEmail(), selectedRow, 4);
-                    model.setValueAt(oldGuest.getPhoneNumber(), selectedRow, 5);
-                    model.setValueAt(oldGuest.getPassword(), selectedRow, 6);
-                    model.setValueAt(oldGuest.getRole().toString(), selectedRow, 7);
+                    model.setValueAt(oldGuest.getEmail(), selectedRow, 3);
+                    model.setValueAt(oldGuest.getPhoneNumber(), selectedRow, 4);
+                    model.setValueAt(oldGuest.getPassword(), selectedRow, 5);
+                    model.setValueAt(oldGuest.getRole().toString(), selectedRow, 6);
 
                     editDialog.dispose();
                 }
@@ -240,7 +240,7 @@ public class GuestAccountClerkGUI extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
-                    String email = (String) table.getValueAt(selectedRow, 4); // Assuming email is at index 4
+                    String email = (String) table.getValueAt(selectedRow, 3); // Assuming email is at index 4
                     boolean deleted = controller.deleteAccounts(email);
                     if (deleted) {
                         // Delete selected row from table
