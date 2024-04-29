@@ -76,9 +76,9 @@ public class ClerkAccountGUI extends JFrame {
                     // Get the data from the selected row
                     String firstName = (String) model.getValueAt(selectedRow, 1);
                     String lastName = (String) model.getValueAt(selectedRow, 2);
-                    String email = (String) model.getValueAt(selectedRow, 4);
-                    long phoneNumber = (long) model.getValueAt(selectedRow, 5);
-                    String password = (String) model.getValueAt(selectedRow, 6);
+                    String email = (String) model.getValueAt(selectedRow, 3);
+                    long phoneNumber = (long) model.getValueAt(selectedRow, 4);
+                    String password = (String) model.getValueAt(selectedRow, 5);
 
                     JTextField firstNameField = new JTextField(firstName);
                     JTextField lastNameField = new JTextField(lastName);
@@ -109,7 +109,7 @@ public class ClerkAccountGUI extends JFrame {
                         // Check if the email is already in use
                         ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
                         String editedEmail = emailField.getText();
-                        String currentEmail = (String) model.getValueAt(selectedRow, 4);
+                        String currentEmail = (String) model.getValueAt(selectedRow, 3);
                         if (!editedEmail.equals(currentEmail)) { // Check if email is edited
                             Optional<Account> existingAccount = accountController.getAccount(editedEmail);
                             if (existingAccount.isPresent()) {
