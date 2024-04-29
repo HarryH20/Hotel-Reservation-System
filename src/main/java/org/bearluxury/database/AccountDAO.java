@@ -1,4 +1,4 @@
-package org.bearluxury;
+package org.bearluxury.database;
 
 import java.util.Optional;
 

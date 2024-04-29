@@ -3,15 +3,15 @@ package org.bearluxury.reservation;
 import java.sql.*;
 import java.util.*;
 import java.util.Date;
-import org.bearluxury.DAO;
-import org.bearluxury.RoomResDAO;
+import org.bearluxury.database.DAO;
+import org.bearluxury.database.RoomResDAO;
 import org.bearluxury.state.SessionManager;
 
 public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservation> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/reservation22";
+    private static String JDBC_URL = "jdbc:h2:~/testingReservations222";
 
     public ReservationJDBCDAO() {
         try {
@@ -41,7 +41,8 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                         "email VARCHAR(255), " +
                         "numberOfGuests INT, " +
                         "startDate DATE, " +
-                        "endDate DATE" +
+                        "endDate DATE," +
+                        "checkedIn BIT" +
                         ")";
 
                 stmt.executeUpdate(createTableSQL);
@@ -73,8 +74,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 int numberOfGuests = resultSet.getInt("numberOfGuests");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate = resultSet.getDate("endDate");
+                boolean checkedIn = resultSet.getBoolean("checkedIn");
 
-                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate,checkedIn);
                 reservation.setID(id);
                 reservation.setReservationID(reservationId);
                 reservations.add(reservation);
@@ -88,8 +90,8 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
     @Override
     public void insert(Reservation reservation) {
         try {
-            String sql = "INSERT INTO reservations (id, roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO reservations (id, roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate, checkedIn) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
 
             int accountId = SessionManager.getInstance().getCurrentAccount().getId();
             PreparedStatement preparedStatement = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
@@ -101,6 +103,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             preparedStatement.setInt(6, reservation.getNumberOfGuests());
             preparedStatement.setDate(7, new java.sql.Date(reservation.getStartDate().getTime()));
             preparedStatement.setDate(8, new java.sql.Date(reservation.getEndDate().getTime()));
+            preparedStatement.setBoolean(9, reservation.isCheckedIn());
 
             int rowsInserted = preparedStatement.executeUpdate();
             if (rowsInserted > 0) {
@@ -119,8 +122,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
     public Optional<Reservation> get(int id) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservations WHERE id = ?");
-            int accountId = SessionManager.getInstance().getCurrentAccount().getId();
-            preparedStatement.setInt(1,accountId);
+            preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
@@ -131,9 +133,10 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 int numberOfGuests = resultSet.getInt("numberOfGuests");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate = resultSet.getDate("endDate");
+                boolean checkedIn = resultSet.getBoolean("checkedIn");
 
-                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
-                reservation.setID(accountId);
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate, checkedIn);
+                reservation.setID(id);
                 return Optional.of(reservation);
             }
         } catch (SQLException e) {
@@ -145,13 +148,10 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
     @Override
     public void update(Reservation reservation, int id) {
         try {
-            String sql = "UPDATE reservations SET roomNumber = ?, firstName = ?, lastName = ?, email = ?, numberOfGuests = ?, startDate = ?, endDate = ? WHERE id = ?";
-
-            int accountId = SessionManager.getInstance().getCurrentAccount().getId();
+            String sql = "UPDATE reservations SET roomNumber = ?, firstName = ?, lastName = ?, email = ?, numberOfGuests = ?, startDate = ?, endDate = ?, checkedIn = ? WHERE reservationId = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
-            preparedStatement.setInt(1, accountId);
             preparedStatement.setInt(1, reservation.getRoomNumber());
             preparedStatement.setString(2, reservation.getFirstName());
             preparedStatement.setString(3, reservation.getLastName());
@@ -159,24 +159,24 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             preparedStatement.setInt(5, reservation.getNumberOfGuests());
             preparedStatement.setDate(6, new java.sql.Date(reservation.getStartDate().getTime()));
             preparedStatement.setDate(7, new java.sql.Date(reservation.getEndDate().getTime()));
-            preparedStatement.setInt(8, id);
+            preparedStatement.setBoolean(8, reservation.isCheckedIn());
+            preparedStatement.setInt(9, id);
 
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {
                 System.out.println("Reservation updated successfully!");
             } else {
-                System.out.println("No reservation found with id: " + id);
+                System.out.println("No reservation found with reservationId: " + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-
     @Override
     public boolean delete(int id) {
         try {
-            PreparedStatement statement = connection.prepareStatement("DELETE FROM reservations WHERE id = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM reservations WHERE reservationId = ?");
             statement.setInt(1, id);
             int rowsAffected = statement.executeUpdate();
             if (rowsAffected > 0) {
@@ -188,15 +188,13 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         return false;
     }
 
-
     @Override
     public void close() {
         try {
             connection.close();
-        }catch (SQLException exc){
+        } catch (SQLException exc) {
             exc.printStackTrace();
         }
-
     }
 
     @Override
@@ -210,6 +208,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             e.printStackTrace();
         }
     }
+
 
     public Set<Reservation> list(int accountId) {
         Set<Reservation> reservations = new HashSet<>();
@@ -228,8 +227,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 int numberOfGuests = resultSet.getInt("numberOfGuests");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate = resultSet.getDate("endDate");
+                boolean checkedIn = resultSet.getBoolean("checkedIn");
 
-                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate,checkedIn);
                 reservation.setID(id);
                 reservation.setReservationID(reservationId);
                 reservations.add(reservation);
@@ -254,8 +254,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
                 int numberOfGuests = resultSet.getInt("numberOfGuests");
                 Date startDate = resultSet.getDate("startDate");
                 Date endDate = resultSet.getDate("endDate");
+                boolean checkedIn = resultSet.getBoolean("checkedIn");
 
-                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate);
+                Reservation reservation = new Reservation(roomNumber, firstName, lastName, email, numberOfGuests, startDate, endDate,checkedIn);
                 reservation.setID(id);
                 reservation.setReservationID(reservationId);
                 return Optional.of(reservation);
@@ -282,7 +283,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
     public void updateByReservationId(Reservation reservation, int reservationId) {
         try {
-            String sql = "UPDATE reservations SET roomNumber = ?, firstName = ?, lastName = ?, email = ?, numberOfGuests = ?, startDate = ?, endDate = ? WHERE reservationId = ?";
+            String sql = "UPDATE reservations SET roomNumber = ?, firstName = ?, lastName = ?, email = ?, numberOfGuests = ?, startDate = ?, endDate = ?, checkedIn = ? WHERE reservationId = ?";
 
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
 
@@ -293,7 +294,10 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             preparedStatement.setInt(5, reservation.getNumberOfGuests());
             preparedStatement.setDate(6, new java.sql.Date(reservation.getStartDate().getTime()));
             preparedStatement.setDate(7, new java.sql.Date(reservation.getEndDate().getTime()));
-            preparedStatement.setInt(8, reservationId);
+            preparedStatement.setBoolean(8,reservation.isCheckedIn());
+            preparedStatement.setInt(9, reservationId);
+
+
 
             int rowsUpdated = preparedStatement.executeUpdate();
             if (rowsUpdated > 0) {

@@ -22,7 +22,20 @@ public class GuestHomePage extends HotelHomePage {
         reserveButton.setFont(font);
         reserveButton.setForeground(Color.BLACK);
         reserveButton.addActionListener(new openHotelManagmentPane());
-        JButton shopButton = shopButton = new JButton("Shop");
+
+        JButton billButton = new JButton("Check Bill");
+        billButton.setFont(font);
+        billButton.setForeground(Color.BLACK);
+        billButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                HotelManagementSystem.openBillingPage();
+            }
+        });
+
+
+        JButton shopButton = new JButton("Shop");
         shopButton.setFont(font);
         shopButton.setForeground(Color.BLACK);
         shopButton.addActionListener(new ActionListener() {
@@ -45,6 +58,7 @@ public class GuestHomePage extends HotelHomePage {
         seeReservations.setForeground(Color.BLACK);
         seeReservations.addActionListener(new GuestHomePage.openViewReservationPane());
 
+        reservePanel.add(billButton);
         reservePanel.add(reserveButton);
         reservePanel.add(shopButton);
         reservePanel.add(seeReservations);
@@ -58,6 +72,8 @@ public class GuestHomePage extends HotelHomePage {
         Date today = new Date();
 
         boolean isValid = false;
+
+
 
         // checks for all the user's reservations if any are today
         for(Reservation r : reservationSet) {

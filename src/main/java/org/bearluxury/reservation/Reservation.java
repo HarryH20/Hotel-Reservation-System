@@ -7,6 +7,7 @@ import org.bearluxury.state.SessionManager;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+//make Reservation take a list of rooms?
 public class Reservation {
     private int roomNumber;
     private String firstName;
@@ -15,6 +16,8 @@ public class Reservation {
     private int numberOfGuests;
     private Date startDate;
     private Date endDate;
+
+    private boolean checkedIn;
     private int id;
 
     private int reservationID;
@@ -23,7 +26,7 @@ public class Reservation {
     public Reservation(int roomNumber, String firstName,
                        String lastName, String email,
                        int numberOfGuests, Date startDate,
-                       Date endDate) {
+                       Date endDate, boolean checkedIn) {
         this.roomNumber = roomNumber;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -31,6 +34,7 @@ public class Reservation {
         this.email = email;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.checkedIn = checkedIn;
 
     }
 
@@ -135,5 +139,14 @@ public class Reservation {
 
     public void setReservationID(int reservationID) {
         this.reservationID = reservationID;
+    }
+
+
+    public boolean isCheckedIn() {
+        return checkedIn;
+    }
+
+    public void setCheckedIn(boolean checkedIn) {
+        this.checkedIn = checkedIn;
     }
 }

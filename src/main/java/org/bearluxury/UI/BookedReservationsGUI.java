@@ -1,13 +1,12 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.ClerkAccountDAO;
+import org.bearluxury.account.GuestAccountJDBCDAO;
 import org.bearluxury.account.Role;
-import org.bearluxury.controllers.AccountController;
-import org.bearluxury.controllers.ReservationController;
+import org.bearluxury.controllers.ClerkAccountController;
+import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
-import org.bearluxury.reservation.ReservationJDBCDAO;
-import org.bearluxury.room.Room;
 import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
@@ -66,7 +65,7 @@ public class BookedReservationsGUI extends JFrame {
     }
 
     private DefaultTableModel createTableModel() {
-        String[] columnNames = {"Account ID", "Reservation ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date"};
+        String[] columnNames = {"Account ID", "Reservation ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date" ,"Checked In"};
         return new DefaultTableModel(columnNames, 0){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -140,7 +139,7 @@ public class BookedReservationsGUI extends JFrame {
 
         // format output dates
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-        AccountController controller = new AccountController(new AccountJDBCDAO());
+        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
 
         // room number,first name,last name,email,number of guests,start date,end date
         reservations
@@ -155,7 +154,8 @@ public class BookedReservationsGUI extends JFrame {
                         reservation.getEmail(),
                         reservation.getNumberOfGuests(),
                         formatter.format(reservation.getStartDate()),
-                        formatter.format(reservation.getEndDate())
+                        formatter.format(reservation.getEndDate()),
+                        reservation.isCheckedIn()
                 }));
     }
 

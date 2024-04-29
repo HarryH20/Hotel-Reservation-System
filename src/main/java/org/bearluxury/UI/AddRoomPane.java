@@ -65,8 +65,6 @@ public class AddRoomPane extends JFrame {
             }
         });
 
-
-
         add(roomNumberLabel);
         add(roomNumber);
         add(priceLabel);
@@ -85,21 +83,22 @@ public class AddRoomPane extends JFrame {
     }
 
     private void saveRoom(double priceSelection) {
+        Room room = null;
         try {
             RoomController controller = new RoomController(new RoomJDBCDAO());
-            controller.insertRoom(new Room(
+            room = new Room(
                     Integer.parseInt(roomNumber.getText()),
                     priceSelection,
                     smokingStatus.isSelected(),
                     RoomBuilder.readAsRoomType(roomTypes.getSelectedItem().toString()),
                     RoomBuilder.readAsBedType(bedTypes.getSelectedItem().toString()),
                     RoomBuilder.readAsQualityLevel(qualityTypes.getSelectedItem().toString()),
-                    Integer.parseInt(bedNumber.getValue().toString())
-
-            ));
+                    Integer.parseInt(bedNumber.getValue().toString()));
+            controller.insertRoom(room);
+            
             showConfirmationDialog();
         } catch (SQLException e) {
-            showFailureDialog();
+           roomUpdate(room);
         }
 
     }
@@ -127,14 +126,23 @@ public class AddRoomPane extends JFrame {
             dispose();
         }
     }
-    private void showFailureDialog() {
-        int selection = JOptionPane.showConfirmDialog(null, "Room already exists! " +
-                "Would you like to add another?");
-        if (selection == JOptionPane.YES_OPTION) {
-            dispose();
-            openAddRoomPane();
-        } else {
-            dispose();
+
+    private void roomUpdate(Room room) {
+        try {
+            RoomController controller = new RoomController(new RoomJDBCDAO());
+            int selection = JOptionPane.showConfirmDialog(null, "Room already exists! " +
+                    "Would you like to update it?");
+
+            if (selection == JOptionPane.YES_OPTION) {
+                dispose();
+                controller.updateRoom(room, room.getRoomNumber());
+                JOptionPane.showMessageDialog(null, "Room updated!");
+
+            } else {
+                dispose();
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
         }
     }
 
@@ -142,5 +150,4 @@ public class AddRoomPane extends JFrame {
         AddRoomPane pane = new AddRoomPane();
         pane.setVisible(true);
     }
-
 }

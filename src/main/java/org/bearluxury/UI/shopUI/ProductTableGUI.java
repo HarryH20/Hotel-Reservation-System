@@ -1,5 +1,6 @@
-package org.bearluxury.UI;
+package org.bearluxury.UI.shopUI;
 
+import org.bearluxury.UI.HotelManagementSystem;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.product.PRODUCT_TYPE;
@@ -81,7 +82,7 @@ public class ProductTableGUI extends JFrame {
                 }
             }
         });
-        topPanel.add(addStockButton, BorderLayout.WEST);
+        topPanel.add(addStockButton, BorderLayout.CENTER);
 
 
         // Add the "Remove Stock" button

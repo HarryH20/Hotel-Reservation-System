@@ -1,20 +1,35 @@
 package org.bearluxury.room;
 
-import org.bearluxury.room.BED_TYPE;
-import org.bearluxury.room.QUALITY_LEVEL;
-import org.bearluxury.room.ROOM_TYPE;
-import org.bearluxury.room.Room;
-
 import java.io.*;
 import java.util.*;
 
-//Parser for room from CSV file
-public class RoomBuilder {
-    Set <Room> roomList;
+/**
+ * This class takes the rooms from the csv and puts it in a set
+ * the set is then used to fill the room database.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 
-    public RoomBuilder(String csvName){
-        roomList = new TreeSet<>(Comparator.comparing(Room::getRoomNumber));
-        File file = new File(csvName);
+public class RoomBuilder {
+    Set <Room> roomSet;
+
+    /**
+     * Is a constructor for the RoomBuilder class.
+     * Takes in a roomCSV and makes a tree set. It
+     * pulls from the roomCSV and puts each room in
+     * the tree set. The tree set is ordered by room
+     * number.
+     *
+     * @param roomCSV
+     */
+
+    public RoomBuilder(String roomCSV){
+        roomSet = new TreeSet<>(Comparator.comparing(Room::getRoomNumber));
+        File file = new File(roomCSV);
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(file));
@@ -32,7 +47,7 @@ public class RoomBuilder {
                         readAsQualityLevel(parsedLine[3]),
                         Integer.parseInt(parsedLine[4]));
 
-                roomList.add(room);
+                roomSet.add(room);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -46,53 +61,22 @@ public class RoomBuilder {
             }
         }
     }
-    public Set<Room> getRoomList(){
-        return roomList;
+
+
+    /**
+     * A setter for the set of rooms
+     * @return a set of rooms
+     */
+    public Set<Room> getRoomSet(){
+        return roomSet;
     }
 
-    public boolean addRoom(int roomNumber, double price, boolean canSmoke,
-                           ROOM_TYPE roomType, BED_TYPE bed,
-                           QUALITY_LEVEL qualityLevel, int numberOfBeds){
-        Room room = new Room(roomNumber,
-                price,
-                canSmoke,
-                roomType,
-                bed,
-                qualityLevel,
-                numberOfBeds);
-       return roomList.add(room);
-
-    }
-    public void writeRoom(String csvName){
-        File file = new File(csvName);
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new FileWriter(file));
-            writer.write("room number, price, room type, quality, number of beds, smoke, type of beds\n");
-
-            //FORMAT: room number	price	room type	quality	number of beds	smoke	type of beds
-           for(Room room: roomList){
-                writer.write(room.getRoomNumber()+","
-                        +room.getPrice()+","
-                        +room.getRoomType().csvFormat()+","
-                        +room.getQualityLevel().csvFormat()+","
-                        +room.getNumberOfBeds()+","
-                        +room.isCanSmoke() +","
-                        +room.getBed()+'\n');
-            }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                } catch (IOException e) {
-                    System.err.println(e.getLocalizedMessage());
-                }
-            }
-        }
-    }
+    /**
+     * Takes in a room type as a string
+     * and converts it to an enum.
+     * @param str the room type as a string
+     * @return returns the enum
+     */
 
     public static ROOM_TYPE readAsRoomType(String str){
         if(str.equals("vintage")){
@@ -108,6 +92,13 @@ public class RoomBuilder {
         return ROOM_TYPE.NATURE;
 
     }
+
+    /**
+     * Takes in a bed type as a string
+     * and converts it to an enum.
+     * @param str the bed type
+     * @return the bed type as an enum
+     */
     public static BED_TYPE readAsBedType(String str){
         if(str.equals("King")){
             return BED_TYPE.KING;
@@ -123,6 +114,13 @@ public class RoomBuilder {
         }
         return BED_TYPE.KING;
     }
+
+    /**
+     * Takes in a quality level as a string
+     * and converts it to an enum.
+     * @param str the quality level
+     * @return the quality level as an enum
+     */
     public static QUALITY_LEVEL readAsQualityLevel(String str){
         if(str.equals("business")){
             return QUALITY_LEVEL.BUSINESS;
