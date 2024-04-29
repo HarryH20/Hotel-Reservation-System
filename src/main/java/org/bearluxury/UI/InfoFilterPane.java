@@ -13,11 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
-public class InfoFilterPane extends JFrame implements DateChangeListener, ActionListener{
+public class InfoFilterPane extends JFrame implements DateChangeListener, ActionListener {
 
     ImageIcon icon;
-    Color backgroundColor = new Color(232,223,185,255);
-    Color blackColor = new Color(1,12,15,255);
+    Color backgroundColor = new Color(232, 223, 185, 255);
+    Color blackColor = new Color(1, 12, 15, 255);
     Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
     //Color goldColor = new Color(170,141,71,255);
 
@@ -59,7 +59,6 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
     LocalDate checkOutDate;
     private int numBeds;
     private int numRooms;
-
 
 
     public InfoFilterPane() {
@@ -228,14 +227,19 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
             if (checkInDate.equals(checkOutDate)) {
                 JOptionPane.showMessageDialog(this, "Check-in and check-out dates cannot be the same.");
                 return;
+            } else if (checkOutDate.isBefore(checkInDate)) {
+                JOptionPane.showMessageDialog(this, "Check-out date cannot be before check-in date.");
+                return;
             }
-            System.out.println("Check in date: " + checkInDate);
-            System.out.println("Check out date: " + checkOutDate);
-            System.out.println("Number of beds: " + numBeds);
-            System.out.println("Number of rooms: " + numRooms);
-            dispose();
-            HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate);
         }
 
+
+        System.out.println("Check in date: " + checkInDate);
+        System.out.println("Check out date: " + checkOutDate);
+        System.out.println("Number of beds: " + numBeds);
+        System.out.println("Number of rooms: " + numRooms);
+        dispose();
+        HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate);
     }
 }
+
