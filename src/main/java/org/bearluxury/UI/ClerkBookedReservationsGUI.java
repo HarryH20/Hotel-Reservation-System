@@ -120,7 +120,7 @@ class DeleteReservationAction implements ActionListener {
                     getReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString())).
                     orElseThrow(() -> new NoSuchElementException("Reservation Doesn't exist"));
 
-            long differenceMillis = new Date().getTime() - res.getStartDate().getTime();
+            long differenceMillis = res.getStartDate().getTime() - new Date().getTime();
             long daysApart = differenceMillis / (1000 * 60 * 60 * 24);
 
             if (controller.deleteReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString()))) {
