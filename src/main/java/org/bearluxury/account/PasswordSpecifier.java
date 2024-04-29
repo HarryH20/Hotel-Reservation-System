@@ -1,16 +1,42 @@
 package org.bearluxury.account;
 import java.lang.Object.*;
+
+/**
+ * Each password specifier
+ * is used to make sure passwords are
+ * in correct format
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class PasswordSpecifier {
     private String passwordProblem;
+
+    /**
+     * constructs an empty passwordSpecifier
+     */
     public PasswordSpecifier(){
         passwordProblem = "";
 
     }
 
+    /**
+     * gets the password problem
+     * @return the password problem
+     */
+
     public String getPasswordProblem() {
         return passwordProblem;
     }
 
+    /**
+     * checks if the password is valid
+     * @param password the password to check
+     * @return whether the password is valid
+     */
     public boolean checkPassword(String password){
         boolean isGood = true;
         if(password.length() < 10) {
@@ -25,6 +51,13 @@ public class PasswordSpecifier {
         }
         return isGood;
     }
+
+    /**
+     * checks if a string contains another string
+     * @param str1 the string to check
+     * @param str2 the other string to check
+     * @return whether str1 contains any of str2
+     */
     public boolean containsAny(String str1, String str2){
         boolean contains = false;
         for(int i = 0; i < str1.length(); i++){
@@ -37,6 +70,12 @@ public class PasswordSpecifier {
         }
         return contains;
     }
+
+    /**
+     * checks for the number of capitals in a string
+     * @param str1 the string to check
+     * @return the number of caps it has
+     */
     public int numCaps(String str1){
         int numberOfCapitals = 0;
         for(int i = 0; i < str1.length(); i++){
