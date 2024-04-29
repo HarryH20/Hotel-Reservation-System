@@ -1,9 +1,7 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.Account;
-import org.bearluxury.account.Guest;
-import org.bearluxury.account.GuestAccountJDBCDAO;
-import org.bearluxury.account.Role;
+import org.bearluxury.account.*;
+import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.state.SessionManager;
 
@@ -11,9 +9,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -147,11 +147,23 @@ public class GuestAccountClerkGUI extends JFrame {
             JDialog editDialog = new JDialog(this, "Edit Account", true);
             editDialog.setLayout(new GridLayout(9, 2));
 
+
             JTextField firstNameField = new JTextField(oldGuest.getFirstName());
             JTextField lastNameField = new JTextField(oldGuest.getLastName());
             JTextField emailField = new JTextField(oldGuest.getEmail());
             emailField.setEditable(false);
-            JTextField phoneNumberField = new JTextField(String.valueOf(oldGuest.getPhoneNumber()));
+
+            MaskFormatter phoneFormatter = null;
+            try {
+                phoneFormatter = new MaskFormatter("###-###-####");
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+            phoneFormatter.setPlaceholder(
+                    String.valueOf(oldGuest.getPhoneNumber()).substring(0,3)+"-"
+                            +String.valueOf(oldGuest.getPhoneNumber()).substring(3,6)+"-"
+                            +String.valueOf(oldGuest.getPhoneNumber()).substring(6,10));
+            JFormattedTextField phoneNumberField = new JFormattedTextField(phoneFormatter);
             JTextField passwordField = new JTextField(oldGuest.getPassword());
 
             JComboBox<Role> roleComboBox = new JComboBox<>(Role.values());
@@ -178,17 +190,55 @@ public class GuestAccountClerkGUI extends JFrame {
                     oldGuest.setFirstName(firstNameField.getText());
                     oldGuest.setLastName(lastNameField.getText());
                     oldGuest.setEmail(emailField.getText());
-                    oldGuest.setPhoneNumber(Long.parseLong(phoneNumberField.getText()));
+                    oldGuest.setPhoneNumber(Long.parseLong(phoneNumberField.getText().replaceAll("-","")));
                     oldGuest.setPassword(passwordField.getText());
                     oldGuest.setRole((Role) roleComboBox.getSelectedItem());
 
                     // Check if the email is already in use
-                    String newEmail = emailField.getText();
-                    if (!newEmail.equals(email)) { // Check if email is edited
-                        Optional<Guest> existingAccount = controller.getAccount(newEmail);
-                        if (existingAccount.isPresent()) {
-                            JOptionPane.showMessageDialog(null, "Email already in use. Please choose another one.", "Warning", JOptionPane.WARNING_MESSAGE);
+                    ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
+                    String editedEmail = emailField.getText();
+                    String currentEmail = (String) model.getValueAt(selectedRow, 3);
+
+
+                    String editedPhoneNumber = String.valueOf(phoneNumberField.getValue());
+                    String currentPhoneNumber = String.valueOf( model.getValueAt(selectedRow, 4));
+                    if (!editedPhoneNumber.equals(currentPhoneNumber)) { // Check if email is edited
+
+                        if (phoneNumberField.getValue() != null) {
+                            ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+
+                            // Check if phone is in use
+                            for (Account account : controller.listAccounts()) {
+                                if (account.getPhoneNumber() == Long
+                                        .parseLong(String.valueOf(phoneNumberField.getValue())
+                                                .replaceAll("-", ""))) {
+                                    JOptionPane.showMessageDialog(null, "This Phone Number already in use.", "Warning", JOptionPane.WARNING_MESSAGE);
+                                    editDialog.dispose();
+                                    editAccountDialog(selectedRow,table);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
+                    String editedPassword = passwordField.getText();
+                    String currentPassword = (String) model.getValueAt(selectedRow, 5);
+                    if (!editedPassword.equals(currentPassword)) { // Check if email is edited
+                        if (passwordField.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please Fill in password Field.", "Warning", JOptionPane.WARNING_MESSAGE);
+                            editDialog.dispose();
+                            editAccountDialog(selectedRow,table);
                             return;
+                        }else{
+                            // password does not meet specification, show error
+                            if(!passwordSpecifier.checkPassword(passwordField.getText())) {
+                                // if there is a problem with the password, it's not empty
+                                JOptionPane.showMessageDialog(null, passwordSpecifier.getPasswordProblem(), "Warning", JOptionPane.WARNING_MESSAGE);
+                                editDialog.dispose();
+                                editAccountDialog(selectedRow,table);
+                                return;
+                            }
                         }
                     }
 
