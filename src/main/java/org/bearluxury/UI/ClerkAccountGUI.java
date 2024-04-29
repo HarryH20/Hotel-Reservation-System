@@ -85,6 +85,7 @@ public class ClerkAccountGUI extends JFrame {
                     JTextField lastNameField = new JTextField(lastName);
                     JTextField usernameField = new JTextField(username);
                     JTextField emailField = new JTextField(email);
+                    emailField.setEditable(false);
                     JTextField phoneNumberField = new JTextField(String.valueOf(phoneNumber));
                     JTextField passwordField = new JTextField(password);
 
@@ -146,10 +147,6 @@ public class ClerkAccountGUI extends JFrame {
                 }
             }
         });
-
-
-
-
 
         // Panel for buttons at the top
         JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));

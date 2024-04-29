@@ -1,6 +1,5 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.UI.shopUI.CreditCardEntryScreen;
 import org.bearluxury.account.*;
 import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.state.SessionManager;

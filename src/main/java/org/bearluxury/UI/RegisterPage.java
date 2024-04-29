@@ -1,5 +1,6 @@
 package org.bearluxury.UI;
 
+import org.bearluxury.Email.EmailSender;
 import org.bearluxury.UI.shopUI.CreditCardFrame;
 import org.bearluxury.account.*;
 
@@ -9,15 +10,15 @@ import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
 
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 public class RegisterPage extends JFrame implements ActionListener {
 
     Color backgroundColor = new Color(232,223,185,255);
-
-    AccountBuilder accountBuilder;
 
     ImageIcon logo;
 
@@ -26,7 +27,7 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JTextField firstNameField;
     private JTextField lastNameField;
     private JTextField emailTextField;
-    private JTextField phoneTextField;
+    private JFormattedTextField phoneTextField;
     private JPasswordField passwordTextField;
     private JPasswordField confirmPasswordField;
     private JButton registerButton;
@@ -35,14 +36,17 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JLabel emptyFirstNameLabel;
     private JLabel emptyLastNameLabel;
     private JLabel emptyEmailLabel;
+    private JLabel badEmailLabel;
     private JLabel emptyPhoneLabel;
     private JLabel emptyPasswordLabel;
+    private JLabel badPasswordLabel;
     private JLabel emptyConfirmPasswordLabel;
 
     private JLabel emailInUseLabel;
     private JLabel phoneInUseLabel;
     private JLabel passwordNotMatchLabel;
 
+    private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
     private JTextField cardNumberField;
     private JTextField expDateField;
     private JTextField cvvField;
@@ -56,7 +60,6 @@ public class RegisterPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        //accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
@@ -64,7 +67,11 @@ public class RegisterPage extends JFrame implements ActionListener {
         firstNameField = new JTextField();
         lastNameField = new JTextField();
         emailTextField = new JTextField();
-        phoneTextField = new JTextField();
+        try {
+            MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
+            phoneTextField = new JFormattedTextField(maskFormatter);
+        }catch(ParseException ignored){
+        }
         passwordTextField = new JPasswordField();
         confirmPasswordField = new JPasswordField();
 
@@ -75,7 +82,7 @@ public class RegisterPage extends JFrame implements ActionListener {
                 "borderWidth:0;" +
                 "focusWidth:0;" +
                 "innerFocusWidth:0");
-        registerButton.addActionListener(this);
+        registerButton.addActionListener(this);//
 
         registerPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
         registerPanel.setBackground(backgroundColor);
@@ -102,10 +109,14 @@ public class RegisterPage extends JFrame implements ActionListener {
         emptyLastNameLabel.setForeground(Color.red);
         emptyEmailLabel = new JLabel("Email address is required");
         emptyEmailLabel.setForeground(Color.red);
+        badEmailLabel = new JLabel("Email address not valid.");
+        badEmailLabel.setForeground(Color.red);
         emptyPhoneLabel = new JLabel("Phone number is required");
         emptyPhoneLabel.setForeground(Color.red);
-        emptyPasswordLabel = new JLabel("Password is required");
+        emptyPasswordLabel = new JLabel("Field cannot be empty");
         emptyPasswordLabel.setForeground(Color.red);
+        badPasswordLabel = new JLabel();
+        badPasswordLabel.setForeground(Color.red);
         emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
         emptyConfirmPasswordLabel.setForeground(Color.red);
 
@@ -164,7 +175,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         panel.add(cmdRegister);
         return panel;
     }
-
+    //
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
@@ -188,6 +199,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         } else {
             registerPanel.remove(emptyEmailLabel);
             registerPanel.remove(emailInUseLabel);
+            registerPanel.remove(badEmailLabel);
 
             // Check if email is in use
             for (Account account : controller.listAccounts()) {
@@ -196,8 +208,13 @@ public class RegisterPage extends JFrame implements ActionListener {
                     validCredentials = false;
                 }
             }
+            if(!EmailSpecifier.isValidEmail(emailTextField.getText())){
+                registerPanel.add(badEmailLabel, 9 + addedComponentCount);
+                validCredentials = false;
+                addedComponentCount++;
+            }
         }
-        if (phoneTextField.getText().isEmpty()) {
+        if (phoneTextField.getValue() == null) {
             registerPanel.add(emptyPhoneLabel, 11 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
@@ -207,17 +224,35 @@ public class RegisterPage extends JFrame implements ActionListener {
 
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
-                if (account.getPhoneNumber() == Long.parseLong(phoneTextField.getText())) {
+                if (account.getPhoneNumber() == Long
+                        .parseLong(String.valueOf(phoneTextField.getValue())
+                                .replaceAll("-",""))) {
                     registerPanel.add(phoneInUseLabel, 11 + addedComponentCount);
+                    addedComponentCount++;
                     validCredentials = false;
                 }
             }
-        }
+        } // password is empty, show error
         if (passwordTextField.getText().isEmpty()) {
             registerPanel.add(emptyPasswordLabel, 13 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
-        } else { registerPanel.remove(emptyPasswordLabel); }
+        }else{
+            registerPanel.remove(emptyPasswordLabel);
+        }
+        // password does not meet specification, show error
+        if(!passwordSpecifier.checkPassword(passwordTextField.getText())){
+            // if there is a problem with the password, it's not empty
+            registerPanel.remove(emptyPasswordLabel);
+
+            badPasswordLabel.setText(passwordSpecifier.getPasswordProblem());
+            registerPanel.add(badPasswordLabel, 13 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        }else{
+            registerPanel.remove(badPasswordLabel);
+        }
+
         if (confirmPasswordField.getText().isEmpty()) {
             registerPanel.add(emptyConfirmPasswordLabel, 15 + addedComponentCount);
             validCredentials = false;
@@ -247,7 +282,8 @@ public class RegisterPage extends JFrame implements ActionListener {
         String email = emailTextField.getText();
         // username is not needed. Using email for now
         String userName = emailTextField.getText();
-        long phoneNumber = Long.parseLong(phoneTextField.getText());
+        // remove unwanted "-" character from phone number
+        long phoneNumber = Long.parseLong(phoneTextField.getText().replaceAll("-",""));
         String password = passwordTextField.getText();
         //FIXME
         Role role = Role.GUEST;
@@ -261,6 +297,10 @@ public class RegisterPage extends JFrame implements ActionListener {
             HotelManagementSystem.openLoginPage();
         } else if (e.getSource() == registerButton) {
             if (checkCredentials()) {
+                JOptionPane.showMessageDialog(this, "Account successfully registered.");
+                EmailSender.sendConfirmationEmail(firstNameField.getText()+", " + lastNameField.getText(), emailTextField.getText());
+                dispose();
+                HotelManagementSystem.openLoginPage();
                 CreditCardFrame cardFrame = new CreditCardFrame();
                 cardFrame.setVisible(true);
                 registerAccount(cardFrame.getCardNumberField(),

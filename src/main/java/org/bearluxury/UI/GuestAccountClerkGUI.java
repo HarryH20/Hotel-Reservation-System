@@ -152,6 +152,7 @@ public class GuestAccountClerkGUI extends JFrame {
             JTextField lastNameField = new JTextField(oldGuest.getLastName());
             JTextField userNameField = new JTextField(oldGuest.getUserName());
             JTextField emailField = new JTextField(oldGuest.getEmail());
+            emailField.setEditable(false);
             JTextField phoneNumberField = new JTextField(String.valueOf(oldGuest.getPhoneNumber()));
             JTextField passwordField = new JTextField(oldGuest.getPassword());
 

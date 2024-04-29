@@ -163,6 +163,7 @@ public class ClerkHomePage extends HotelHomePage{
                     JTextField userNameField = new JTextField(loggedInAccount.getUserName());
                     JLabel emailLabel = new JLabel("Email:");
                     JTextField emailField = new JTextField(loggedInAccount.getEmail());
+                    emailField.setEditable(false);
                     JLabel phoneNumberLabel = new JLabel("Phone Number:");
                     JTextField phoneNumberField = new JTextField(String.valueOf(loggedInAccount.getPhoneNumber()));
                     JLabel passwordLabel = new JLabel("Password:");

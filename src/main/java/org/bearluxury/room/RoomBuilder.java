@@ -6,6 +6,12 @@ import java.util.*;
 /**
  * This class takes the rooms from the csv and puts it in a set
  * the set is then used to fill the room database.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
  */
 
 public class RoomBuilder {
@@ -68,7 +74,7 @@ public class RoomBuilder {
     /**
      * Takes in a room type as a string
      * and converts it to an enum.
-     * @param str
+     * @param str the room type as a string
      * @return returns the enum
      */
 
@@ -90,8 +96,8 @@ public class RoomBuilder {
     /**
      * Takes in a bed type as a string
      * and converts it to an enum.
-     * @param str
-     * @return
+     * @param str the bed type
+     * @return the bed type as an enum
      */
     public static BED_TYPE readAsBedType(String str){
         if(str.equals("King")){
@@ -112,8 +118,8 @@ public class RoomBuilder {
     /**
      * Takes in a quality level as a string
      * and converts it to an enum.
-     * @param str
-     * @return
+     * @param str the quality level
+     * @return the quality level as an enum
      */
     public static QUALITY_LEVEL readAsQualityLevel(String str){
         if(str.equals("business")){
