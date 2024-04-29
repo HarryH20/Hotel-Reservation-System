@@ -20,4 +20,8 @@ public class CreditCardPayment extends Payment {
         }
         return false;
     }
+
+    public CreditCard getCard() {
+        return card;
+    }
 }
