@@ -53,7 +53,7 @@ public class ClerkAccountGUI extends JFrame {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
                     // Get the email from the selected row
-                    String email = (String) model.getValueAt(selectedRow, 4); // Assuming email is at index 4
+                    String email = (String) model.getValueAt(selectedRow, 3); // Assuming email is at index 4
                     // Delete the account from the database
                     boolean deleted = accountController.deleteAccounts(email);
                     if (deleted) {
@@ -119,9 +119,9 @@ public class ClerkAccountGUI extends JFrame {
                         }
                         model.setValueAt(firstNameField.getText(), selectedRow, 1);
                         model.setValueAt(lastNameField.getText(), selectedRow, 2);
-                        model.setValueAt(emailField.getText(), selectedRow, 4);
-                        model.setValueAt(Long.parseLong(phoneNumberField.getText()), selectedRow, 5);
-                        model.setValueAt(passwordField.getText(), selectedRow, 6);
+                        model.setValueAt(emailField.getText(), selectedRow, 3);
+                        model.setValueAt(Long.parseLong(phoneNumberField.getText()), selectedRow, 4);
+                        model.setValueAt(passwordField.getText(), selectedRow, 5);
 
                         // Create an Account object with updated information
                         Account updatedAccount = new Account(
