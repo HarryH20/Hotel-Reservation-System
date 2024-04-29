@@ -120,14 +120,14 @@ class DeleteReservationAction implements ActionListener {
                     getReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString())).
                     orElseThrow(() -> new NoSuchElementException("Reservation Doesn't exist"));
 
-            long differenceMillis = new Date().getTime() - res.getEndDate().getTime();
+            long differenceMillis = new Date().getTime() - res.getStartDate().getTime();
             long daysApart = differenceMillis / (1000 * 60 * 60 * 24);
 
             if (controller.deleteReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString()))) {
                 Set<Sale> sales = saleController.listSale(Integer.parseInt(table.getValueAt(selectedRow, 0).toString()));
                 for(Sale sale: sales){
                     if(table.getValueAt(selectedRow, 2).toString().equals(sale.getProductName())){
-                        if(daysApart > 2){
+                        if(daysApart < 2){
                             GuestAccountController guestAccountController = new GuestAccountController(new GuestAccountJDBCDAO());
                             CreditCard card = guestAccountController.getAccount(table.getValueAt(selectedRow,5).toString()).orElseThrow().getCreditCard();
                             card.chargeCard(0.8 * sale.getPrice() * sale.getQuantity());
