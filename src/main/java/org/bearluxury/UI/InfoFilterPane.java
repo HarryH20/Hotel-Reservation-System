@@ -103,7 +103,7 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
 
         DatePickerSettings checkOutDatePickerSettings = new DatePickerSettings();
         checkOutDatePicker = new DatePicker(checkOutDatePickerSettings);
-        checkOutDatePickerSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
+        checkOutDatePickerSettings.setDateRangeLimits(LocalDate.now().plusDays(1), LocalDate.now().plusYears(1));
         checkOutDatePicker.setDate(LocalDate.now().plusDays(2));
         checkOutDatePicker.addDateChangeListener(this);
 
