@@ -190,6 +190,7 @@ public class ClerkAccountGUI extends JFrame {
             JTextField lastNameField = new JTextField(lastName);
             JTextField emailField = new JTextField(email);
             emailField.setEditable(false);
+            emailField.setFocusable(false);
 
             MaskFormatter phoneFormatter = null;
             try {

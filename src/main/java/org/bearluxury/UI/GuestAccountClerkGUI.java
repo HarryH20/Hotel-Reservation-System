@@ -152,6 +152,7 @@ public class GuestAccountClerkGUI extends JFrame {
             JTextField lastNameField = new JTextField(oldGuest.getLastName());
             JTextField emailField = new JTextField(oldGuest.getEmail());
             emailField.setEditable(false);
+            emailField.setFocusable(false);
 
             MaskFormatter phoneFormatter = null;
             try {
@@ -179,8 +180,6 @@ public class GuestAccountClerkGUI extends JFrame {
             editDialog.add(phoneNumberField);
             editDialog.add(new JLabel("Password:"));
             editDialog.add(passwordField);
-            editDialog.add(new JLabel("Role:"));
-            editDialog.add(roleComboBox);
 
             JButton saveButton = new JButton("Save");
             saveButton.addActionListener(new ActionListener() {
@@ -192,12 +191,7 @@ public class GuestAccountClerkGUI extends JFrame {
                     oldGuest.setEmail(emailField.getText());
                     oldGuest.setPhoneNumber(Long.parseLong(phoneNumberField.getText().replaceAll("-","")));
                     oldGuest.setPassword(passwordField.getText());
-                    oldGuest.setRole((Role) roleComboBox.getSelectedItem());
 
-                    // Check if the email is already in use
-                    ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
-                    String editedEmail = emailField.getText();
-                    String currentEmail = (String) model.getValueAt(selectedRow, 3);
 
 
                     String editedPhoneNumber = String.valueOf(phoneNumberField.getValue());
@@ -251,7 +245,6 @@ public class GuestAccountClerkGUI extends JFrame {
                     model.setValueAt(oldGuest.getEmail(), selectedRow, 3);
                     model.setValueAt(oldGuest.getPhoneNumber(), selectedRow, 4);
                     model.setValueAt(oldGuest.getPassword(), selectedRow, 5);
-                    model.setValueAt(oldGuest.getRole().toString(), selectedRow, 6);
 
                     editDialog.dispose();
                 }

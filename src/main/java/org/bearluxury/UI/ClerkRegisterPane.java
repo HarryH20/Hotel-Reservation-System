@@ -85,6 +85,17 @@ public class ClerkRegisterPane extends JFrame {
                 }
             }
         });
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                // Open the previous window or go back to the main menu
+                new AdminHomePage().setVisible(true); // Assuming MainMenu is the class for the main menu
+            }
+        });
+
+
+
 
         ClerkRegisterPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
         ClerkRegisterPanel.setBackground(backgroundColor);
@@ -148,6 +159,7 @@ public class ClerkRegisterPane extends JFrame {
         ClerkRegisterPanel.add(confirmPassword);
 
         ClerkRegisterPanel.add(submitButton, "gapy 10");
+        ClerkRegisterPanel.add(backButton, "gapy 10");
 
         add(ClerkRegisterPanel);
     }
