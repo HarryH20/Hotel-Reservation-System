@@ -5,7 +5,7 @@ import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.Mailer;
 import org.simplejavamail.mailer.MailerBuilder;
 import org.simplejavamail.mailer.config.TransportStrategy;
-
+//
 public class EmailSender {
     public static void sendConfirmationEmail(String recipient,String emailAddress ){
         Email email = EmailBuilder.startingBlank()
