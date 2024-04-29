@@ -1,4 +1,4 @@
-package Email;
+package org.bearluxury.Email;
 
 import org.bearluxury.Email.EmailSender;
 import org.junit.Test;
