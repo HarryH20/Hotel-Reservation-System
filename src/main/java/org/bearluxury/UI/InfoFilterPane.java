@@ -192,6 +192,8 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
 
         checkInDate = checkInDatePicker.getDate();
         checkOutDate = checkOutDatePicker.getDate();
+
+
     }
 
     @Override
@@ -223,6 +225,10 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
             roomsField.setText(String.valueOf(numRooms));
             minusRoomButton.setEnabled(true);
         } else if (e.getSource() == checkAvailabilityButton) {
+            if (checkInDate.equals(checkOutDate)) {
+                JOptionPane.showMessageDialog(this, "Check-in and check-out dates cannot be the same.");
+                return;
+            }
             System.out.println("Check in date: " + checkInDate);
             System.out.println("Check out date: " + checkOutDate);
             System.out.println("Number of beds: " + numBeds);
