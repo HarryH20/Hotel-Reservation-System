@@ -164,7 +164,7 @@ public class RegisterPage extends JFrame implements ActionListener {
         panel.add(cmdRegister);
         return panel;
     }
-
+//
     private Boolean checkCredentials() {
         Boolean validCredentials = true;
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
