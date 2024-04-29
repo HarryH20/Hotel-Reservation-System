@@ -4,6 +4,7 @@ import org.bearluxury.Billing.SaleJDBCDAO;
 import org.bearluxury.account.*;
 import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
+import org.bearluxury.shop.CreditCardPayment;
 import org.bearluxury.shop.Sale;
 import org.bearluxury.controllers.SaleController;
 import org.bearluxury.state.SessionManager;
@@ -158,8 +159,9 @@ public class BillingPage extends JFrame {
 
                         billPrice += price * quantity;
                     }
-                    card.chargeCard(billPrice);
-                    account.setCreditCard(card);
+                    CreditCardPayment payment = new CreditCardPayment(billPrice, account.getCreditCard());
+                    payment.processPayment();
+                    account.setCreditCard(payment.getCard());
                     controller.updateAccounts(account,account.getEmail());
                     DefaultTableModel model = (DefaultTableModel) saleTable.getModel();
                     model.setRowCount(0);
