@@ -14,7 +14,6 @@ public class Account {
     private String firstName;
     private int id;
     private String lastName;
-    private String userName;
     private String email;
     private long phoneNumber;
     private String password;
@@ -25,7 +24,6 @@ public class Account {
      * constructs an account with the following fields
      * @param firstName
      * @param lastName
-     * @param userName
      * @param email
      * @param phoneNumber
      * @param password
@@ -33,14 +31,12 @@ public class Account {
      */
     public Account(String firstName,
                    String lastName,
-                   String userName,
                    String email,
                    long phoneNumber,
                    String password,
                    Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.userName = userName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
@@ -89,22 +85,6 @@ public class Account {
         this.lastName = lastName;
     }
 
-    /**
-     * gets the userName
-     * @return the accounts userName
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * sets the userName
-     * @param userName the updated userName
-     */
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
 
     /**
      * gets the account email
@@ -183,7 +163,6 @@ public class Account {
     public String toString() {
         return firstName +
                 "," + lastName +
-                "," + userName +
                 "," + email +
                 "," + phoneNumber +
                 "," + password +

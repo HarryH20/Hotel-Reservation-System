@@ -10,7 +10,7 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/account26";
+    private static String JDBC_URL = "jdbc:h2:~/clerkAccount77";
 
     public ClerkAccountDAO() {
         try {
@@ -35,7 +35,6 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "firstName VARCHAR(50), " +
                         "lastName VARCHAR(50), " +
-                        "userName VARCHAR(50) UNIQUE, " +
                         "email VARCHAR(100) UNIQUE, " +
                         "phoneNumber BIGINT, " +
                         "password VARCHAR(100), " +
@@ -65,7 +64,6 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
                 account.setId(rs.getInt("id"));
                 account.setFirstName(rs.getString("firstName"));
                 account.setLastName(rs.getString("lastName"));
-                account.setUserName(rs.getString("userName"));
                 account.setEmail(rs.getString("email"));
                 account.setPhoneNumber(rs.getLong("phoneNumber"));
                 account.setPassword(rs.getString("password"));
@@ -84,15 +82,14 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
 
     @Override
     public void insert(Account account) {
-        String insertSQL = "INSERT INTO accounts (firstName, lastName, userName, email, phoneNumber, password, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String insertSQL = "INSERT INTO accounts (firstName, lastName, email, phoneNumber, password, role) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
             pstmt.setString(1, account.getFirstName());
             pstmt.setString(2, account.getLastName());
-            pstmt.setString(3, account.getUserName());
-            pstmt.setString(4, account.getEmail());
-            pstmt.setLong(5, account.getPhoneNumber());
-            pstmt.setString(6, account.getPassword());
-            pstmt.setString(7, account.getRole().toString());
+            pstmt.setString(3, account.getEmail());
+            pstmt.setLong(4, account.getPhoneNumber());
+            pstmt.setString(5, account.getPassword());
+            pstmt.setString(6, account.getRole().toString());
             pstmt.executeUpdate();
         }
         catch (SQLException exc){
@@ -111,7 +108,6 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
                     account.setId(rs.getInt("id"));
                     account.setFirstName(rs.getString("firstName"));
                     account.setLastName(rs.getString("lastName"));
-                    account.setUserName(rs.getString("userName"));
                     account.setEmail(rs.getString("email"));
                     account.setPhoneNumber(rs.getLong("phoneNumber"));
                     account.setPassword(rs.getString("password"));
@@ -130,15 +126,14 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
 
     @Override
     public void update(Account account, String email) {
-        String sql = "UPDATE accounts SET firstName = ?, lastName = ?, userName = ?, phoneNumber = ?, password = ?, role = ? WHERE email = ?";
+        String sql = "UPDATE accounts SET firstName = ?, lastName = ?, phoneNumber = ?, password = ?, role = ? WHERE email = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, account.getFirstName());
             pstmt.setString(2, account.getLastName());
-            pstmt.setString(3, account.getUserName());
-            pstmt.setLong(4, account.getPhoneNumber());
-            pstmt.setString(5, account.getPassword());
-            pstmt.setString(6, account.getRole().toString());
-            pstmt.setString(7, email);
+            pstmt.setLong(3, account.getPhoneNumber());
+            pstmt.setString(4, account.getPassword());
+            pstmt.setString(5, account.getRole().toString());
+            pstmt.setString(6, email);
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

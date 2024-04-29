@@ -280,14 +280,11 @@ public class RegisterPage extends JFrame implements ActionListener {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
         String email = emailTextField.getText();
-        // username is not needed. Using email for now
-        String userName = emailTextField.getText();
-        // remove unwanted "-" character from phone number
         long phoneNumber = Long.parseLong(phoneTextField.getText().replaceAll("-",""));
         String password = passwordTextField.getText();
         //FIXME
         Role role = Role.GUEST;
-        controller.insertAccount(new Guest(firstName,lastName, userName, email,phoneNumber,password, role,new CreditCard(cardNumber,cardHolderName, expDate,cvv)));
+        controller.insertAccount(new Guest(firstName,lastName, email,phoneNumber,password, role,new CreditCard(cardNumber,cardHolderName, expDate,cvv)));
     }
 
     @Override

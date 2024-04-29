@@ -221,14 +221,13 @@ public class ClerkRegisterPane extends JFrame {
         String userLastName = lastName.getText();
         String userPhone = phoneNumber.getText();
         String userEmail = email.getText();
-        String guestUsername = email.getText();
         String userPassword = password.getText();
         Role role = Role.CLERK;
 
         ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
 
         // Insert the clerk into the database
-        controller.insertAccount(new Account(userFirstName, userLastName, guestUsername, userEmail, Long.parseLong(userPhone), userPassword, role));
+        controller.insertAccount(new Account(userFirstName, userLastName, userEmail, Long.parseLong(userPhone), userPassword, role));
         JOptionPane.showMessageDialog(this, "Clerk successfully registered.");
         dispose();
 
