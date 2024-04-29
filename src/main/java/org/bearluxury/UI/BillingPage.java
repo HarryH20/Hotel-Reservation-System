@@ -160,13 +160,18 @@ public class BillingPage extends JFrame {
                         billPrice += price * quantity;
                     }
                     CreditCardPayment payment = new CreditCardPayment(billPrice, account.getCreditCard());
-                    payment.processPayment();
-                    account.setCreditCard(payment.getCard());
-                    controller.updateAccounts(account,account.getEmail());
-                    DefaultTableModel model = (DefaultTableModel) saleTable.getModel();
-                    model.setRowCount(0);
-                    saleController.deleteSaleByAcctId(SessionManager.getInstance().getCurrentAccount().getId());
-                    JOptionPane.showMessageDialog(null,"Your bill has been paid!");
+                    if(payment.processPayment()){
+                        account.setCreditCard(payment.getCard());
+                        controller.updateAccounts(account,account.getEmail());
+                        DefaultTableModel model = (DefaultTableModel) saleTable.getModel();
+                        model.setRowCount(0);
+                        saleController.deleteSaleByAcctId(SessionManager.getInstance().getCurrentAccount().getId());
+                        JOptionPane.showMessageDialog(null,"Your bill has been paid!");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "You cannot afford this bill...uh oh!");
+                    }
+
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Only a guest can pay their bill!");
