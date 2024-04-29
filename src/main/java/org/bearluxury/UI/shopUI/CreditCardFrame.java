@@ -46,20 +46,25 @@ public class CreditCardFrame extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                String cardNumber = cardNumberField.getText();
                 String cvv = cvvField.getText();
                 String expDate = expDateField.getText();
                 String cardHolderName = cardHolderNameField.getText();
 
+                boolean validCardNumber = isValidCardNumber(cardNumber);
                 boolean validCVV = isValidCVV(cvv);
                 boolean validExpDate = isValidExpDate(expDate);
                 boolean validName = isValidCardHolderName(cardHolderName);
 
-                if (validCVV && validExpDate && validName) {
+                if (validCardNumber && validCVV && validExpDate && validName) {
                     JOptionPane.showMessageDialog(null, "Account successfully registered.");
                     HotelManagementSystem.openLoginPage();
                     dispose();
                 } else {
                     String errorMessage = "";
+                    if (!validCardNumber) {
+                        errorMessage += "Invalid Card Number. Card number must be between 15 and 16 digits.\n";
+                    }
                     if (!validCVV) {
                         errorMessage += "Invalid CVV. CVV must be between 3 and 4 digits and contain only numbers.\n";
                     }
@@ -77,6 +82,10 @@ public class CreditCardFrame extends JFrame {
         creditCardPanel.add(submitButton, "span 2, align center");
 
         add(creditCardPanel);
+    }
+
+    private boolean isValidCardNumber(String cardNumber) {
+        return Pattern.matches("\\d{15,16}", cardNumber);
     }
 
     private boolean isValidCVV(String cvv) {
@@ -119,3 +128,4 @@ public class CreditCardFrame extends JFrame {
         return cardHolderNameField.getText();
     }
 }
+
