@@ -79,7 +79,7 @@ public class RegisterPage extends JFrame implements ActionListener {
                 "borderWidth:0;" +
                 "focusWidth:0;" +
                 "innerFocusWidth:0");
-        registerButton.addActionListener(this);
+        registerButton.addActionListener(this);//
 
         registerPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
         registerPanel.setBackground(backgroundColor);
