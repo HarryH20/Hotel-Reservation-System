@@ -15,7 +15,7 @@ import java.util.TreeSet;
 
 public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
     private Connection connection;
-    private static String JDBC_URL = "jdbc:h2:~/testingGuest";
+    private static String JDBC_URL = "jdbc:h2:~/guestAccount77";
     public GuestAccountJDBCDAO(){
         try{
             connection = DriverManager.getConnection(JDBC_URL);
@@ -39,7 +39,6 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
                         "id INT AUTO_INCREMENT PRIMARY KEY, " +
                         "firstName VARCHAR(50), " +
                         "lastName VARCHAR(50), " +
-                        "userName VARCHAR(50) UNIQUE, " +
                         "email VARCHAR(100) UNIQUE, " +
                         "phoneNumber BIGINT, " +
                         "password VARCHAR(100), " +
@@ -87,7 +86,6 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
                 account.setId(rs.getInt("id"));
                 account.setFirstName(rs.getString("firstName"));
                 account.setLastName(rs.getString("lastName"));
-                account.setUserName(rs.getString("userName"));
                 account.setEmail(rs.getString("email"));
                 account.setPhoneNumber(rs.getLong("phoneNumber"));
                 account.setPassword(rs.getString("password"));
@@ -109,20 +107,19 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
 
     @Override
     public void insert(Guest account) {
-        String insertSQL = "INSERT INTO guests (firstName, lastName, userName, email, phoneNumber, password, role, " +
-                "cardNumber, cardHolderName, expDate, cvv) VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?)";
+        String insertSQL = "INSERT INTO guests (firstName, lastName, email, phoneNumber, password, role, " +
+                "cardNumber, cardHolderName, expDate, cvv) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
             pstmt.setString(1, account.getFirstName());
             pstmt.setString(2, account.getLastName());
-            pstmt.setString(3, account.getUserName());
-            pstmt.setString(4, account.getEmail());
-            pstmt.setLong(5, account.getPhoneNumber());
-            pstmt.setString(6, account.getPassword());
-            pstmt.setString(7, account.getRole().toString());
-            pstmt.setString(8,account.getCreditCard().getCardNumber());
-            pstmt.setString(9,account.getCreditCard().getCardHolderName());
-            pstmt.setString(10, account.getCreditCard().getExpDate());
-            pstmt.setString(11,account.getCreditCard().getCvv());
+            pstmt.setString(3, account.getEmail());
+            pstmt.setLong(4, account.getPhoneNumber());
+            pstmt.setString(5, account.getPassword());
+            pstmt.setString(6, account.getRole().toString());
+            pstmt.setString(7,account.getCreditCard().getCardNumber());
+            pstmt.setString(8,account.getCreditCard().getCardHolderName());
+            pstmt.setString(9, account.getCreditCard().getExpDate());
+            pstmt.setString(10,account.getCreditCard().getCvv());
 
             pstmt.executeUpdate();
         }
@@ -142,7 +139,6 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
                     account.setId(rs.getInt("id"));
                     account.setFirstName(rs.getString("firstName"));
                     account.setLastName(rs.getString("lastName"));
-                    account.setUserName(rs.getString("userName"));
                     account.setEmail(rs.getString("email"));
                     account.setPhoneNumber(rs.getLong("phoneNumber"));
                     account.setPassword(rs.getString("password"));
@@ -166,20 +162,19 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
 
     @Override
     public void update(Guest account, String email) {
-        String sql = "UPDATE guests SET firstName = ?, lastName = ?, userName = ?, phoneNumber = ?, password = ?, role = ?, " +
-                "cardNumber = ?, cardHolderName = ?, expDate = ?, cvv = ?WHERE email = ? ";
+        String sql = "UPDATE guests SET firstName = ?, lastName = ?, phoneNumber = ?, password = ?, role = ?, " +
+                "cardNumber = ?, cardHolderName = ?, expDate = ?, cvv = ? WHERE email = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, account.getFirstName());
             pstmt.setString(2, account.getLastName());
-            pstmt.setString(3, account.getUserName());
-            pstmt.setLong(4, account.getPhoneNumber());
-            pstmt.setString(5, account.getPassword());
-            pstmt.setString(6, account.getRole().toString());
-            pstmt.setString(7,account.getCreditCard().getCardNumber());
-            pstmt.setString(8,account.getCreditCard().getCardHolderName());
-            pstmt.setString(9, account.getCreditCard().getExpDate());
-            pstmt.setString(10,account.getCreditCard().getCvv());
-            pstmt.setString(11, email);
+            pstmt.setLong(3, account.getPhoneNumber());
+            pstmt.setString(4, account.getPassword());
+            pstmt.setString(5, account.getRole().toString());
+            pstmt.setString(6, account.getCreditCard().getCardNumber());
+            pstmt.setString(7, account.getCreditCard().getCardHolderName());
+            pstmt.setString(8, account.getCreditCard().getExpDate());
+            pstmt.setString(9, account.getCreditCard().getCvv());
+            pstmt.setString(10, email); // Set email in the WHERE clause
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

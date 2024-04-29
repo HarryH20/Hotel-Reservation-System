@@ -59,7 +59,7 @@ public class GuestAccountClerkGUI extends JFrame {
         getContentPane().add(panel, BorderLayout.CENTER);
     }
     private DefaultTableModel createTableModel() {
-        String[] columnNames = {"Account ID","First Name", "Last Name", "Username", "Email", "Phone Number", "Password", "Role"};
+        String[] columnNames = {"Account ID","First Name", "Last Name", "Email", "Phone Number", "Password", "Role"};
         return new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -127,7 +127,6 @@ public class GuestAccountClerkGUI extends JFrame {
                             String.valueOf(account.getId()),
                             account.getFirstName(),
                             account.getLastName(),
-                            account.getUserName(),
                             account.getEmail(),
                             account.getPhoneNumber(),
                             account.getPassword(),
@@ -150,7 +149,6 @@ public class GuestAccountClerkGUI extends JFrame {
 
             JTextField firstNameField = new JTextField(oldGuest.getFirstName());
             JTextField lastNameField = new JTextField(oldGuest.getLastName());
-            JTextField userNameField = new JTextField(oldGuest.getUserName());
             JTextField emailField = new JTextField(oldGuest.getEmail());
             emailField.setEditable(false);
             JTextField phoneNumberField = new JTextField(String.valueOf(oldGuest.getPhoneNumber()));
@@ -163,8 +161,6 @@ public class GuestAccountClerkGUI extends JFrame {
             editDialog.add(firstNameField);
             editDialog.add(new JLabel("Last Name:"));
             editDialog.add(lastNameField);
-            editDialog.add(new JLabel("Username:"));
-            editDialog.add(userNameField);
             editDialog.add(new JLabel("Email:"));
             editDialog.add(emailField);
             editDialog.add(new JLabel("Phone Number:"));
@@ -181,7 +177,6 @@ public class GuestAccountClerkGUI extends JFrame {
                     // Update guest object with new data
                     oldGuest.setFirstName(firstNameField.getText());
                     oldGuest.setLastName(lastNameField.getText());
-                    oldGuest.setUserName(userNameField.getText());
                     oldGuest.setEmail(emailField.getText());
                     oldGuest.setPhoneNumber(Long.parseLong(phoneNumberField.getText()));
                     oldGuest.setPassword(passwordField.getText());
@@ -203,7 +198,6 @@ public class GuestAccountClerkGUI extends JFrame {
                     // Update row in table
                     model.setValueAt(oldGuest.getFirstName(), selectedRow, 1);
                     model.setValueAt(oldGuest.getLastName(), selectedRow, 2);
-                    model.setValueAt(oldGuest.getUserName(), selectedRow, 3);
                     model.setValueAt(oldGuest.getEmail(), selectedRow, 4);
                     model.setValueAt(oldGuest.getPhoneNumber(), selectedRow, 5);
                     model.setValueAt(oldGuest.getPassword(), selectedRow, 6);

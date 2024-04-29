@@ -158,9 +158,7 @@ public class ClerkHomePage extends HotelHomePage{
                     JLabel firstNameLabel = new JLabel("First Name:");
                     JTextField firstNameField = new JTextField(loggedInAccount.getFirstName());
                     JLabel lastNameLabel = new JLabel("Last Name:");
-                    JTextField lastNameField = new JTextField(loggedInAccount.getLastName());
-                    JLabel userNameLabel = new JLabel("Username:");
-                    JTextField userNameField = new JTextField(loggedInAccount.getUserName());
+                    JTextField lastNameField = new JTextField(loggedInAccount.getLastName());;
                     JLabel emailLabel = new JLabel("Email:");
                     JTextField emailField = new JTextField(loggedInAccount.getEmail());
                     emailField.setEditable(false);
@@ -174,8 +172,6 @@ public class ClerkHomePage extends HotelHomePage{
                     dialog.add(firstNameField);
                     dialog.add(lastNameLabel);
                     dialog.add(lastNameField);
-                    dialog.add(userNameLabel);
-                    dialog.add(userNameField);
                     dialog.add(emailLabel);
                     dialog.add(emailField);
                     dialog.add(phoneNumberLabel);
@@ -192,7 +188,6 @@ public class ClerkHomePage extends HotelHomePage{
                             // Get the modified information
                             String newFirstName = firstNameField.getText();
                             String newLastName = lastNameField.getText();
-                            String newUserName = userNameField.getText();
                             String newEmail = emailField.getText();
                             long newPhoneNumber = Long.parseLong(phoneNumberField.getText());
                             String newPassword = passwordField.getText();
@@ -206,7 +201,6 @@ public class ClerkHomePage extends HotelHomePage{
                                 // Update the account with the modified information
                                 loggedInAccount.setFirstName(newFirstName);
                                 loggedInAccount.setLastName(newLastName);
-                                loggedInAccount.setUserName(newUserName);
                                 loggedInAccount.setEmail(newEmail);
                                 loggedInAccount.setPhoneNumber(newPhoneNumber);
                                 loggedInAccount.setPassword(newPassword);
