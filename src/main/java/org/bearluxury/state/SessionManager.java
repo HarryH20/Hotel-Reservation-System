@@ -27,7 +27,7 @@ public class SessionManager {
                 return account;
             } else {
                 Guest guest = new Guest(account.getFirstName(), account.getLastName(),
-                        account.getUserName(), account.getEmail(),
+                         account.getEmail(),
                         account.getPhoneNumber(), account.getPassword(), Role.GUEST, new CreditCard("123"," ", " ", "123")); // Setting credit card number to 0
                 guest.setId(account.getId());
                 return guest;
@@ -38,7 +38,7 @@ public class SessionManager {
             } else {
 
                 Clerk clerk = new Clerk(account.getFirstName(), account.getLastName(),
-                        account.getUserName(), account.getEmail(),
+                         account.getEmail(),
                         account.getPhoneNumber(), account.getPassword(), Role.CLERK);
                 clerk.setId(account.getId());
                 return clerk;
@@ -48,7 +48,7 @@ public class SessionManager {
                 return account;
             } else {
                 Admin admin = new Admin(account.getFirstName(), account.getLastName(),
-                        account.getUserName(), account.getEmail(),
+                         account.getEmail(),
                         account.getPhoneNumber(), account.getPassword(), Role.ADMIN);
                 admin.setId(account.getId());
                 return admin;

@@ -53,7 +53,7 @@ public class ClerkAccountGUI extends JFrame {
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
                     // Get the email from the selected row
-                    String email = (String) model.getValueAt(selectedRow, 4); // Assuming email is at index 4
+                    String email = (String) model.getValueAt(selectedRow, 3); // Assuming email is at index 4
                     // Delete the account from the database
                     boolean deleted = accountController.deleteAccounts(email);
                     if (deleted) {
@@ -76,14 +76,12 @@ public class ClerkAccountGUI extends JFrame {
                     // Get the data from the selected row
                     String firstName = (String) model.getValueAt(selectedRow, 1);
                     String lastName = (String) model.getValueAt(selectedRow, 2);
-                    String username = (String) model.getValueAt(selectedRow, 3);
-                    String email = (String) model.getValueAt(selectedRow, 4);
-                    long phoneNumber = (long) model.getValueAt(selectedRow, 5);
-                    String password = (String) model.getValueAt(selectedRow, 6);
+                    String email = (String) model.getValueAt(selectedRow, 3);
+                    long phoneNumber = (long) model.getValueAt(selectedRow, 4);
+                    String password = (String) model.getValueAt(selectedRow, 5);
 
                     JTextField firstNameField = new JTextField(firstName);
                     JTextField lastNameField = new JTextField(lastName);
-                    JTextField usernameField = new JTextField(username);
                     JTextField emailField = new JTextField(email);
                     emailField.setEditable(false);
                     JTextField phoneNumberField = new JTextField(String.valueOf(phoneNumber));
@@ -95,8 +93,6 @@ public class ClerkAccountGUI extends JFrame {
                     editPanel.add(firstNameField);
                     editPanel.add(new JLabel("Last Name:"));
                     editPanel.add(lastNameField);
-                    editPanel.add(new JLabel("Username:"));
-                    editPanel.add(usernameField);
                     editPanel.add(new JLabel("Email:"));
                     editPanel.add(emailField);
                     editPanel.add(new JLabel("Phone Number:"));
@@ -113,7 +109,7 @@ public class ClerkAccountGUI extends JFrame {
                         // Check if the email is already in use
                         ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
                         String editedEmail = emailField.getText();
-                        String currentEmail = (String) model.getValueAt(selectedRow, 4);
+                        String currentEmail = (String) model.getValueAt(selectedRow, 3);
                         if (!editedEmail.equals(currentEmail)) { // Check if email is edited
                             Optional<Account> existingAccount = accountController.getAccount(editedEmail);
                             if (existingAccount.isPresent()) {
@@ -123,16 +119,14 @@ public class ClerkAccountGUI extends JFrame {
                         }
                         model.setValueAt(firstNameField.getText(), selectedRow, 1);
                         model.setValueAt(lastNameField.getText(), selectedRow, 2);
-                        model.setValueAt(usernameField.getText(), selectedRow, 3);
-                        model.setValueAt(emailField.getText(), selectedRow, 4);
-                        model.setValueAt(Long.parseLong(phoneNumberField.getText()), selectedRow, 5);
-                        model.setValueAt(passwordField.getText(), selectedRow, 6);
+                        model.setValueAt(emailField.getText(), selectedRow, 3);
+                        model.setValueAt(Long.parseLong(phoneNumberField.getText()), selectedRow, 4);
+                        model.setValueAt(passwordField.getText(), selectedRow, 5);
 
                         // Create an Account object with updated information
                         Account updatedAccount = new Account(
                                 firstNameField.getText(),
                                 lastNameField.getText(),
-                                usernameField.getText(),
                                 emailField.getText(),
                                 Long.parseLong(phoneNumberField.getText()),
                                 passwordField.getText(),
@@ -173,7 +167,7 @@ public class ClerkAccountGUI extends JFrame {
 
 
     private DefaultTableModel createTableModel() {
-        String[] columnNames = {"Account ID","First Name", "Last Name", "Username", "Email", "Phone Number", "Password", "Role"};
+        String[] columnNames = {"Account ID","First Name", "Last Name", "Email", "Phone Number", "Password", "Role"};
         return new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -242,7 +236,6 @@ public class ClerkAccountGUI extends JFrame {
                 String.valueOf(account.getId()),
                 account.getFirstName(),
                 account.getLastName(),
-                account.getUserName(),
                 account.getEmail(),
                 account.getPhoneNumber(),
                         account.getPassword(),

@@ -147,10 +147,15 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     private void reloadProductCards(String filter) {
         itemPanel.removeAll();
         // Retrieve products from the database based on the filter
-        productController.listProducts().stream()
-                .filter(product -> filter.equals("All items") || product.getProductType().toString().equalsIgnoreCase(filter))
-                .map(product -> new ProductCard(product, this))
-                .forEach(itemPanel::add);
+        if (!filter.equals("All items")) {
+            productCards.forEach(productCard -> {
+                if (productCard.getProduct().getProductType().toString().equalsIgnoreCase(filter)) {
+                    itemPanel.add(productCard);
+                }
+            });
+        } else {
+            productCards.forEach(productCard -> itemPanel.add(productCard));
+        }
         productScrollPane.revalidate();
         productScrollPane.repaint();
     }

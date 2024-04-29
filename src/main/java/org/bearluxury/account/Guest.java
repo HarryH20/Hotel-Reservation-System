@@ -7,9 +7,9 @@ import java.util.ArrayList;
 public class Guest extends Account{
     CreditCard card;
 
-    public Guest(String firstName, String lastName, String userName,
+    public Guest(String firstName, String lastName,
                  String email, long phoneNumber, String password, Role role, CreditCard card) {
-        super(firstName, lastName, userName, email, phoneNumber, password, role);
+        super(firstName, lastName, email, phoneNumber, password, role);
         this.card = card;
 
     }

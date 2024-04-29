@@ -36,7 +36,6 @@ public class HotelManagementSystem  {
             exc.printStackTrace();
         }
     }
-    ///
 
     //added homepages for user role
     /*
@@ -105,7 +104,7 @@ public class HotelManagementSystem  {
         Optional<Account> existingAdmin = controller.getAccount("admin@admin.com");
         if (!existingAdmin.isPresent()) {
             // Create a Clerk with Admin role
-            Account admin = new Account("Admin", "Admin", "Admin", "admin@admin.com", 1234567890, "adminpassword", Role.ADMIN);
+            Account admin = new Account("Admin", "Admin", "admin@admin.com", 1234567890, "adminpassword", Role.ADMIN);
 
             // Insert the Clerk into the database
             controller.insertAccount(admin);

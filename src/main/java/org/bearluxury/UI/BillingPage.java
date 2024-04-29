@@ -4,6 +4,7 @@ import org.bearluxury.Billing.SaleJDBCDAO;
 import org.bearluxury.account.*;
 import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
+import org.bearluxury.shop.CreditCardPayment;
 import org.bearluxury.shop.Sale;
 import org.bearluxury.controllers.SaleController;
 import org.bearluxury.state.SessionManager;
@@ -158,13 +159,19 @@ public class BillingPage extends JFrame {
 
                         billPrice += price * quantity;
                     }
-                    card.chargeCard(billPrice);
-                    account.setCreditCard(card);
-                    controller.updateAccounts(account,account.getEmail());
-                    DefaultTableModel model = (DefaultTableModel) saleTable.getModel();
-                    model.setRowCount(0);
-                    saleController.deleteSaleByAcctId(SessionManager.getInstance().getCurrentAccount().getId());
-                    JOptionPane.showMessageDialog(null,"Your bill has been paid!");
+                    CreditCardPayment payment = new CreditCardPayment(billPrice, account.getCreditCard());
+                    if(payment.processPayment()){
+                        account.setCreditCard(payment.getCard());
+                        controller.updateAccounts(account,account.getEmail());
+                        DefaultTableModel model = (DefaultTableModel) saleTable.getModel();
+                        model.setRowCount(0);
+                        saleController.deleteSaleByAcctId(SessionManager.getInstance().getCurrentAccount().getId());
+                        JOptionPane.showMessageDialog(null,"Your bill has been paid!");
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "You cannot afford this bill...uh oh!");
+                    }
+
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Only a guest can pay their bill!");
