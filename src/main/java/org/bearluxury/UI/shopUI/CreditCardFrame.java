@@ -69,7 +69,7 @@ public class CreditCardFrame extends JFrame {
                         errorMessage += "Invalid CVV. CVV must be between 3 and 4 digits and contain only numbers.\n";
                     }
                     if (!validExpDate) {
-                        errorMessage += "Invalid Expiration Date. Please enter in MM/YY format and should not be past today's date.\n";
+                        errorMessage += "Invalid Expiration Date. Please enter in MM/YY format(ex 09/2024) and should not be past today's date.\n";
                     }
                     if (!validName) {
                         errorMessage += "Invalid Cardholder Name. Name must contain only alphabetical characters.\n";
