@@ -1,6 +1,5 @@
 package org.bearluxury.account;
 
-import org.bearluxury.account.Account;
 
 import java.io.*;
 import java.util.ArrayList;

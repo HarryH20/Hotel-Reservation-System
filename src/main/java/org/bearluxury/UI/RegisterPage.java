@@ -17,8 +17,6 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     Color backgroundColor = new Color(232,223,185,255);
 
-    AccountBuilder accountBuilder;
-
     ImageIcon logo;
 
     private JPanel registerPanel;
@@ -56,7 +54,6 @@ public class RegisterPage extends JFrame implements ActionListener {
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
         getContentPane().setBackground(backgroundColor);
 
-        //accountBuilder = new AccountBuilder("src/main/resources/AccountList.csv");
 
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
