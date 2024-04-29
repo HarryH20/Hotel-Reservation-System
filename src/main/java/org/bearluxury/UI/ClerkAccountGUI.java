@@ -148,10 +148,6 @@ public class ClerkAccountGUI extends JFrame {
             }
         });
 
-
-
-
-
         // Panel for buttons at the top
         JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         topButtonPanel.setBackground(backgroundColor);
