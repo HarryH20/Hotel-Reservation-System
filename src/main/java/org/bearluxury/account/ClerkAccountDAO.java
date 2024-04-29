@@ -6,12 +6,26 @@ import org.bearluxury.database.DAO;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * Each ClerkAccountDAO object stores
+ * the data in a database for a clerk, admin
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
+
 public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
 
     private Connection connection;
 
     private static String JDBC_URL = "jdbc:h2:~/clerkAccount77";
 
+    /**
+     * connects to a new database and creates a table for it
+     */
     public ClerkAccountDAO() {
         try {
             connection = DriverManager.getConnection(JDBC_URL);
@@ -21,6 +35,9 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
         }
     }
 
+    /**
+     * builds an account table if it doesn't already exist
+     */
     private void createAccountTableIfNotExists() {
         try (Statement stmt = connection.createStatement()) {
             boolean tableExists = false;
@@ -53,7 +70,10 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
         }
     }
 
-
+    /**
+     * lists the accounts that are in the database
+     * @return the list of accounts in the database
+     */
     @Override
     public Set<Account> list() {
         Set<Account> accounts = new TreeSet<>(Comparator.comparing(Account::getEmail));
@@ -79,7 +99,10 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
     }
 
 
-
+    /**
+     * inserts an account into the database
+     * @param account the account that is inserted
+     */
     @Override
     public void insert(Account account) {
         String insertSQL = "INSERT INTO accounts (firstName, lastName, email, phoneNumber, password, role) VALUES (?, ?, ?, ?, ?, ?)";
@@ -97,6 +120,11 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
         }
     }
 
+    /**
+     * finds an account in the database
+     * @param email the email we search the database with
+     * @return returns an account
+     */
     @Override
     public Optional<Account> get(String email) {
         String sql = "SELECT * FROM accounts WHERE email = ?";
@@ -124,6 +152,12 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
         return Optional.empty();
     }
 
+    /**
+     * updates the account with new information in the database
+     * @param account the account to update
+     * @param email the email used to find the account
+     */
+
     @Override
     public void update(Account account, String email) {
         String sql = "UPDATE accounts SET firstName = ?, lastName = ?, phoneNumber = ?, password = ?, role = ? WHERE email = ?";
@@ -140,6 +174,12 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
         }
     }
 
+    /**
+     * deletes an account from the database
+     * @param email the email to search with
+     * @return whether deletion was succesful
+     */
+
     @Override
     public boolean delete(String email) {
         String sql = "DELETE FROM accounts WHERE email = ?";
@@ -153,6 +193,9 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
         return false;
     }
 
+    /**
+     * closes the database
+     */
     @Override
     public void close() {
         try {
@@ -164,6 +207,9 @@ public class ClerkAccountDAO implements DAO<Account>, AccountDAO<Account> {
         }
     }
 
+    /**
+     * clears the database
+     */
     @Override
     public void clear() {
         try (Statement stmt = connection.createStatement()) {
