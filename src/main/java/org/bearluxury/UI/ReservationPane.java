@@ -154,10 +154,22 @@ public class ReservationPane extends JFrame {
         checkOutDatePicker.setDate(checkOut);
         checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
         reservationPanel.add(checkOutDatePicker);
+        roomId.setEditable(false);
+        firstName.setEditable(false);
+        lastName.setEditable(false);
+        email.setEditable(false);
+        checkInDatePicker.setEnabled(false);
+        checkOutDatePicker.setEnabled(false);
+        roomId.setFocusable(false);
+        firstName.setFocusable(false);
+        lastName.setFocusable(false);
+        email.setFocusable(false);
+        guestNumber.setEnabled(false);
+
 
         c.add(reservationPanel);
 
-        submitButton = new JButton("Submit");
+        submitButton = new JButton("Confirm");
         submitButton.setBounds(200, 400, 100, 40);
         submitButton.addActionListener(new ActionListener() {
             @Override
