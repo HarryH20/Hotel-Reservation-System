@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Pattern;
 
 import net.miginfocom.swing.MigLayout;
 import org.bearluxury.UI.HotelManagementSystem;
@@ -41,9 +42,14 @@ public class CreditCardFrame extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Account successfully registered.");
-                HotelManagementSystem.openLoginPage();
-                dispose();
+                String cvv = cvvField.getText();
+                if (isValidCVV(cvv)) {
+                    JOptionPane.showMessageDialog(null, "Account successfully registered.");
+                    HotelManagementSystem.openLoginPage();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid CVV. CVV must be between 3 and 4 digits and contain only numbers.");
+                }
             }
         });
 
@@ -51,6 +57,11 @@ public class CreditCardFrame extends JFrame {
         creditCardPanel.add(submitButton, "span 2, align center");
 
         add(creditCardPanel);
+    }
+
+    private boolean isValidCVV(String cvv) {
+        // Check if the input is numeric and has length between 3 and 4
+        return Pattern.matches("\\d{3,4}", cvv);
     }
 
     public String getCardNumberField() {
