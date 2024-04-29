@@ -15,8 +15,6 @@ import java.awt.event.ActionListener;
 
 public class LoginPage extends JFrame implements ActionListener {
 
-    Color backgroundColor = new Color(232,223,185,255);
-
     ImageIcon logo;
 
     private JPanel loginPanel;
@@ -36,13 +34,15 @@ public class LoginPage extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
-        getContentPane().setBackground(backgroundColor);
+        getContentPane().setBackground(Style.backgroundColor);
 
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
         JLabel logoLabel = new JLabel(logo);
 
         emailTextField = new JTextField();
+        emailTextField.addActionListener(this);
         passwordTextField = new JPasswordField();
+        passwordTextField.addActionListener(this);
 
         loginButton = new JButton("Login");
         loginButton.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -59,7 +59,6 @@ public class LoginPage extends JFrame implements ActionListener {
         roleDropdown.addActionListener(this);
 
         loginPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
-        loginPanel.setBackground(backgroundColor);
         loginPanel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:20;" +
                 "background:darken(@background,3%);");
@@ -125,7 +124,12 @@ public class LoginPage extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == loginButton) {
+        // Change focus to password
+        if (e.getSource() == emailTextField) {
+            passwordTextField.requestFocusInWindow();
+        }
+        // Handle login
+        if (e.getSource() == loginButton || e.getSource() == passwordTextField) {
             String selectedRole = (String) roleDropdown.getSelectedItem();
             Role role = Role.valueOf(selectedRole.toUpperCase()); // Convert the selected role to Role enum
             Account account;
