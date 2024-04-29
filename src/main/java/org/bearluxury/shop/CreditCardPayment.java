@@ -14,7 +14,7 @@ public class CreditCardPayment extends Payment {
     public boolean processPayment() {
         double balance = card.getBalance();
         double amount = getAmount();
-        if (amount < balance) {
+        if (amount > 0.01 && amount < balance) {
             card.chargeCard(amount);
             return true;
         }
