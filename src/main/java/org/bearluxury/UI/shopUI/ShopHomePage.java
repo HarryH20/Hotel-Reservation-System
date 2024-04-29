@@ -54,6 +54,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     JLabel totalPriceNumber;
     double totalPrice;
     JButton checkoutButton;
+
     public ShopHomePage(ProductController productController) {
         setTitle("Shop Home");
         setSize(1280, 720);
@@ -120,6 +121,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
 
         checkoutButton = new JButton("Checkout");
         checkoutButton.addActionListener(this);
+        checkoutButton.setEnabled(false);
         backButton.addActionListener(this);
 
         checkoutPanel.add(cartLabel);
@@ -179,6 +181,12 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         cartScrollPane.setPreferredSize(new Dimension(140, 200));
         checkoutPanel.add(cartScrollPane, 2);
         totalPriceNumber.setText("$" + String.format("%.2f", totalPrice));
+        // Enable checkout button
+        if (totalPrice > 0) {
+            checkoutButton.setEnabled(true);
+        } else {
+            checkoutButton.setEnabled(false);
+        }
         this.setVisible(true);
     }
 
@@ -210,6 +218,7 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
             CheckoutDialog checkoutDialog = new CheckoutDialog(this, cartInventory, totalPrice);
             checkoutDialog.setVisible(true);
         }
+
         if(e.getSource() == backButton){
             dispose();
             HotelManagementSystem.openGuestHomePage();
