@@ -45,13 +45,23 @@ public class ProductCard extends JPanel implements ActionListener {
         productPrice = new JLabel("$" + String.format("%.2f", product.getPrice()));
         productPrice.putClientProperty(FlatClientProperties.STYLE, "font:bold +2");
         productStock = new JLabel("Stock: " + product.getQuantity());
+        if (this.product.getQuantity() <= 0) {
+            productStock.setText("Out of stock");
+            productStock.setForeground(Color.red);
+        }
 
         quantityTextField = new JTextField("0", 2);
         quantityTextField.addActionListener(this);
+        if (this.product.getQuantity() == 0) {
+            quantityTextField.setEnabled(false);
+        }
         minusButton = new JButton("-");
         minusButton.setEnabled(false);
         minusButton.addActionListener(this);
         plusButton = new JButton("+");
+        if (this.product.getQuantity() <= 0) {
+            plusButton.setEnabled(false);
+        }
         plusButton.addActionListener(this);
 
         northPanel.add(productName);
