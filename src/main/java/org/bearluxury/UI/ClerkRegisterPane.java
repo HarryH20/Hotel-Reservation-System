@@ -2,17 +2,16 @@ package org.bearluxury.UI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import net.miginfocom.swing.MigLayout;
-import org.bearluxury.account.Account;
-import org.bearluxury.account.ClerkAccountDAO;
-import org.bearluxury.account.GuestAccountJDBCDAO;
-import org.bearluxury.account.Role;
+import org.bearluxury.account.*;
 import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
 
 import javax.swing.*;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 
 public class ClerkRegisterPane extends JFrame {
     ImageIcon logo;
@@ -26,7 +25,7 @@ public class ClerkRegisterPane extends JFrame {
     private JTextField lastName;
     private JTextField userName;
     private JTextField email;
-    private JTextField phoneNumber;
+    private JFormattedTextField phoneNumber;
     private JTextField password;
     private JTextField confirmPassword;
 
@@ -36,11 +35,18 @@ public class ClerkRegisterPane extends JFrame {
     private JLabel emptyPhoneLabel;
     private JLabel invalidLengthPhoneNumberLbl;
     private JLabel emptyPasswordLabel;
+    private JLabel badPasswordLabel;
+
     private JLabel emptyConfirmPasswordLabel;
 
     private JLabel emailInUseLabel;
+    private JLabel badEmailLabel;
+
     private JLabel phoneInUseLabel;
     private JLabel passwordNotMatchLabel;
+
+    private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
+
 
     public ClerkRegisterPane() {
         setTitle("Clerk Registration");
@@ -57,7 +63,11 @@ public class ClerkRegisterPane extends JFrame {
         firstName = new JTextField();
         lastName = new JTextField();
         email = new JTextField();
-        phoneNumber = new JTextField();
+        try {
+            MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
+            phoneNumber = new JFormattedTextField(maskFormatter);
+        }catch(ParseException ignored){
+        }
         password = new JPasswordField();
         confirmPassword = new JPasswordField();
 
@@ -105,11 +115,17 @@ public class ClerkRegisterPane extends JFrame {
         invalidLengthPhoneNumberLbl.setForeground(Color.red);
         emptyPasswordLabel = new JLabel("Password is required");
         emptyPasswordLabel.setForeground(Color.red);
+        badPasswordLabel = new JLabel();
+        badPasswordLabel.setForeground(Color.red);
         emptyConfirmPasswordLabel = new JLabel("Confirm password is required");
         emptyConfirmPasswordLabel.setForeground(Color.red);
 
         emailInUseLabel = new JLabel("This email is already in use");
         emailInUseLabel.setForeground(Color.red);
+
+        badEmailLabel = new JLabel("Email address not valid.");
+        badEmailLabel.setForeground(Color.red);
+
         phoneInUseLabel = new JLabel("This phone number is already in use");
         phoneInUseLabel.setForeground(Color.red);
         passwordNotMatchLabel = new JLabel("Passwords do not match");
@@ -143,59 +159,79 @@ public class ClerkRegisterPane extends JFrame {
         // Check if fields are empty
         int addedComponentCount = 0;
         if (firstName.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyFirstNameLabel, 5 + addedComponentCount);
+            ClerkRegisterPanel.add(emptyFirstNameLabel, 3 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
         } else { ClerkRegisterPanel.remove(emptyFirstNameLabel); }
         if (lastName.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyLastNameLabel, 7 + addedComponentCount);
+            ClerkRegisterPanel.add(emptyLastNameLabel, 5 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
         } else { ClerkRegisterPanel.remove(emptyLastNameLabel); }
         if (email.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyEmailLabel, 9 + addedComponentCount);
+            ClerkRegisterPanel.add(emptyEmailLabel, 7 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
         } else {
             ClerkRegisterPanel.remove(emptyEmailLabel);
             ClerkRegisterPanel.remove(emailInUseLabel);
+            ClerkRegisterPanel.remove(badEmailLabel);
+
 
             // Check if email is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getEmail().equalsIgnoreCase(email.getText())) {
-                    ClerkRegisterPanel.add(emailInUseLabel, 9 + addedComponentCount);
+                    ClerkRegisterPanel.add(emailInUseLabel, 7 + addedComponentCount);
                     validCredentials = false;
                 }
             }
+            if(!EmailSpecifier.isValidEmail(email.getText())){
+                ClerkRegisterPanel.add(badEmailLabel, 7 + addedComponentCount);
+                validCredentials = false;
+                addedComponentCount++;
+            }
         }
-        if (phoneNumber.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyPhoneLabel, 11 + addedComponentCount);
+        if (phoneNumber.getValue() == null) {
+            ClerkRegisterPanel.add(emptyPhoneLabel, 9 + addedComponentCount);
             addedComponentCount++;
-            validCredentials = false;
-        } else if (phoneNumber.getText().length() != 10) {
-            ClerkRegisterPanel.remove(emptyPhoneLabel);
-            ClerkRegisterPanel.add(invalidLengthPhoneNumberLbl, 12 + addedComponentCount);
             validCredentials = false;
         } else {
             ClerkRegisterPanel.remove(emptyPhoneLabel);
             ClerkRegisterPanel.remove(phoneInUseLabel);
-            ClerkRegisterPanel.remove(invalidLengthPhoneNumberLbl);
 
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
-                if (account.getPhoneNumber() == Long.parseLong(phoneNumber.getText())) {
-                    ClerkRegisterPanel.add(phoneInUseLabel, 11 + addedComponentCount);
+                if (account.getPhoneNumber() == Long
+                        .parseLong(String.valueOf(phoneNumber.getValue())
+                                .replaceAll("-",""))) {
+                    ClerkRegisterPanel.add(phoneInUseLabel, 9 + addedComponentCount);
+                    addedComponentCount++;
                     validCredentials = false;
                 }
             }
         }
+
+
         if (password.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyPasswordLabel, 13 + addedComponentCount);
+            ClerkRegisterPanel.add(emptyPasswordLabel, 10 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
-        } else { ClerkRegisterPanel.remove(emptyPasswordLabel); }
+        } else {
+            ClerkRegisterPanel.remove(emptyPasswordLabel);
+        }
+        if(!passwordSpecifier.checkPassword(password.getText())){
+            // if there is a problem with the password, it's not empty
+            ClerkRegisterPanel.remove(emptyPasswordLabel);
+
+            badPasswordLabel.setText(passwordSpecifier.getPasswordProblem());
+            ClerkRegisterPanel.add(badPasswordLabel, 10 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        }else{
+            ClerkRegisterPanel.remove(badPasswordLabel);
+        }
         if (confirmPassword.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyConfirmPasswordLabel, 15 + addedComponentCount);
+            ClerkRegisterPanel.add(emptyConfirmPasswordLabel, 10 + addedComponentCount);
             validCredentials = false;
         } else {
             ClerkRegisterPanel.remove(emptyConfirmPasswordLabel);
@@ -204,7 +240,7 @@ public class ClerkRegisterPane extends JFrame {
             // Check if passwords match
             if (!password.getText().isEmpty()) {
                 if (!password.getText().equals(confirmPassword.getText())) {
-                    ClerkRegisterPanel.add(passwordNotMatchLabel, 15 + addedComponentCount);
+                    ClerkRegisterPanel.add(passwordNotMatchLabel, 12 + addedComponentCount);
                     validCredentials = false;
                 }
             }
@@ -219,7 +255,7 @@ public class ClerkRegisterPane extends JFrame {
     public void saveClerkToDatabase() {
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();
-        String userPhone = phoneNumber.getText();
+        String userPhone = phoneNumber.getText().replaceAll("-","");
         String userEmail = email.getText();
         String userPassword = password.getText();
         Role role = Role.CLERK;
