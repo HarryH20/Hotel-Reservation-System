@@ -333,7 +333,12 @@ public class RegisterPage extends JFrame implements ActionListener {
             if (checkCredentials()) {
                 registerAccount();
                 JOptionPane.showMessageDialog(this, "Account successfully registered.");
-                EmailSender.sendConfirmationEmail(firstNameField.getText()+", " + lastNameField.getText(), emailTextField.getText());
+                try {
+                    EmailSender.sendConfirmationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
+                }catch(Exception e1){
+                    EmailSender.sendConfirmationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
+
+                }
                 dispose();
                 HotelManagementSystem.openLoginPage();
             }
