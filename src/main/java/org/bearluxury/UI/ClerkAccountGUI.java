@@ -52,12 +52,10 @@ public class ClerkAccountGUI extends JFrame {
                 ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
-                    // Get the email from the selected row
-                    String email = (String) model.getValueAt(selectedRow, 3); // Assuming email is at index 4
-                    // Delete the account from the database
+
+                    String email = (String) model.getValueAt(selectedRow, 3);
                     boolean deleted = accountController.deleteAccounts(email);
                     if (deleted) {
-                        // Remove the row from the table if deletion is successful
                         model.removeRow(selectedRow);
                     } else {
                         JOptionPane.showMessageDialog(null, "Failed to delete account.");

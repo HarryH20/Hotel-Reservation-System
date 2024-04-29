@@ -13,9 +13,24 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
+
+/**
+ * Each GuestAccountJDBCDAO object stores
+ * the data in a database for a guest
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
     private Connection connection;
     private static String JDBC_URL = "jdbc:h2:~/guestAccount77";
+
+    /**
+     * connects to a new database and creates a table for it
+     */
     public GuestAccountJDBCDAO(){
         try{
             connection = DriverManager.getConnection(JDBC_URL);
@@ -25,6 +40,10 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
         }
 
     }
+
+    /**
+     * builds an account table if it doesn't already exist
+     */
     private void createGuestTableIfNotExists() {
         try (Statement stmt = connection.createStatement()) {
             boolean tableExists = false;
@@ -60,6 +79,8 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
             e.printStackTrace();
         }
     }
+
+
     public String getCreditCardNumber(String email) {
         String sql = "SELECT cardNumber FROM guests WHERE email = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -76,6 +97,10 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
     }
 
 
+    /**
+     * lists the accounts that are in the database
+     * @return the list of accounts in the database
+     */
     @Override
     public Set<Guest> list() {
         Set<Guest> accounts = new TreeSet<>(Comparator.comparing(Account::getEmail));
@@ -105,6 +130,10 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
     }
 
 
+    /**
+     * inserts an account into the database
+     * @param account the account that is inserted
+     */
     @Override
     public void insert(Guest account) {
         String insertSQL = "INSERT INTO guests (firstName, lastName, email, phoneNumber, password, role, " +
@@ -128,6 +157,11 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
         }
     }
 
+    /**
+     * finds an account in the database
+     * @param email the email we search the database with
+     * @return returns an account
+     */
     @Override
     public Optional<Guest> get(String email) {
         String sql = "SELECT * FROM guests WHERE email = ?";
@@ -160,6 +194,11 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
         return Optional.empty();
     }
 
+    /**
+     * updates the account with new information in the database
+     * @param account the account to update
+     * @param email the email used to find the account
+     */
     @Override
     public void update(Guest account, String email) {
         String sql = "UPDATE guests SET firstName = ?, lastName = ?, phoneNumber = ?, password = ?, role = ?, " +
@@ -182,6 +221,11 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
         }
     }
 
+    /**
+     * deletes an account from the database
+     * @param email the email to search with
+     * @return whether deletion was succesful
+     */
     @Override
     public boolean delete(String email) {
         String sql = "DELETE FROM guests WHERE email = ?";
@@ -195,6 +239,10 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
         return false;
     }
 
+
+    /**
+     * closes the database
+     */
     @Override
     public void close() {
         try {
@@ -206,6 +254,9 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
         }
     }
 
+    /**
+     * clears the database
+     */
     @Override
     public void clear() {
         try (Statement stmt = connection.createStatement()) {
