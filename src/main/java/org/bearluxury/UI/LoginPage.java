@@ -12,8 +12,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
-public class LoginPage extends JFrame implements ActionListener {
+public class LoginPage extends JFrame implements ActionListener, ItemListener {
+    final String SAVED_LOGIN_PATH = "src/main/resources/SavedLogin.csv";
 
     ImageIcon logo;
 
@@ -27,6 +34,8 @@ public class LoginPage extends JFrame implements ActionListener {
     private JLabel wrongMsg;
 
     private JComboBox<String> roleDropdown; // Dropdown for role selection
+    private JCheckBox rememberMe;
+    private boolean rememberAccount;
 
     public LoginPage() {
         setTitle("Login");
@@ -43,6 +52,8 @@ public class LoginPage extends JFrame implements ActionListener {
         emailTextField.addActionListener(this);
         passwordTextField = new JPasswordField();
         passwordTextField.addActionListener(this);
+        rememberMe = new JCheckBox("Remember me");
+        rememberMe.addItemListener(this);
 
         loginButton = new JButton("Login");
         loginButton.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -85,12 +96,18 @@ public class LoginPage extends JFrame implements ActionListener {
         loginPanel.add(passwordTextField);
         loginPanel.add(new JLabel("Login as"), "gapy 8");
         loginPanel.add(roleDropdown); // Add the dropdown
+        loginPanel.add(rememberMe, "grow 0");
         loginPanel.add(loginButton, "gapy 10");
         add(loginPanel);
 
         // Initially hide the register label
         cmdRegister = createRegisterLabel();
         loginPanel.add(cmdRegister, "gapy 10");
+
+        // Get saved login
+        if (getSavedLogin()) {
+            System.out.println("Account remembered from previous login");
+        }
     }
 
     private JButton createRegisterLabel() {
@@ -122,6 +139,49 @@ public class LoginPage extends JFrame implements ActionListener {
         return null;
     }
 
+    private void saveLoginInformation() {
+        try (FileWriter writer = new FileWriter(SAVED_LOGIN_PATH)) {
+            writer.append("Email,Password,Role\n");
+            writer.append(emailTextField.getText())
+                    .append(",")
+                    .append(passwordTextField.getText())
+                    .append(",")
+                    .append((String) roleDropdown.getSelectedItem())
+                    .append("\n");
+
+        } catch (IOException e) {
+            System.err.println("Error writing to CSV file: " + e.getMessage());
+        }
+    }
+
+    private void clearLoginInformation() {
+        try (FileWriter writer = new FileWriter(SAVED_LOGIN_PATH)) {
+            writer.write("");
+        } catch (IOException e) {
+            System.err.println("Error clearing CSV file: " + e.getMessage());
+        }
+    }
+
+    private boolean getSavedLogin() {
+        try (BufferedReader br = new BufferedReader(new FileReader(SAVED_LOGIN_PATH))) {
+
+            br.readLine();
+            String accountLine = br.readLine();
+            if (accountLine != null) {
+                String[] columns = accountLine.split(",");
+                emailTextField.setText(columns[0]);
+                passwordTextField.setText(columns[1]);
+                roleDropdown.setSelectedItem(columns[2]);
+                rememberMe.setSelected(true);
+            } else {
+                return false;
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading CSV file: " + e.getMessage());
+        }
+        return true;
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         // Change focus to password
@@ -144,6 +204,12 @@ public class LoginPage extends JFrame implements ActionListener {
             }
 
             if (account != null && account.getRole().equals(role)) {
+                //Save login information if requested
+                if (rememberAccount) {
+                    saveLoginInformation();
+                } else {
+                    clearLoginInformation();
+                }
                 SessionManager.getInstance().setCurrentAccount(account);
                 dispose();
                 if (role.equals(Role.GUEST)) {
@@ -170,4 +236,12 @@ public class LoginPage extends JFrame implements ActionListener {
         }
     }
 
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            rememberAccount = true;
+        } else {
+            rememberAccount = false;
+        }
+    }
 }

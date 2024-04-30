@@ -19,17 +19,14 @@ public class GuestBookedReservationsGUI extends BookedReservationsGUI {
 
         JButton editButton = new JButton("Edit Reservation");
         JButton deleteButton = new JButton("Cancel Reservation");
-        JButton checkInButton = new JButton("Check In");
 
 
         editButton.setFont(Style.defaultFont);
         deleteButton.setFont(Style.defaultFont);
-        checkInButton.setFont(Style.defaultFont);
 
 
         deleteButton.addActionListener(new DeleteReservationAction(table, model));
         editButton.addActionListener(new EditReservationAction(table));
-        checkInButton.addActionListener(new CheckInAction(table, model));
 
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 3, 10, 0)); // 1 row, 3 columns, with 10px horizontal gap
@@ -39,7 +36,6 @@ public class GuestBookedReservationsGUI extends BookedReservationsGUI {
 
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
-        buttonPanel.add(checkInButton);
 
 
         getContentPane().add(buttonPanel, BorderLayout.SOUTH);

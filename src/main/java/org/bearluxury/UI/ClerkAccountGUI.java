@@ -1,19 +1,20 @@
 package org.bearluxury.UI;
 
 
-import org.bearluxury.account.Account;
-import org.bearluxury.account.ClerkAccountDAO;
-import org.bearluxury.account.Role;
+import org.bearluxury.account.*;
 import org.bearluxury.controllers.ClerkAccountController;
+import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,12 +53,10 @@ public class ClerkAccountGUI extends JFrame {
                 ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
                 int selectedRow = table.getSelectedRow();
                 if (selectedRow != -1) {
-                    // Get the email from the selected row
-                    String email = (String) model.getValueAt(selectedRow, 3); // Assuming email is at index 4
-                    // Delete the account from the database
+
+                    String email = (String) model.getValueAt(selectedRow, 3);
                     boolean deleted = accountController.deleteAccounts(email);
                     if (deleted) {
-                        // Remove the row from the table if deletion is successful
                         model.removeRow(selectedRow);
                     } else {
                         JOptionPane.showMessageDialog(null, "Failed to delete account.");
@@ -71,76 +70,10 @@ public class ClerkAccountGUI extends JFrame {
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    // Get the data from the selected row
-                    String firstName = (String) model.getValueAt(selectedRow, 1);
-                    String lastName = (String) model.getValueAt(selectedRow, 2);
-                    String email = (String) model.getValueAt(selectedRow, 3);
-                    long phoneNumber = (long) model.getValueAt(selectedRow, 4);
-                    String password = (String) model.getValueAt(selectedRow, 5);
-
-                    JTextField firstNameField = new JTextField(firstName);
-                    JTextField lastNameField = new JTextField(lastName);
-                    JTextField emailField = new JTextField(email);
-                    emailField.setEditable(false);
-                    JTextField phoneNumberField = new JTextField(String.valueOf(phoneNumber));
-                    JTextField passwordField = new JTextField(password);
-
-
-                    JPanel editPanel = new JPanel(new GridLayout(8, 2));
-                    editPanel.add(new JLabel("First Name:"));
-                    editPanel.add(firstNameField);
-                    editPanel.add(new JLabel("Last Name:"));
-                    editPanel.add(lastNameField);
-                    editPanel.add(new JLabel("Email:"));
-                    editPanel.add(emailField);
-                    editPanel.add(new JLabel("Phone Number:"));
-                    editPanel.add(phoneNumberField);
-                    editPanel.add(new JLabel("Password:"));
-                    editPanel.add(passwordField);
-
-                    int result = JOptionPane.showConfirmDialog(null, editPanel,
-                            "Edit Account", JOptionPane.OK_CANCEL_OPTION);
-                    if (result == JOptionPane.OK_OPTION) {
-                        // Update the row with edited data
-
-
-                        // Check if the email is already in use
-                        ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
-                        String editedEmail = emailField.getText();
-                        String currentEmail = (String) model.getValueAt(selectedRow, 3);
-                        if (!editedEmail.equals(currentEmail)) { // Check if email is edited
-                            Optional<Account> existingAccount = accountController.getAccount(editedEmail);
-                            if (existingAccount.isPresent()) {
-                                JOptionPane.showMessageDialog(null, "Email already in use. Please choose another one.", "Warning", JOptionPane.WARNING_MESSAGE);
-                                return;
-                            }
-                        }
-                        model.setValueAt(firstNameField.getText(), selectedRow, 1);
-                        model.setValueAt(lastNameField.getText(), selectedRow, 2);
-                        model.setValueAt(emailField.getText(), selectedRow, 3);
-                        model.setValueAt(Long.parseLong(phoneNumberField.getText()), selectedRow, 4);
-                        model.setValueAt(passwordField.getText(), selectedRow, 5);
-
-                        // Create an Account object with updated information
-                        Account updatedAccount = new Account(
-                                firstNameField.getText(),
-                                lastNameField.getText(),
-                                emailField.getText(),
-                                Long.parseLong(phoneNumberField.getText()),
-                                passwordField.getText(),
-                                Role.CLERK
-                        );
-
-                        // Update the account in the database
-                        accountController.updateAccounts(updatedAccount, currentEmail);
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(null, "Please select an account to edit.");
-                }
+                openEditDialog(table,model);
             }
         });
+
 
         // Panel for buttons at the top
         JPanel topButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -242,5 +175,123 @@ public class ClerkAccountGUI extends JFrame {
                 account.getRole().toString()
         }));
     }
+    public void openEditDialog(JTable table,DefaultTableModel model){
+
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow != -1) {
+            // Get the data from the selected row
+            String firstName = (String) model.getValueAt(selectedRow, 1);
+            String lastName = (String) model.getValueAt(selectedRow, 2);
+            String email = (String) model.getValueAt(selectedRow, 3);
+            long phoneNumber = (long) model.getValueAt(selectedRow, 4);
+            String password = (String) model.getValueAt(selectedRow, 5);
+
+            JTextField firstNameField = new JTextField(firstName);
+            JTextField lastNameField = new JTextField(lastName);
+            JTextField emailField = new JTextField(email);
+            emailField.setEditable(false);
+            emailField.setFocusable(false);
+
+            MaskFormatter phoneFormatter = null;
+            try {
+                phoneFormatter = new MaskFormatter("###-###-####");
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+            phoneFormatter.setPlaceholder(String.valueOf(phoneNumber).substring(0,3)+"-"+String.valueOf(phoneNumber).substring(3,6)+"-"+String.valueOf(phoneNumber).substring(6,10));
+            JFormattedTextField phoneNumberField = new JFormattedTextField(phoneFormatter);
+            JTextField passwordField = new JTextField(password);
+
+
+            JPanel editPanel = new JPanel(new GridLayout(8, 2));
+            editPanel.add(new JLabel("First Name:"));
+            editPanel.add(firstNameField);
+            editPanel.add(new JLabel("Last Name:"));
+            editPanel.add(lastNameField);
+            editPanel.add(new JLabel("Email:"));
+            editPanel.add(emailField);
+            editPanel.add(new JLabel("Phone Number:"));
+            editPanel.add(phoneNumberField);
+            editPanel.add(new JLabel("Password:"));
+            editPanel.add(passwordField);
+
+            JOptionPane p = new JOptionPane();
+            int result = p.showOptionDialog(null, editPanel, "Edit Account", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+
+
+            if (result == JOptionPane.OK_OPTION) {
+                // Update the row with edited data
+
+
+                // Check if the email is already in use
+                ClerkAccountController accountController = new ClerkAccountController(new ClerkAccountDAO());
+                String editedEmail = emailField.getText();
+                String currentEmail = (String) model.getValueAt(selectedRow, 3);
+
+
+                String editedPhoneNumber = String.valueOf(phoneNumberField.getValue());
+                String currentPhoneNumber = String.valueOf( model.getValueAt(selectedRow, 4));
+                if (!editedPhoneNumber.equals(currentPhoneNumber)) { // Check if email is edited
+
+                    if (phoneNumberField.getValue() != null) {
+                        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+
+                        // Check if phone is in use
+                        for (Account account : controller.listAccounts()) {
+                            if (account.getPhoneNumber() == Long
+                                    .parseLong(String.valueOf(phoneNumberField.getValue())
+                                            .replaceAll("-", ""))) {
+                                JOptionPane.showMessageDialog(null, "This Phone Number already in use.", "Warning", JOptionPane.WARNING_MESSAGE);
+                                openEditDialog(table,model);
+                                return;
+                            }
+                        }
+                    }
+                }
+
+                PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
+                String editedPassword = passwordField.getText();
+                String currentPassword = (String) model.getValueAt(selectedRow, 5);
+                if (!editedPassword.equals(currentPassword)) { // Check if email is edited
+                    if (passwordField.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please Fill in password Field.", "Warning", JOptionPane.WARNING_MESSAGE);
+                        openEditDialog(table,model);
+                        return;
+                    }else{
+                        // password does not meet specification, show error
+                        if(!passwordSpecifier.checkPassword(passwordField.getText())) {
+                            // if there is a problem with the password, it's not empty
+                            JOptionPane.showMessageDialog(null, passwordSpecifier.getPasswordProblem(), "Warning", JOptionPane.WARNING_MESSAGE);
+                            openEditDialog(table,model);
+                            return;
+                        }
+                    }
+                }
+
+                model.setValueAt(firstNameField.getText(), selectedRow, 1);
+                model.setValueAt(lastNameField.getText(), selectedRow, 2);
+                model.setValueAt(emailField.getText(), selectedRow, 3);
+                model.setValueAt(Long.parseLong(phoneNumberField.getText().replaceAll("-","")), selectedRow, 4);
+                model.setValueAt(passwordField.getText(), selectedRow, 5);
+
+                // Create an Account object with updated information
+                Account updatedAccount = new Account(
+                        firstNameField.getText(),
+                        lastNameField.getText(),
+                        emailField.getText(),
+                        Long.parseLong(phoneNumberField.getText().replaceAll("-","")),
+                        passwordField.getText(),
+                        Role.CLERK
+                );
+
+                // Update the account in the database
+                accountController.updateAccounts(updatedAccount, currentEmail);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Please select an account to edit.");
+        }
+
+    }
+
 }
 

@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
-
 //Window
 public class HotelManagementSystem  {
     public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
@@ -37,7 +36,6 @@ public class HotelManagementSystem  {
             exc.printStackTrace();
         }
     }
-    ///
 
     //added homepages for user role
     /*
@@ -73,6 +71,11 @@ public class HotelManagementSystem  {
         registerPage.setVisible(true);
     }
 
+    public static void openClerkRegisterPane(boolean modify) {
+        ClerkRegisterPane clerkRegisterPane = new ClerkRegisterPane(modify);
+        clerkRegisterPane.setVisible(true);
+    }
+
     public static void openHotelManagmentSystem(){
         InfoFilterPane window = new InfoFilterPane();
         window.setVisible(true);
@@ -86,7 +89,6 @@ public class HotelManagementSystem  {
         RegisterPane register = new RegisterPane();
         register.setVisible(true);
     }*/
-
     public static void openShopHomePage() {
         try {
             ProductJDBCDAO productDAO = new ProductJDBCDAO();

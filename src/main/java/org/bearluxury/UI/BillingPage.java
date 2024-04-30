@@ -146,6 +146,10 @@ public class BillingPage extends JFrame {
         payBillButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if (saleTable.getRowCount() == 0) {
+                    JOptionPane.showMessageDialog(null, "There are no items in the bill to pay.");
+                    return; // Exit method
+                }
                 // Add payment logic here
                 if(SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST){
                     GuestAccountController controller= new GuestAccountController(new GuestAccountJDBCDAO());
