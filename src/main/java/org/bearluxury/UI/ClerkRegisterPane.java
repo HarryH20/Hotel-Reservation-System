@@ -20,7 +20,6 @@ public class ClerkRegisterPane extends JFrame {
     private JPanel clerkRegisterPanel;
 
     Account existingAccount;
-    boolean modify;
 
     //private Container c;
     //private JLabel title;
@@ -51,6 +50,7 @@ public class ClerkRegisterPane extends JFrame {
     private JLabel passwordNotMatchLabel;
 
     private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
+    MaskFormatter maskFormatter;
 
 
     public ClerkRegisterPane(boolean modify) {
@@ -77,7 +77,7 @@ public class ClerkRegisterPane extends JFrame {
             email.setFocusable(false);
         }
         try {
-            MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
+            maskFormatter = new MaskFormatter("###-###-####");
             phoneNumber = new JFormattedTextField(maskFormatter);
         }catch(ParseException ignored){
         }
@@ -202,14 +202,8 @@ public class ClerkRegisterPane extends JFrame {
         firstName.setText(account.getFirstName());
         lastName.setText(account.getLastName());
         email.setText(account.getEmail());
-        try {
-            MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
-            maskFormatter.setPlaceholder(String.valueOf(account.getPhoneNumber()));
-
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        phoneNumber.setText(String.valueOf(account.getPhoneNumber()));
+        String phoneText = String.valueOf(account.getPhoneNumber());
+        phoneNumber.setValue(phoneText.substring(0, 3) + "-" + phoneText.substring(3, 6) + "-" + phoneText.substring(6));
         password.setText(account.getPassword());
     }
 
@@ -283,8 +277,7 @@ public class ClerkRegisterPane extends JFrame {
                 addedComponentCount++;
             }
         }
-        System.out.println(phoneNumber.getValue());
-        if (phoneNumber.getText().length() < 12) {
+        if (phoneNumber.getValue() == null) {
             clerkRegisterPanel.add(emptyPhoneLabel, 10 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
@@ -293,7 +286,7 @@ public class ClerkRegisterPane extends JFrame {
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getPhoneNumber() == Long
-                        .parseLong(String.valueOf(phoneNumber.getText())
+                        .parseLong(String.valueOf(phoneNumber.getValue())
                                 .replaceAll("-",""))) {
                     clerkRegisterPanel.add(phoneInUseLabel, 10 + addedComponentCount);
                     addedComponentCount++;
