@@ -83,7 +83,16 @@ public class ProductControllerTest {
 
         Product product = new Product("Test Product", 10.0, initialStock, PRODUCT_TYPE.CLOTHING);
 
+        // Mock behavior for get
         when(mockProductDAO.get(productId)).thenReturn(Optional.of(product));
+
+        // Mock behavior for addStock
+        doAnswer(invocation -> {
+            int amount = invocation.getArgument(1);
+            product.setQuantity(product.getQuantity() + amount);
+            return null;
+        }).when(mockProductDAO).addStock(productId, stockToAdd);
+
         productController.addStock(productId, stockToAdd);
 
         Optional<Product> retrievedProduct = productController.getProduct(productId);
@@ -95,7 +104,6 @@ public class ProductControllerTest {
         verify(mockProductDAO, times(1)).addStock(productId, stockToAdd);
     }
 
-    //TODO: This test is failing
     @Test
     void removeStockTest() {
         int productId = 1;
@@ -104,7 +112,18 @@ public class ProductControllerTest {
 
         Product product = new Product("Test Product", 10.0, initialStock, PRODUCT_TYPE.CLOTHING);
 
+        // Mock behavior for get
         when(mockProductDAO.get(productId)).thenReturn(Optional.of(product));
+
+        // Mock behavior for removeStock
+        doAnswer(invocation -> {
+            int amount = invocation.getArgument(1);
+            if (product.getQuantity() >= amount) {
+                product.setQuantity(product.getQuantity() - amount);
+            }
+            return null;
+        }).when(mockProductDAO).removeStock(productId, stockToRemove);
+
         productController.removeStock(productId, stockToRemove);
 
         Optional<Product> retrievedProduct = productController.getProduct(productId);
@@ -115,4 +134,5 @@ public class ProductControllerTest {
         assertEquals(initialStock - stockToRemove, updatedProduct.getQuantity(), "Stock quantity should be updated correctly");
         verify(mockProductDAO, times(1)).removeStock(productId, stockToRemove);
     }
+
 }

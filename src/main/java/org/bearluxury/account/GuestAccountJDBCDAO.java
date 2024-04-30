@@ -81,6 +81,11 @@ public class GuestAccountJDBCDAO implements DAO<Guest>, AccountDAO<Guest> {
     }
 
 
+    /**
+     * gets the credit card number from a guest account
+     * @param email the email to search with
+     * @return the credit card number
+     */
     public String getCreditCardNumber(String email) {
         String sql = "SELECT cardNumber FROM guests WHERE email = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
