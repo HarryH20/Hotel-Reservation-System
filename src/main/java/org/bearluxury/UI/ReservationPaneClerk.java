@@ -140,6 +140,7 @@ public class ReservationPaneClerk extends JFrame {
         checkInDatePicker.setDate(checkIn);
         checkInDatePicker.setPreferredSize(new Dimension(200, 30));
         reservationPanel.add(checkInDatePicker);
+        checkInDatePicker.setEnabled(false);
 
         JLabel checkOutLbl = new JLabel("Check-Out:");
         checkOutLbl.setFont(new Font("Arial", Font.PLAIN, 15));
@@ -150,6 +151,8 @@ public class ReservationPaneClerk extends JFrame {
         checkOutDatePicker.setDate(checkOut);
         checkOutDatePicker.setPreferredSize(new Dimension(200, 30));
         reservationPanel.add(checkOutDatePicker);
+        checkOutDatePicker.setEnabled(false);
+        roomId.setEditable(false);
 
 
         c.add(reservationPanel);

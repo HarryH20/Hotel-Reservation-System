@@ -154,7 +154,6 @@ public class ReservationPaneGuest extends JFrame {
         firstName.setEditable(false);
         lastName.setEditable(false);
         email.setEditable(false);
-        guestNumber.setEnabled(false);
         checkInDatePicker.setEnabled(false);
         checkOutDatePicker.setEnabled(false);
 

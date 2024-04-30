@@ -193,15 +193,24 @@ public class AvaliableRoomsGUI extends JFrame {
             int selectedRow = table.getSelectedRow();
             if (selectedRow != -1) {
                 int roomId = Integer.parseInt(table.getValueAt(selectedRow, 0).toString());
-                openReservationForm(roomId, checkIn, checkOut);
+                if(SessionManager.getInstance().getCurrentAccount().getRole() == Role.CLERK) {
+                    openReservationFormClerk(roomId, checkIn, checkOut);
+                }
+                else{
+                    openReservationFormGuest(roomId, checkIn, checkOut);
+                }
                 model.removeRow(selectedRow);
             } else {
                 JOptionPane.showMessageDialog(null, "Please select a row first.");
             }
         }
 
-        private static void openReservationForm(int roomID, LocalDate checkIn, LocalDate checkOut) {
+        private static void openReservationFormGuest(int roomID, LocalDate checkIn, LocalDate checkOut) {
             ReservationPaneGuest pane = new ReservationPaneGuest(roomID, checkIn, checkOut);
+            pane.setVisible(true);
+        }
+        private static void openReservationFormClerk(int roomID, LocalDate checkIn, LocalDate checkOut) {
+            ReservationPaneClerk pane = new ReservationPaneClerk(roomID, checkIn, checkOut);
             pane.setVisible(true);
         }
     }
