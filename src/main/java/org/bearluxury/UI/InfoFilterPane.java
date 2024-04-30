@@ -13,11 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
-public class InfoFilterPane extends JFrame implements DateChangeListener, ActionListener{
+public class InfoFilterPane extends JFrame implements DateChangeListener, ActionListener {
 
     ImageIcon icon;
-    Color backgroundColor = new Color(232,223,185,255);
-    Color blackColor = new Color(1,12,15,255);
+    Color backgroundColor = new Color(232, 223, 185, 255);
+    Color blackColor = new Color(1, 12, 15, 255);
     Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
     //Color goldColor = new Color(170,141,71,255);
 
@@ -61,7 +61,6 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
     private int numRooms;
 
 
-
     public InfoFilterPane() {
         setTitle("Bear Luxury");
         setSize(1280, 720);
@@ -103,7 +102,7 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
 
         DatePickerSettings checkOutDatePickerSettings = new DatePickerSettings();
         checkOutDatePicker = new DatePicker(checkOutDatePickerSettings);
-        checkOutDatePickerSettings.setDateRangeLimits(LocalDate.now(), LocalDate.now().plusYears(1));
+        checkOutDatePickerSettings.setDateRangeLimits(LocalDate.now().plusDays(1), LocalDate.now().plusYears(1));
         checkOutDatePicker.setDate(LocalDate.now().plusDays(2));
         checkOutDatePicker.addDateChangeListener(this);
 
@@ -192,6 +191,8 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
 
         checkInDate = checkInDatePicker.getDate();
         checkOutDate = checkOutDatePicker.getDate();
+
+
     }
 
     @Override
@@ -223,6 +224,13 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
             roomsField.setText(String.valueOf(numRooms));
             minusRoomButton.setEnabled(true);
         } else if (e.getSource() == checkAvailabilityButton) {
+            if (checkInDate.equals(checkOutDate)) {
+                JOptionPane.showMessageDialog(this, "Check-in and check-out dates cannot be the same.");
+                return;
+            } else if (checkOutDate.isBefore(checkInDate)) {
+                JOptionPane.showMessageDialog(this, "Check-out date cannot be before check-in date.");
+                return;
+            }
             System.out.println("Check in date: " + checkInDate);
             System.out.println("Check out date: " + checkOutDate);
             System.out.println("Number of beds: " + numBeds);
@@ -231,5 +239,8 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
             HotelManagementSystem.openRoomCatalogPane(numBeds, checkInDate, checkOutDate);
         }
 
+
+
     }
 }
+

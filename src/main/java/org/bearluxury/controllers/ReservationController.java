@@ -4,6 +4,7 @@ import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.Room;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Set;
 
@@ -71,5 +72,9 @@ public class ReservationController {
     // Update a reservation by reservation ID
     public void updateReservationByReservationId(Reservation reservation, int reservationId) {
         reservationDAO.updateByReservationId(reservation, reservationId);
+    }
+
+    public boolean hasConflictingReservations(int roomNumber, LocalDate startDate, LocalDate endDate) {
+        return reservationDAO.hasConflictingReservations(roomNumber, startDate, endDate);
     }
 }

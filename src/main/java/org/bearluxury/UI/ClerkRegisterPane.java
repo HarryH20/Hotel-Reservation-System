@@ -5,6 +5,7 @@ import net.miginfocom.swing.MigLayout;
 import org.bearluxury.account.*;
 import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -12,25 +13,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.Optional;
 
 public class ClerkRegisterPane extends JFrame {
     ImageIcon logo;
-    Color backgroundColor = new Color(232, 223, 185, 255);
-    private JPanel ClerkRegisterPanel;
+    private JPanel clerkRegisterPanel;
+
+    Account existingAccount;
+    boolean modify;
 
     //private Container c;
     //private JLabel title;
     private JButton submitButton;
     private JTextField firstName;
     private JTextField lastName;
-    private JTextField userName;
     private JTextField email;
     private JFormattedTextField phoneNumber;
     private JTextField password;
     private JTextField confirmPassword;
 
     private JLabel emptyFirstNameLabel;
+    private JLabel badFirstNameLabel;
     private JLabel emptyLastNameLabel;
+    private JLabel badLastNameLabel;
     private JLabel emptyEmailLabel;
     private JLabel emptyPhoneLabel;
     private JLabel invalidLengthPhoneNumberLbl;
@@ -48,13 +53,17 @@ public class ClerkRegisterPane extends JFrame {
     private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
 
 
-    public ClerkRegisterPane() {
-        setTitle("Clerk Registration");
+    public ClerkRegisterPane(boolean modify) {
+        if (modify) {
+            setTitle("Modify Clerk Account");
+        } else {
+            setTitle("Clerk Registration");
+        }
         setSize(1200, 920);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new MigLayout("fill,insets 20", "[center]", "[center]"));
-        getContentPane().setBackground(backgroundColor);
+        getContentPane().setBackground(Style.backgroundColor);
 
         //panel
         logo = new ImageIcon("src/main/resources/bbl-logo-transparent.png");
@@ -63,6 +72,8 @@ public class ClerkRegisterPane extends JFrame {
         firstName = new JTextField();
         lastName = new JTextField();
         email = new JTextField();
+        email.setEnabled(false);
+        email.setFocusable(false);
         try {
             MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
             phoneNumber = new JFormattedTextField(maskFormatter);
@@ -81,14 +92,33 @@ public class ClerkRegisterPane extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (checkCredentials()) {
-                    saveClerkToDatabase();
+                    if (modify) {
+                        updateClerkAccount();
+                    } else {
+                        saveClerkToDatabase();
+                    }
+                }
+            }
+        });
+        JButton backButton = new JButton("Back");
+        backButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                dispose(); // Close the current window
+                // Open the previous window or go back to the main menu
+
+                if (modify) {
+                    HotelManagementSystem.openClerkHomePage();
+                } else {
+                    HotelManagementSystem.openAdminHomePage(); // Assuming MainMenu is the class for the main menu
                 }
             }
         });
 
-        ClerkRegisterPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
-        ClerkRegisterPanel.setBackground(backgroundColor);
-        ClerkRegisterPanel.putClientProperty(FlatClientProperties.STYLE, "" +
+
+
+
+        clerkRegisterPanel = new JPanel(new MigLayout("wrap,fillx,insets 0 45 30 45", "fill,250:280"));
+        clerkRegisterPanel.putClientProperty(FlatClientProperties.STYLE, "" +
                 "arc:20;" +
                 "background:darken(@background,3%);");
 
@@ -98,6 +128,9 @@ public class ClerkRegisterPane extends JFrame {
                 "showRevealButton:true");
 
         JLabel description = new JLabel("Please fill in the information below to get started");
+        if (modify) {
+            description.setText("Modify personal information");
+        }
         description.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
@@ -105,8 +138,12 @@ public class ClerkRegisterPane extends JFrame {
         //error checking prompts
         emptyFirstNameLabel = new JLabel("First name is required");
         emptyFirstNameLabel.setForeground(Color.red);
+        badFirstNameLabel = new JLabel("First name must be alphabetical");
+        badFirstNameLabel.setForeground(Color.red);
         emptyLastNameLabel = new JLabel("Last name is required");
         emptyLastNameLabel.setForeground(Color.red);
+        badLastNameLabel = new JLabel("Last name must be alphabetical");
+        badLastNameLabel.setForeground(Color.red);
         emptyEmailLabel = new JLabel("Email address is required");
         emptyEmailLabel.setForeground(Color.red);
         emptyPhoneLabel = new JLabel("Phone number is required");
@@ -131,116 +168,156 @@ public class ClerkRegisterPane extends JFrame {
         passwordNotMatchLabel = new JLabel("Passwords do not match");
         passwordNotMatchLabel.setForeground(Color.red);
 
+        //Fill fields if modiyfing
+        existingAccount = SessionManager.getInstance().getCurrentAccount();
+        if (modify) {
+            fillExistingInformation(existingAccount);
+        }
+
         //Adding labels to panel
-        ClerkRegisterPanel.add(logoLabel);
-        ClerkRegisterPanel.add(description);
-        ClerkRegisterPanel.add(new JLabel("First name"), "gapy 6");
-        ClerkRegisterPanel.add(firstName);
-        ClerkRegisterPanel.add(new JLabel("Last name"), "gapy 6");
-        ClerkRegisterPanel.add(lastName);
-        ClerkRegisterPanel.add(new JLabel("Email"), "gapy 6");
-        ClerkRegisterPanel.add(email);
-        ClerkRegisterPanel.add(new JLabel("Phone"), "gapy 6");
-        ClerkRegisterPanel.add(phoneNumber);
-        ClerkRegisterPanel.add(new JLabel("Password"), "gapy 6");
-        ClerkRegisterPanel.add(password);
-        ClerkRegisterPanel.add(new JLabel("Confirm password"), "gapy 6");
-        ClerkRegisterPanel.add(confirmPassword);
+        clerkRegisterPanel.add(logoLabel);
+        clerkRegisterPanel.add(description);
+        clerkRegisterPanel.add(new JLabel("First name"), "gapy 6");
+        clerkRegisterPanel.add(firstName);
+        clerkRegisterPanel.add(new JLabel("Last name"), "gapy 6");
+        clerkRegisterPanel.add(lastName);
+        clerkRegisterPanel.add(new JLabel("Email"), "gapy 6");
+        clerkRegisterPanel.add(email);
+        clerkRegisterPanel.add(new JLabel("Phone"), "gapy 6");
+        clerkRegisterPanel.add(phoneNumber);
+        clerkRegisterPanel.add(new JLabel("Password"), "gapy 6");
+        clerkRegisterPanel.add(password);
+        clerkRegisterPanel.add(new JLabel("Confirm password"), "gapy 6");
+        clerkRegisterPanel.add(confirmPassword);
 
-        ClerkRegisterPanel.add(submitButton, "gapy 10");
+        clerkRegisterPanel.add(submitButton, "gapy 10");
+        clerkRegisterPanel.add(backButton, "gapy 10");
 
-        add(ClerkRegisterPanel);
+        add(clerkRegisterPanel);
     }
 
-    private Boolean checkCredentials() {
-        Boolean validCredentials = true;
-        ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+    private void fillExistingInformation(Account account) {
+        firstName.setText(account.getFirstName());
+        lastName.setText(account.getLastName());
+        email.setText(account.getEmail());
+        //phoneNumber.setValue(account.getPhoneNumber());
+        phoneNumber.setText(String.valueOf(account.getPhoneNumber()));
+        password.setText(account.getPassword());
+    }
+
+    private void removeErrorLabels() {
+        clerkRegisterPanel.remove(emptyFirstNameLabel);
+        clerkRegisterPanel.remove(badFirstNameLabel);
+        clerkRegisterPanel.remove(emptyLastNameLabel);
+        clerkRegisterPanel.remove(badLastNameLabel);
+        clerkRegisterPanel.remove(emptyEmailLabel);
+        clerkRegisterPanel.remove(badEmailLabel);
+        clerkRegisterPanel.remove(emailInUseLabel);
+        clerkRegisterPanel.remove(emptyPhoneLabel);
+        clerkRegisterPanel.remove(phoneInUseLabel);
+        clerkRegisterPanel.remove(emptyPasswordLabel);
+        clerkRegisterPanel.remove(badPasswordLabel);
+        clerkRegisterPanel.remove(emptyConfirmPasswordLabel);
+        clerkRegisterPanel.remove(passwordNotMatchLabel);
+    }
+
+    private boolean checkCredentials() {
+        boolean validCredentials = true;
+        GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
+        removeErrorLabels();
 
         // Check if fields are empty
         int addedComponentCount = 0;
         if (firstName.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyFirstNameLabel, 3 + addedComponentCount);
-            addedComponentCount++;
-            validCredentials = false;
-        } else { ClerkRegisterPanel.remove(emptyFirstNameLabel); }
-        if (lastName.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyLastNameLabel, 5 + addedComponentCount);
-            addedComponentCount++;
-            validCredentials = false;
-        } else { ClerkRegisterPanel.remove(emptyLastNameLabel); }
-        if (email.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyEmailLabel, 7 + addedComponentCount);
+            clerkRegisterPanel.add(emptyFirstNameLabel, 4 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
         } else {
-            ClerkRegisterPanel.remove(emptyEmailLabel);
-            ClerkRegisterPanel.remove(emailInUseLabel);
-            ClerkRegisterPanel.remove(badEmailLabel);
 
+            // Check if alphabetical
+            if (!firstName.getText().matches("[a-zA-Z]*$")) {
+                clerkRegisterPanel.add(badFirstNameLabel, 4 + addedComponentCount);
+                addedComponentCount++;
+                validCredentials = false;
+            }
+        }
+        if (lastName.getText().isEmpty()) {
+            clerkRegisterPanel.add(emptyLastNameLabel, 6 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        } else {
+
+            // Check if alphabetical
+            if (!lastName.getText().matches("[a-zA-Z]*$")) {
+                clerkRegisterPanel.add(badLastNameLabel, 6 + addedComponentCount);
+                addedComponentCount++;
+                validCredentials = false;
+            }
+        }
+        if (email.getText().isEmpty()) {
+            clerkRegisterPanel.add(emptyEmailLabel, 8 + addedComponentCount);
+            addedComponentCount++;
+            validCredentials = false;
+        } else {
 
             // Check if email is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getEmail().equalsIgnoreCase(email.getText())) {
-                    ClerkRegisterPanel.add(emailInUseLabel, 7 + addedComponentCount);
+                    clerkRegisterPanel.add(emailInUseLabel, 8 + addedComponentCount);
                     validCredentials = false;
+                    addedComponentCount++;
+
                 }
             }
             if(!EmailSpecifier.isValidEmail(email.getText())){
-                ClerkRegisterPanel.add(badEmailLabel, 7 + addedComponentCount);
+                clerkRegisterPanel.add(badEmailLabel, 8 + addedComponentCount);
                 validCredentials = false;
                 addedComponentCount++;
             }
         }
-        if (phoneNumber.getValue() == null) {
-            ClerkRegisterPanel.add(emptyPhoneLabel, 9 + addedComponentCount);
+        if (phoneNumber.getText().length() < 12) {
+            clerkRegisterPanel.add(emptyPhoneLabel, 10 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
         } else {
-            ClerkRegisterPanel.remove(emptyPhoneLabel);
-            ClerkRegisterPanel.remove(phoneInUseLabel);
 
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getPhoneNumber() == Long
-                        .parseLong(String.valueOf(phoneNumber.getValue())
+                        .parseLong(String.valueOf(phoneNumber.getText())
                                 .replaceAll("-",""))) {
-                    ClerkRegisterPanel.add(phoneInUseLabel, 9 + addedComponentCount);
+                    clerkRegisterPanel.add(phoneInUseLabel, 10 + addedComponentCount);
                     addedComponentCount++;
                     validCredentials = false;
                 }
             }
-        }
-
-
+        } // password is empty, show error
         if (password.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyPasswordLabel, 10 + addedComponentCount);
-            addedComponentCount++;
-            validCredentials = false;
-        } else {
-            ClerkRegisterPanel.remove(emptyPasswordLabel);
-        }
-        if(!passwordSpecifier.checkPassword(password.getText())){
-            // if there is a problem with the password, it's not empty
-            ClerkRegisterPanel.remove(emptyPasswordLabel);
-
-            badPasswordLabel.setText(passwordSpecifier.getPasswordProblem());
-            ClerkRegisterPanel.add(badPasswordLabel, 10 + addedComponentCount);
+            clerkRegisterPanel.add(emptyPasswordLabel, 12 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
         }else{
-            ClerkRegisterPanel.remove(badPasswordLabel);
+
+            // password does not meet specification, show error
+            if(!passwordSpecifier.checkPassword(password.getText())){
+                // if there is a problem with the password, it's not empty
+                clerkRegisterPanel.remove(emptyPasswordLabel);
+
+                badPasswordLabel.setText(passwordSpecifier.getPasswordProblem());
+                clerkRegisterPanel.add(badPasswordLabel, 12 + addedComponentCount);
+                addedComponentCount++;
+                validCredentials = false;
+            }
         }
         if (confirmPassword.getText().isEmpty()) {
-            ClerkRegisterPanel.add(emptyConfirmPasswordLabel, 10 + addedComponentCount);
+            clerkRegisterPanel.add(emptyConfirmPasswordLabel, 14 + addedComponentCount);
             validCredentials = false;
         } else {
-            ClerkRegisterPanel.remove(emptyConfirmPasswordLabel);
-            ClerkRegisterPanel.remove(passwordNotMatchLabel);
 
             // Check if passwords match
             if (!password.getText().isEmpty()) {
                 if (!password.getText().equals(confirmPassword.getText())) {
-                    ClerkRegisterPanel.add(passwordNotMatchLabel, 12 + addedComponentCount);
+                    clerkRegisterPanel.add(passwordNotMatchLabel, 14 + addedComponentCount);
                     validCredentials = false;
                 }
             }
@@ -266,7 +343,27 @@ public class ClerkRegisterPane extends JFrame {
         controller.insertAccount(new Account(userFirstName, userLastName, userEmail, Long.parseLong(userPhone), userPassword, role));
         JOptionPane.showMessageDialog(this, "Clerk successfully registered.");
         dispose();
+    }
 
+    public void updateClerkAccount() {
+        ClerkAccountController clerkAccountController = new ClerkAccountController(new ClerkAccountDAO());
+        Optional<Account> loggedInAccountOptional = clerkAccountController.getAccount(existingAccount.getEmail());
+        Account loggedInAccount = loggedInAccountOptional.get();
+
+        // Update the account with the modified information
+        loggedInAccount.setFirstName(firstName.getText());
+        loggedInAccount.setLastName(lastName.getText());
+        loggedInAccount.setEmail(email.getText());
+        loggedInAccount.setPhoneNumber(Long.parseLong(phoneNumber.getText().replaceAll("-", "")));
+        loggedInAccount.setPassword(password.getText());
+
+        // Call the update method in AccountController to update the account in the database
+        clerkAccountController.updateAccounts(loggedInAccount, existingAccount.getEmail());
+
+        // Close the dialog
+        JOptionPane.showMessageDialog(this, "Account information updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+        HotelManagementSystem.openClerkHomePage();
     }
 
 }

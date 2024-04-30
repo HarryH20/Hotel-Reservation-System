@@ -2,6 +2,7 @@ package org.bearluxury.UI.shopUI;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import org.bearluxury.Billing.SaleJDBCDAO;
+import org.bearluxury.UI.HotelManagementSystem;
 import org.bearluxury.controllers.ProductController;
 import org.bearluxury.controllers.SaleController;
 import org.bearluxury.product.Product;
@@ -16,9 +17,12 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class CheckoutDialog extends JDialog implements ActionListener {
     private final double SALES_TAX = 0.0625;
+
+    JFrame parent;
 
     Map<Product, Integer> cart;
 
@@ -50,8 +54,10 @@ public class CheckoutDialog extends JDialog implements ActionListener {
     public CheckoutDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
         super(parent, "Checkout", true);
         setLocationRelativeTo(parent);
-        setSize(400, 600);
+        setSize(340, 450);
+        setResizable(false);
 
+        this.parent = parent;
         this.cart = cart;
 
         // Cart panel
@@ -85,7 +91,15 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         leftPanel = new JPanel(new GridLayout(2, 1));
         rightPanel = new JPanel(new GridLayout(2, 1));
 
-        totalProductsLabel = new JLabel(this.cart.size() + " products");
+        totalProductsLabel = new JLabel();
+        // Get number of items
+        AtomicInteger totalItems = new AtomicInteger();
+        cart.forEach((product, quantity) -> totalItems.addAndGet(quantity));
+        if (totalItems.get() == 1) {
+            totalProductsLabel.setText("1 item");
+        } else {
+            totalProductsLabel.setText(totalItems + " items");
+        }
         taxLabel = new JLabel("Sales tax");
         leftPanel.add(totalProductsLabel);
         leftPanel.add(taxLabel);
@@ -101,10 +115,10 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         summaryPanel.add(rightPanel, BorderLayout.EAST);
 
         totalPanel = new JPanel(new BorderLayout());
-        overallTotalLabel = new JLabel("Total:");
+        overallTotalLabel = new JLabel(" Total:");
         overallTotalLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +8");
         overallTotalCost = totalPrice + (totalPrice * SALES_TAX);
-        overallTotalAmountLabel = new JLabel("$" + String.format("%.2f", overallTotalCost));
+        overallTotalAmountLabel = new JLabel("$" + String.format("%.2f", overallTotalCost) + " ");
         overallTotalAmountLabel.putClientProperty(FlatClientProperties.STYLE, "font:bold +8");
         totalPanel.add(overallTotalLabel, BorderLayout.WEST);
         totalPanel.add(overallTotalAmountLabel, BorderLayout.EAST);
@@ -145,6 +159,8 @@ public class CheckoutDialog extends JDialog implements ActionListener {
                 }
                 // Close the dialog
                 dispose();
+                parent.dispose();
+                HotelManagementSystem.openShopHomePage();
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 throw new RuntimeException(ex);

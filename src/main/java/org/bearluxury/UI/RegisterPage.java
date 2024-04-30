@@ -35,7 +35,9 @@ public class RegisterPage extends JFrame implements ActionListener {
     private JButton cmdLogin;
 
     private JLabel emptyFirstNameLabel;
+    private JLabel badFirstNameLabel;
     private JLabel emptyLastNameLabel;
+    private JLabel badLastNameLabel;
     private JLabel emptyEmailLabel;
     private JLabel badEmailLabel;
     private JLabel emptyPhoneLabel;
@@ -117,9 +119,13 @@ public class RegisterPage extends JFrame implements ActionListener {
                         "[dark]foreground:darken(@foreground,30%)");
 
         emptyFirstNameLabel = new JLabel("First name is required");
+        badFirstNameLabel = new JLabel("First name must be alphabetical");
+        badFirstNameLabel.setForeground(Color.red);
         emptyFirstNameLabel.setForeground(Color.red);
         emptyLastNameLabel = new JLabel("Last name is required");
         emptyLastNameLabel.setForeground(Color.red);
+        badLastNameLabel = new JLabel("Last name must be alphabetical");
+        badLastNameLabel.setForeground(Color.red);
         emptyEmailLabel = new JLabel("Email address is required");
         emptyEmailLabel.setForeground(Color.red);
         badEmailLabel = new JLabel("Email address not valid.");
@@ -197,9 +203,27 @@ public class RegisterPage extends JFrame implements ActionListener {
         return panel;
     }
 
+    private void removeErrorLabels() {
+        registerPanel.remove(emptyFirstNameLabel);
+        registerPanel.remove(badFirstNameLabel);
+        registerPanel.remove(emptyLastNameLabel);
+        registerPanel.remove(badLastNameLabel);
+        registerPanel.remove(emptyEmailLabel);
+        registerPanel.remove(badEmailLabel);
+        registerPanel.remove(emailInUseLabel);
+        registerPanel.remove(emptyPhoneLabel);
+        registerPanel.remove(phoneInUseLabel);
+        registerPanel.remove(emptyPasswordLabel);
+        registerPanel.remove(badPasswordLabel);
+        registerPanel.remove(emptyConfirmPasswordLabel);
+        registerPanel.remove(passwordNotMatchLabel);
+        registerPanel.remove(emptyCardInfoLabel);
+    }
+
     private boolean checkCredentials() {
         boolean validCredentials = true;
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
+        removeErrorLabels();
 
         // Check if fields are empty
         int addedComponentCount = 0;
@@ -207,26 +231,40 @@ public class RegisterPage extends JFrame implements ActionListener {
             registerPanel.add(emptyFirstNameLabel, 5 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
-        } else { registerPanel.remove(emptyFirstNameLabel); }
+        } else {
+
+            // Check if alphabetical
+            if (!firstNameField.getText().matches("[a-zA-Z]*$")) {
+                registerPanel.add(badFirstNameLabel, 5 + addedComponentCount);
+                addedComponentCount++;
+                validCredentials = false;
+            }
+        }
         if (lastNameField.getText().isEmpty()) {
             registerPanel.add(emptyLastNameLabel, 7 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
-        } else { registerPanel.remove(emptyLastNameLabel); }
+        } else {
+
+            // Check if alphabetical
+            if (!lastNameField.getText().matches("[a-zA-Z]*$")) {
+                registerPanel.add(badLastNameLabel, 7 + addedComponentCount);
+                addedComponentCount++;
+                validCredentials = false;
+            }
+        }
         if (emailTextField.getText().isEmpty()) {
             registerPanel.add(emptyEmailLabel, 9 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
         } else {
-            registerPanel.remove(emptyEmailLabel);
-            registerPanel.remove(emailInUseLabel);
-            registerPanel.remove(badEmailLabel);
 
             // Check if email is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getEmail().equalsIgnoreCase(emailTextField.getText())) {
                     registerPanel.add(emailInUseLabel, 9 + addedComponentCount);
                     validCredentials = false;
+                    addedComponentCount++;
 
                 }
             }
@@ -241,8 +279,6 @@ public class RegisterPage extends JFrame implements ActionListener {
             addedComponentCount++;
             validCredentials = false;
         } else {
-            registerPanel.remove(emptyPhoneLabel);
-            registerPanel.remove(phoneInUseLabel);
 
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
@@ -260,7 +296,6 @@ public class RegisterPage extends JFrame implements ActionListener {
             addedComponentCount++;
             validCredentials = false;
         }else{
-            registerPanel.remove(emptyPasswordLabel);
 
             // password does not meet specification, show error
             if(!passwordSpecifier.checkPassword(passwordTextField.getText())){
@@ -271,8 +306,6 @@ public class RegisterPage extends JFrame implements ActionListener {
                 registerPanel.add(badPasswordLabel, 13 + addedComponentCount);
                 addedComponentCount++;
                 validCredentials = false;
-            }else{
-                registerPanel.remove(badPasswordLabel);
             }
         }
         if (confirmPasswordField.getText().isEmpty()) {
@@ -280,8 +313,6 @@ public class RegisterPage extends JFrame implements ActionListener {
             addedComponentCount++;
             validCredentials = false;
         } else {
-            registerPanel.remove(emptyConfirmPasswordLabel);
-            registerPanel.remove(passwordNotMatchLabel);
 
             // Check if passwords match
             if (!passwordTextField.getText().isEmpty()) {
@@ -295,8 +326,6 @@ public class RegisterPage extends JFrame implements ActionListener {
         if (cardNumberField.getValue() == null || dateField.getValue() == null || cvvField.getValue() == null) {
             registerPanel.add(emptyCardInfoLabel, 18 + addedComponentCount);
             validCredentials = false;
-        } else {
-            registerPanel.remove(emptyCardInfoLabel);
         }
 
         setVisible(true);
@@ -333,7 +362,12 @@ public class RegisterPage extends JFrame implements ActionListener {
             if (checkCredentials()) {
                 registerAccount();
                 JOptionPane.showMessageDialog(this, "Account successfully registered.");
-                EmailSender.sendConfirmationEmail(firstNameField.getText()+", " + lastNameField.getText(), emailTextField.getText());
+                try {
+                    EmailSender.sendConfirmationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
+                }catch(Exception e1){
+                    EmailSender.sendConfirmationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
+
+                }
                 dispose();
                 HotelManagementSystem.openLoginPage();
             }

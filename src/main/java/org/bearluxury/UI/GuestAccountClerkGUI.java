@@ -1,19 +1,22 @@
 package org.bearluxury.UI;
 
-import org.bearluxury.account.Account;
-import org.bearluxury.account.Guest;
-import org.bearluxury.account.GuestAccountJDBCDAO;
-import org.bearluxury.account.Role;
+import org.bearluxury.account.*;
+import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
+import org.bearluxury.controllers.ReservationController;
+import org.bearluxury.reservation.Reservation;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -147,11 +150,24 @@ public class GuestAccountClerkGUI extends JFrame {
             JDialog editDialog = new JDialog(this, "Edit Account", true);
             editDialog.setLayout(new GridLayout(9, 2));
 
+
             JTextField firstNameField = new JTextField(oldGuest.getFirstName());
             JTextField lastNameField = new JTextField(oldGuest.getLastName());
             JTextField emailField = new JTextField(oldGuest.getEmail());
             emailField.setEditable(false);
-            JTextField phoneNumberField = new JTextField(String.valueOf(oldGuest.getPhoneNumber()));
+            emailField.setFocusable(false);
+
+            MaskFormatter phoneFormatter = null;
+            try {
+                phoneFormatter = new MaskFormatter("###-###-####");
+            } catch (ParseException ex) {
+                throw new RuntimeException(ex);
+            }
+            phoneFormatter.setPlaceholder(
+                    String.valueOf(oldGuest.getPhoneNumber()).substring(0,3)+"-"
+                            +String.valueOf(oldGuest.getPhoneNumber()).substring(3,6)+"-"
+                            +String.valueOf(oldGuest.getPhoneNumber()).substring(6,10));
+            JFormattedTextField phoneNumberField = new JFormattedTextField(phoneFormatter);
             JTextField passwordField = new JTextField(oldGuest.getPassword());
 
             JComboBox<Role> roleComboBox = new JComboBox<>(Role.values());
@@ -167,8 +183,6 @@ public class GuestAccountClerkGUI extends JFrame {
             editDialog.add(phoneNumberField);
             editDialog.add(new JLabel("Password:"));
             editDialog.add(passwordField);
-            editDialog.add(new JLabel("Role:"));
-            editDialog.add(roleComboBox);
 
             JButton saveButton = new JButton("Save");
             saveButton.addActionListener(new ActionListener() {
@@ -178,17 +192,50 @@ public class GuestAccountClerkGUI extends JFrame {
                     oldGuest.setFirstName(firstNameField.getText());
                     oldGuest.setLastName(lastNameField.getText());
                     oldGuest.setEmail(emailField.getText());
-                    oldGuest.setPhoneNumber(Long.parseLong(phoneNumberField.getText()));
+                    oldGuest.setPhoneNumber(Long.parseLong(phoneNumberField.getText().replaceAll("-","")));
                     oldGuest.setPassword(passwordField.getText());
-                    oldGuest.setRole((Role) roleComboBox.getSelectedItem());
 
-                    // Check if the email is already in use
-                    String newEmail = emailField.getText();
-                    if (!newEmail.equals(email)) { // Check if email is edited
-                        Optional<Guest> existingAccount = controller.getAccount(newEmail);
-                        if (existingAccount.isPresent()) {
-                            JOptionPane.showMessageDialog(null, "Email already in use. Please choose another one.", "Warning", JOptionPane.WARNING_MESSAGE);
+
+
+                    String editedPhoneNumber = String.valueOf(phoneNumberField.getValue());
+                    String currentPhoneNumber = String.valueOf( model.getValueAt(selectedRow, 4));
+                    if (!editedPhoneNumber.equals(currentPhoneNumber)) { // Check if email is edited
+
+                        if (phoneNumberField.getValue() != null) {
+                            ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
+
+                            // Check if phone is in use
+                            for (Account account : controller.listAccounts()) {
+                                if (account.getPhoneNumber() == Long
+                                        .parseLong(String.valueOf(phoneNumberField.getValue())
+                                                .replaceAll("-", ""))) {
+                                    JOptionPane.showMessageDialog(null, "This Phone Number already in use.", "Warning", JOptionPane.WARNING_MESSAGE);
+                                    editDialog.dispose();
+                                    editAccountDialog(selectedRow,table);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+
+                    PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
+                    String editedPassword = passwordField.getText();
+                    String currentPassword = (String) model.getValueAt(selectedRow, 5);
+                    if (!editedPassword.equals(currentPassword)) { // Check if email is edited
+                        if (passwordField.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(null, "Please Fill in password Field.", "Warning", JOptionPane.WARNING_MESSAGE);
+                            editDialog.dispose();
+                            editAccountDialog(selectedRow,table);
                             return;
+                        }else{
+                            // password does not meet specification, show error
+                            if(!passwordSpecifier.checkPassword(passwordField.getText())) {
+                                // if there is a problem with the password, it's not empty
+                                JOptionPane.showMessageDialog(null, passwordSpecifier.getPasswordProblem(), "Warning", JOptionPane.WARNING_MESSAGE);
+                                editDialog.dispose();
+                                editAccountDialog(selectedRow,table);
+                                return;
+                            }
                         }
                     }
 
@@ -201,7 +248,6 @@ public class GuestAccountClerkGUI extends JFrame {
                     model.setValueAt(oldGuest.getEmail(), selectedRow, 3);
                     model.setValueAt(oldGuest.getPhoneNumber(), selectedRow, 4);
                     model.setValueAt(oldGuest.getPassword(), selectedRow, 5);
-                    model.setValueAt(oldGuest.getRole().toString(), selectedRow, 6);
 
                     editDialog.dispose();
                 }
@@ -239,15 +285,31 @@ public class GuestAccountClerkGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
+                ReservationController controller1 = new ReservationController(new ReservationJDBCDAO());
                 if (selectedRow != -1) {
-                    String email = (String) table.getValueAt(selectedRow, 3); // Assuming email is at index 4
-                    boolean deleted = controller.deleteAccounts(email);
-                    if (deleted) {
-                        // Delete selected row from table
-                        model.removeRow(selectedRow);
-                        JOptionPane.showMessageDialog(null, "Account deleted successfully.");
+                    String accountNumberStr = (String) table.getValueAt(selectedRow, 0);
+                    int accountNumber = Integer.parseInt(accountNumberStr); // Assuming account ID is at index 0
+
+                    // Delete associated reservations first
+                    Set<Reservation> reservations = controller1.listReservationsByAccountId(accountNumber);
+                    for (Reservation reservation : reservations) {
+                        controller1.deleteReservationByReservationId(reservation.getReservationID());
+                    }
+
+                    // Check if all reservations are deleted
+                    boolean allReservationsDeleted = controller1.listReservationsByAccountId(accountNumber).isEmpty();
+                    if (allReservationsDeleted) {
+                        // Delete the account
+                        boolean deleted = controller.deleteAccounts((String) table.getValueAt(selectedRow, 3)); // Assuming email is at index 5
+                        if (deleted) {
+                            // Delete selected row from table
+                            model.removeRow(selectedRow);
+                            JOptionPane.showMessageDialog(null, "Account and associated reservations deleted successfully.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Failed to delete account and associated reservations.");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Failed to delete account.");
+                        JOptionPane.showMessageDialog(null, "Failed to delete all reservations associated with the account.");
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Please select a row to delete.");
@@ -256,4 +318,6 @@ public class GuestAccountClerkGUI extends JFrame {
         });
         return deleteButton;
     }
+
+
 }
