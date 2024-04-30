@@ -1,8 +1,5 @@
 package org.bearluxury.controllers;
 
-import org.bearluxury.account.CreditCard;
-import org.bearluxury.account.Guest;
-import org.bearluxury.account.Role;
 import org.bearluxury.product.PRODUCT_TYPE;
 import org.bearluxury.product.Product;
 import org.bearluxury.product.ProductJDBCDAO;
