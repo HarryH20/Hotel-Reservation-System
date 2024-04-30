@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AvaliableRoomsGUI extends JFrame {
 
@@ -202,7 +201,7 @@ public class AvaliableRoomsGUI extends JFrame {
         }
 
         private static void openReservationForm(int roomID, LocalDate checkIn, LocalDate checkOut) {
-            ReservationPane pane = new ReservationPane(roomID, checkIn, checkOut);
+            ReservationPaneGuest pane = new ReservationPaneGuest(roomID, checkIn, checkOut);
             pane.setVisible(true);
         }
     }

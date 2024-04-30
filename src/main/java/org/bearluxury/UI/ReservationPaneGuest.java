@@ -5,11 +5,9 @@ import org.bearluxury.Billing.SaleJDBCDAO;
 import org.bearluxury.account.GuestAccountJDBCDAO;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.*;
-import org.bearluxury.room.RoomCatalog;
 import org.bearluxury.room.RoomJDBCDAO;
 import org.bearluxury.shop.Sale;
 import org.bearluxury.state.SessionManager;
-import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 
@@ -17,9 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -28,7 +24,7 @@ import java.util.NoSuchElementException;
  * Attempting to make it work with a calendar need new maven dependacies.
  * It is in its own seperate class and called by openReservationPane().
  */
-public class ReservationPane extends JFrame {
+public class ReservationPaneGuest extends JFrame {
     private Container c;
     private JLabel title;
     private JTextField roomId;
@@ -41,7 +37,7 @@ public class ReservationPane extends JFrame {
     private DatePicker checkInDatePicker;
     private DatePicker checkOutDatePicker;
 
-    public ReservationPane(int id, LocalDate checkIn, LocalDate checkOut) {
+    public ReservationPaneGuest(int id, LocalDate checkIn, LocalDate checkOut) {
         setTitle("Reservation Form");
         setBounds(300, 90, 500, 600);
         setResizable(false);
@@ -158,13 +154,9 @@ public class ReservationPane extends JFrame {
         firstName.setEditable(false);
         lastName.setEditable(false);
         email.setEditable(false);
+        guestNumber.setEnabled(false);
         checkInDatePicker.setEnabled(false);
         checkOutDatePicker.setEnabled(false);
-        roomId.setFocusable(false);
-        firstName.setFocusable(false);
-        lastName.setFocusable(false);
-        email.setFocusable(false);
-        guestNumber.setEnabled(false);
 
 
         c.add(reservationPanel);
@@ -241,4 +233,9 @@ public class ReservationPane extends JFrame {
         return new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);
     }
 }
+
+
+
+
+
 
