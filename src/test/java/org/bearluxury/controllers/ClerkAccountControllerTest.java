@@ -1,7 +1,8 @@
 package org.bearluxury.controllers;
 
 import org.bearluxury.account.Account;
-import org.bearluxury.account.AccountJDBCDAO;
+import org.bearluxury.account.Clerk;
+import org.bearluxury.account.ClerkAccountDAO;
 import org.bearluxury.account.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,22 +16,22 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class AccountControllerTest {
+class ClerkAccountControllerTest {
 
     @Mock
-    private AccountJDBCDAO mockAccountDAO;
+    private ClerkAccountDAO mockAccountDAO;
 
-    private AccountController accountController;
+    private ClerkAccountController accountController;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        accountController = new AccountController(mockAccountDAO);
+        accountController = new ClerkAccountController(mockAccountDAO);
     }
 
     @Test
     void insertAccount() {
-        Account account = new Account("testfirstname", "testlastname", "testusername", "test@example.com", 12345678, "123", Role.GUEST);
+        Account account = new Clerk("testfirstname", "testlastname", "test@example.com", 12345678, "123", Role.CLERK);
         accountController.insertAccount(account);
         verify(mockAccountDAO, times(1)).insert(account);
     }
@@ -38,7 +39,7 @@ class AccountControllerTest {
     @Test
     void getAccount() {
         String email = "test@example.com";
-        Account account = new Account("testfirstname", "testlastname", "testusername", email, 12345678, "123", Role.GUEST);
+        Account account = new Account("testfirstname", "testlastname", email, 12345678, "123", Role.CLERK);
         when(mockAccountDAO.get(email)).thenReturn(Optional.of(account));
         Optional<Account> retrievedAccount = accountController.getAccount(email);
         assertTrue(retrievedAccount.isPresent());
@@ -48,8 +49,8 @@ class AccountControllerTest {
     @Test
     void listAccounts() {
         Set<Account> accounts = new HashSet<>();
-        accounts.add(new Account("testfirstname", "testlastname", "testusername", "test@example.com", 12345678, "123", Role.GUEST));
-        accounts.add(new Account("testfirstname2", "testlastname2", "testusername2", "test2@example.com", 87654321, "123", Role.GUEST));
+        accounts.add(new Account("testfirstname", "testlastname", "test@example.com", 12345678, "123", Role.CLERK));
+        accounts.add(new Account("testfirstname2", "testlastname2", "test2@example.com", 87654321, "123", Role.CLERK));
         when(mockAccountDAO.list()).thenReturn(accounts);
         Set<Account> retrievedAccounts = accountController.listAccounts();
         assertEquals(accounts, retrievedAccounts);
@@ -57,7 +58,7 @@ class AccountControllerTest {
 
     @Test
     void updateAccounts() {
-        Account account = new Account("testfirstname", "testlastname", "testusername", "test@example.com", 12345678, "123", Role.GUEST);
+        Account account = new Account("testfirstname", "testlastname", "test@example.com", 12345678, "123", Role.CLERK);
         String email = "test@example.com";
         accountController.updateAccounts(account, email);
         verify(mockAccountDAO, times(1)).update(account, email);

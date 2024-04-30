@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ *
+ */
 public class AdminHomePage extends HotelHomePage{
     AdminHomePage() {
         JButton addUser = new JButton("Register New Clerk");
@@ -32,8 +35,8 @@ public class AdminHomePage extends HotelHomePage{
     private class openRegistration implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ClerkRegisterPane pane = new ClerkRegisterPane(false);
-            pane.setVisible(true);
+            dispose();
+            HotelManagementSystem.openClerkRegisterPane(false);
         }
     }
 

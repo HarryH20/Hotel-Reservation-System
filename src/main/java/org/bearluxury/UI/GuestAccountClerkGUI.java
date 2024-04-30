@@ -218,6 +218,22 @@ public class GuestAccountClerkGUI extends JFrame {
                         }
                     }
 
+                    if (firstNameField.getText().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "Please Fill in name Field.", "Warning", JOptionPane.WARNING_MESSAGE);
+                        editDialog.dispose();
+                        editAccountDialog(selectedRow,table);
+                        return;
+                    } else {
+                        // Check if alphabetical
+                        if (!firstNameField.getText().matches("[a-zA-Z]*$") || !lastNameField.getText().matches("[a-zA-Z]*$")) {
+                            JOptionPane.showMessageDialog(null, "Name must be alphabetical.", "Warning", JOptionPane.WARNING_MESSAGE);
+                            editDialog.dispose();
+                            editAccountDialog(selectedRow,table);
+                            return;
+                        }
+
+                    }
+
                     PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
                     String editedPassword = passwordField.getText();
                     String currentPassword = (String) model.getValueAt(selectedRow, 5);

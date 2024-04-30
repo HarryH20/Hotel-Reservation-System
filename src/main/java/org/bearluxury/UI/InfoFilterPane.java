@@ -121,7 +121,7 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
         roomsLabel.setFont(font);
 
         centerPanel.add(bedsLabel);
-        centerPanel.add(roomsLabel);
+//        centerPanel.add(roomsLabel);
 
         bedsPanel = new JPanel();
         bedsPanel.setBackground(backgroundColor);
@@ -150,7 +150,7 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
         roomsPanel.add(plusRoomButton);
 
         centerPanel.add(bedsPanel);
-        centerPanel.add(roomsPanel);
+//        centerPanel.add(roomsPanel);
 
         southPanel = new JPanel();
         southPanel.setBackground(backgroundColor);
@@ -209,8 +209,12 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
                 minusBedsButton.setEnabled(false);
             }
             bedsField.setText(String.valueOf(numBeds));
+            plusBedsButton.setEnabled(true);
         } else if (e.getSource() == plusBedsButton) {
             numBeds++;
+            if (numBeds >= 4) {
+                plusBedsButton.setEnabled(false);
+            }
             bedsField.setText(String.valueOf(numBeds));
             minusBedsButton.setEnabled(true);
         } else if (e.getSource() == minusRoomButton) {

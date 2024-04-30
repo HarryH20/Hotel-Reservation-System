@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import org.bearluxury.Billing.SaleJDBCDAO;
+import org.bearluxury.account.Account;
 import org.bearluxury.account.GuestAccountJDBCDAO;
 import org.bearluxury.account.Role;
 import org.bearluxury.controllers.*;
@@ -18,6 +19,8 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.NoSuchElementException;
+
+import static org.bearluxury.Email.EmailSender.sendReservationConfirmation;
 
 /*
  * This is the class for the reservation pane is not completed.
@@ -213,6 +216,18 @@ public class ReservationPaneGuest extends JFrame {
                 saleController.insertSale(sale);
                 JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
                 dispose();
+                try {
+                    sendReservationConfirmation(SessionManager.getInstance().getCurrentAccount().getFirstName(),
+                            SessionManager.getInstance().getCurrentAccount().getEmail(),
+                            res.getStartDate(),
+                            res.getEndDate());
+                }catch(Exception e){
+                    // if email fails, try one more time
+                    sendReservationConfirmation(SessionManager.getInstance().getCurrentAccount().getFirstName(),
+                            SessionManager.getInstance().getCurrentAccount().getEmail(),
+                            res.getStartDate(),
+                            res.getEndDate());
+                }
             } else {
                 int acctId = guestAccountController.getAccount(guestEmail).orElseThrow(() ->
                         new NoSuchElementException("Guest not found")).getId();
@@ -220,6 +235,18 @@ public class ReservationPaneGuest extends JFrame {
                 saleController.insertSale(sale);
                 JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
                 dispose();
+                try {
+                    sendReservationConfirmation(SessionManager.getInstance().getCurrentAccount().getFirstName(),
+                            SessionManager.getInstance().getCurrentAccount().getEmail(),
+                            res.getStartDate(),
+                            res.getEndDate());
+                }catch(Exception e){
+                    // if email fails, try one more time
+                    sendReservationConfirmation(SessionManager.getInstance().getCurrentAccount().getFirstName(),
+                            SessionManager.getInstance().getCurrentAccount().getEmail(),
+                            res.getStartDate(),
+                            res.getEndDate());
+                }
             }
 
 

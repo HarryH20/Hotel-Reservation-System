@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Optional;
 
-
 //Window
 public class HotelManagementSystem  {
     public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
@@ -70,6 +69,11 @@ public class HotelManagementSystem  {
     public static void openRegisterPage() {
         RegisterPage registerPage = new RegisterPage();
         registerPage.setVisible(true);
+    }
+
+    public static void openClerkRegisterPane(boolean modify) {
+        ClerkRegisterPane clerkRegisterPane = new ClerkRegisterPane(modify);
+        clerkRegisterPane.setVisible(true);
     }
 
     public static void openHotelManagmentSystem(){
