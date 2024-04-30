@@ -145,8 +145,7 @@ public class ClerkHomePage extends HotelHomePage{
 
                 if (loggedInAccountOptional.isPresent()) {
                     dispose();
-                    ClerkRegisterPane clerkRegisterPane = new ClerkRegisterPane(true);
-                    clerkRegisterPane.setVisible(true);
+                    HotelManagementSystem.openClerkRegisterPane(true);
                 } else {
                     JOptionPane.showMessageDialog(null, "Account not found!", "Error", JOptionPane.ERROR_MESSAGE);
                 }

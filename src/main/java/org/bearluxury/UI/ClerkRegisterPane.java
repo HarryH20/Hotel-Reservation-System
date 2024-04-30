@@ -352,6 +352,7 @@ public class ClerkRegisterPane extends JFrame {
         controller.insertAccount(new Account(userFirstName, userLastName, userEmail, Long.parseLong(userPhone), userPassword, role));
         JOptionPane.showMessageDialog(this, "Clerk successfully registered.");
         dispose();
+        HotelManagementSystem.openAdminHomePage();
     }
 
     public void updateClerkAccount() {

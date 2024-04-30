@@ -71,6 +71,11 @@ public class HotelManagementSystem  {
         registerPage.setVisible(true);
     }
 
+    public static void openClerkRegisterPane(boolean modify) {
+        ClerkRegisterPane clerkRegisterPane = new ClerkRegisterPane(modify);
+        clerkRegisterPane.setVisible(true);
+    }
+
     public static void openHotelManagmentSystem(){
         InfoFilterPane window = new InfoFilterPane();
         window.setVisible(true);

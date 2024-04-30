@@ -32,8 +32,8 @@ public class AdminHomePage extends HotelHomePage{
     private class openRegistration implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            ClerkRegisterPane pane = new ClerkRegisterPane(false);
-            pane.setVisible(true);
+            dispose();
+            HotelManagementSystem.openClerkRegisterPane(false);
         }
     }
 
