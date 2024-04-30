@@ -12,6 +12,15 @@ import java.sql.SQLException;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
+/**
+ * GUI for the addition of room in the Clerks home page
+ * @author Alan Vilagrand
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Will Clore
+ * @author Harrison Hassler
+ */
 public class AddRoomPane extends JFrame {
     private JLabel roomNumberLabel;
     private JTextField roomNumber;
@@ -82,6 +91,10 @@ public class AddRoomPane extends JFrame {
         add(createRoom);
     }
 
+    /**
+     * Uses room controller to insert a new room to the database
+     * @param priceSelection
+     */
     private void saveRoom(double priceSelection) {
         Room room = null;
         try {
@@ -116,6 +129,9 @@ public class AddRoomPane extends JFrame {
         return priceSelection;
     }
 
+    /**
+     * Prompts user for creation of new room, else returned to previous window
+     */
     private void showConfirmationDialog() {
         int selection = JOptionPane.showConfirmDialog(null, "Room Created! " +
                 "Would you like to add another?");
@@ -127,6 +143,10 @@ public class AddRoomPane extends JFrame {
         }
     }
 
+    /**
+     * Takes in room object and prompts user to update or leave as is
+     * @param room
+     */
     private void roomUpdate(Room room) {
         try {
             RoomController controller = new RoomController(new RoomJDBCDAO());

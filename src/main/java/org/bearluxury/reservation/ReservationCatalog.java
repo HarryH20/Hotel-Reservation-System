@@ -35,7 +35,7 @@ public class ReservationCatalog {
             // NO COMMENT LOL
             if(!(endDateAsDate.before(r.getStartDate()) || startDateAsDate.after(r.getEndDate()))){
                isAvailable = false;
-                System.out.println("THE ROOM IS NOT AVAILIBE");
+                System.out.println("THE ROOM IS NOT AVAILABLE");
             }
         }
         return isAvailable;
