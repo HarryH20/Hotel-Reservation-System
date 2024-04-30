@@ -3,6 +3,9 @@ package org.bearluxury.UI;
 import org.bearluxury.account.*;
 import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
+import org.bearluxury.controllers.ReservationController;
+import org.bearluxury.reservation.Reservation;
+import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
@@ -282,15 +285,31 @@ public class GuestAccountClerkGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = table.getSelectedRow();
+                ReservationController controller1 = new ReservationController(new ReservationJDBCDAO());
                 if (selectedRow != -1) {
-                    String email = (String) table.getValueAt(selectedRow, 3); // Assuming email is at index 4
-                    boolean deleted = controller.deleteAccounts(email);
-                    if (deleted) {
-                        // Delete selected row from table
-                        model.removeRow(selectedRow);
-                        JOptionPane.showMessageDialog(null, "Account deleted successfully.");
+                    String accountNumberStr = (String) table.getValueAt(selectedRow, 0);
+                    int accountNumber = Integer.parseInt(accountNumberStr); // Assuming account ID is at index 0
+
+                    // Delete associated reservations first
+                    Set<Reservation> reservations = controller1.listReservationsByAccountId(accountNumber);
+                    for (Reservation reservation : reservations) {
+                        controller1.deleteReservationByReservationId(reservation.getReservationID());
+                    }
+
+                    // Check if all reservations are deleted
+                    boolean allReservationsDeleted = controller1.listReservationsByAccountId(accountNumber).isEmpty();
+                    if (allReservationsDeleted) {
+                        // Delete the account
+                        boolean deleted = controller.deleteAccounts((String) table.getValueAt(selectedRow, 3)); // Assuming email is at index 5
+                        if (deleted) {
+                            // Delete selected row from table
+                            model.removeRow(selectedRow);
+                            JOptionPane.showMessageDialog(null, "Account and associated reservations deleted successfully.");
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Failed to delete account and associated reservations.");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "Failed to delete account.");
+                        JOptionPane.showMessageDialog(null, "Failed to delete all reservations associated with the account.");
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Please select a row to delete.");
@@ -299,4 +318,6 @@ public class GuestAccountClerkGUI extends JFrame {
         });
         return deleteButton;
     }
+
+
 }

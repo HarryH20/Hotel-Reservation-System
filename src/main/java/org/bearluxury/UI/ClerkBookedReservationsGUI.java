@@ -30,6 +30,7 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI {
 
 
     public ClerkBookedReservationsGUI(ReservationCatalog reservationCatalog) {
+
         super(reservationCatalog);
 
         JButton editButton = new JButton("Edit Reservation");
