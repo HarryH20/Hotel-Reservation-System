@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ *
+ */
 public class AdminHomePage extends HotelHomePage{
     AdminHomePage() {
         JButton addUser = new JButton("Register New Clerk");
