@@ -83,10 +83,8 @@ public class ProductControllerTest {
 
         Product product = new Product("Test Product", 10.0, initialStock, PRODUCT_TYPE.CLOTHING);
 
-        // Mock behavior for get
         when(mockProductDAO.get(productId)).thenReturn(Optional.of(product));
 
-        // Mock behavior for addStock
         doAnswer(invocation -> {
             int amount = invocation.getArgument(1);
             product.setQuantity(product.getQuantity() + amount);
@@ -112,10 +110,8 @@ public class ProductControllerTest {
 
         Product product = new Product("Test Product", 10.0, initialStock, PRODUCT_TYPE.CLOTHING);
 
-        // Mock behavior for get
         when(mockProductDAO.get(productId)).thenReturn(Optional.of(product));
 
-        // Mock behavior for removeStock
         doAnswer(invocation -> {
             int amount = invocation.getArgument(1);
             if (product.getQuantity() >= amount) {

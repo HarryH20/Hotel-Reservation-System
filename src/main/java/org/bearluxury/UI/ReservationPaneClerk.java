@@ -194,7 +194,6 @@ public class ReservationPaneClerk extends JFrame {
 
 
             Reservation res = new Reservation(roomNumber, guestFirstName, guestLastName, guestEmail, numberOfGuests, startDate, endDate, false);
-            controller.insertReservation(res);
 
 
 
@@ -208,6 +207,7 @@ public class ReservationPaneClerk extends JFrame {
             if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST) {
                 sale.setAccountId(SessionManager.getInstance().getCurrentAccount().getId());
                 saleController.insertSale(sale);
+                controller.insertReservation(res);
                 JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
                 dispose();
             } else {
@@ -215,6 +215,7 @@ public class ReservationPaneClerk extends JFrame {
                         new NoSuchElementException("Guest not found")).getId();
                 sale.setAccountId(acctId);
                 saleController.insertSale(sale);
+                controller.insertReservation(res);
                 JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
                 dispose();
             }
