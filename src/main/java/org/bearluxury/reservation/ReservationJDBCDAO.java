@@ -1,6 +1,7 @@
 package org.bearluxury.reservation;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.Date;
 import org.bearluxury.database.DAO;
@@ -308,6 +309,26 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean hasConflictingReservations(int roomNumber, LocalDate startDate, LocalDate endDate) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservations WHERE roomNumber = ? AND ((startDate <= ? AND endDate >= ?) OR (startDate <= ? AND endDate >= ?) OR (startDate >= ? AND endDate <= ?))");
+            preparedStatement.setInt(1, roomNumber);
+            preparedStatement.setDate(2, java.sql.Date.valueOf(startDate));
+            preparedStatement.setDate(3, java.sql.Date.valueOf(startDate));
+            preparedStatement.setDate(4, java.sql.Date.valueOf(endDate));
+            preparedStatement.setDate(5, java.sql.Date.valueOf(endDate));
+            preparedStatement.setDate(6, java.sql.Date.valueOf(startDate));
+            preparedStatement.setDate(7, java.sql.Date.valueOf(endDate));
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next(); // If there is any result, there are conflicting reservations
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
 

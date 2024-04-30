@@ -88,6 +88,7 @@ public class EditReservationPane extends JFrame{
                     JOptionPane.showMessageDialog(null, "Check-in and check-out dates cannot be the same", "Error", JOptionPane.ERROR_MESSAGE);
                     return; // Don't proceed further
                 }
+
                 ReservationController controller = new ReservationController(new ReservationJDBCDAO());
                 SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
                 Reservation res = new Reservation(toChange.getRoomNumber(),
@@ -98,10 +99,14 @@ public class EditReservationPane extends JFrame{
                         java.sql.Date.valueOf(startDate),
                         java.sql.Date.valueOf(endDate),toChange.isCheckedIn());
 
+                // Check for conflicting reservations
+                if (controller.hasConflictingReservations(res.getRoomNumber(), startDate, endDate)) {
+                    JOptionPane.showMessageDialog(null, "There are conflicting reservations for the selected dates", "Error", JOptionPane.ERROR_MESSAGE);
+                    return; // Don't proceed further
+                }
 
                 res.setReservationID(toChange.getReservationID());
                 controller.updateReservationByReservationId(res,toChange.getReservationID());
-
 
                 model.removeRow(table.getSelectedRow());
 
@@ -121,11 +126,10 @@ public class EditReservationPane extends JFrame{
                 });
                 JOptionPane.showMessageDialog(null, "Reservation updated");
                 dispose();
-
             }
-
-
         });
+
+
 
 
         add(guestLabel);
