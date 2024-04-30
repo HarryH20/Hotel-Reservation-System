@@ -363,9 +363,9 @@ public class RegisterPage extends JFrame implements ActionListener {
                 registerAccount();
                 JOptionPane.showMessageDialog(this, "Account successfully registered.");
                 try {
-                    EmailSender.sendConfirmationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
+                    EmailSender.sendAccountCreationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
                 }catch(Exception e1){
-                    EmailSender.sendConfirmationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
+                    EmailSender.sendAccountCreationEmail(firstNameField.getText() + ", " + lastNameField.getText(), emailTextField.getText());
 
                 }
                 dispose();
