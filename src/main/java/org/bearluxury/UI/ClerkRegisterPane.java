@@ -5,6 +5,7 @@ import net.miginfocom.swing.MigLayout;
 import org.bearluxury.account.*;
 import org.bearluxury.controllers.ClerkAccountController;
 import org.bearluxury.controllers.GuestAccountController;
+import org.bearluxury.state.SessionManager;
 
 import javax.swing.*;
 import javax.swing.text.MaskFormatter;
@@ -12,10 +13,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.util.Optional;
 
 public class ClerkRegisterPane extends JFrame {
     ImageIcon logo;
     private JPanel clerkRegisterPanel;
+
+    Account existingAccount;
+    boolean modify;
 
     //private Container c;
     //private JLabel title;
@@ -48,8 +53,12 @@ public class ClerkRegisterPane extends JFrame {
     private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
 
 
-    public ClerkRegisterPane() {
-        setTitle("Clerk Registration");
+    public ClerkRegisterPane(boolean modify) {
+        if (modify) {
+            setTitle("Modify Clerk Account");
+        } else {
+            setTitle("Clerk Registration");
+        }
         setSize(1200, 920);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -63,6 +72,8 @@ public class ClerkRegisterPane extends JFrame {
         firstName = new JTextField();
         lastName = new JTextField();
         email = new JTextField();
+        email.setEnabled(false);
+        email.setFocusable(false);
         try {
             MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
             phoneNumber = new JFormattedTextField(maskFormatter);
@@ -81,7 +92,11 @@ public class ClerkRegisterPane extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (checkCredentials()) {
-                    saveClerkToDatabase();
+                    if (modify) {
+                        updateClerkAccount();
+                    } else {
+                        saveClerkToDatabase();
+                    }
                 }
             }
         });
@@ -90,7 +105,12 @@ public class ClerkRegisterPane extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Close the current window
                 // Open the previous window or go back to the main menu
-                HotelManagementSystem.openAdminHomePage(); // Assuming MainMenu is the class for the main menu
+
+                if (modify) {
+                    HotelManagementSystem.openClerkHomePage();
+                } else {
+                    HotelManagementSystem.openAdminHomePage(); // Assuming MainMenu is the class for the main menu
+                }
             }
         });
 
@@ -108,6 +128,9 @@ public class ClerkRegisterPane extends JFrame {
                 "showRevealButton:true");
 
         JLabel description = new JLabel("Please fill in the information below to get started");
+        if (modify) {
+            description.setText("Modify personal information");
+        }
         description.putClientProperty(FlatClientProperties.STYLE, "" +
                 "[light]foreground:lighten(@foreground,30%);" +
                 "[dark]foreground:darken(@foreground,30%)");
@@ -145,6 +168,12 @@ public class ClerkRegisterPane extends JFrame {
         passwordNotMatchLabel = new JLabel("Passwords do not match");
         passwordNotMatchLabel.setForeground(Color.red);
 
+        //Fill fields if modiyfing
+        existingAccount = SessionManager.getInstance().getCurrentAccount();
+        if (modify) {
+            fillExistingInformation(existingAccount);
+        }
+
         //Adding labels to panel
         clerkRegisterPanel.add(logoLabel);
         clerkRegisterPanel.add(description);
@@ -165,6 +194,15 @@ public class ClerkRegisterPane extends JFrame {
         clerkRegisterPanel.add(backButton, "gapy 10");
 
         add(clerkRegisterPanel);
+    }
+
+    private void fillExistingInformation(Account account) {
+        firstName.setText(account.getFirstName());
+        lastName.setText(account.getLastName());
+        email.setText(account.getEmail());
+        //phoneNumber.setValue(account.getPhoneNumber());
+        phoneNumber.setText(String.valueOf(account.getPhoneNumber()));
+        password.setText(account.getPassword());
     }
 
     private void removeErrorLabels() {
@@ -237,7 +275,7 @@ public class ClerkRegisterPane extends JFrame {
                 addedComponentCount++;
             }
         }
-        if (phoneNumber.getValue() == null) {
+        if (phoneNumber.getText().length() < 12) {
             clerkRegisterPanel.add(emptyPhoneLabel, 10 + addedComponentCount);
             addedComponentCount++;
             validCredentials = false;
@@ -246,7 +284,7 @@ public class ClerkRegisterPane extends JFrame {
             // Check if phone is in use
             for (Account account : controller.listAccounts()) {
                 if (account.getPhoneNumber() == Long
-                        .parseLong(String.valueOf(phoneNumber.getValue())
+                        .parseLong(String.valueOf(phoneNumber.getText())
                                 .replaceAll("-",""))) {
                     clerkRegisterPanel.add(phoneInUseLabel, 10 + addedComponentCount);
                     addedComponentCount++;
@@ -305,7 +343,27 @@ public class ClerkRegisterPane extends JFrame {
         controller.insertAccount(new Account(userFirstName, userLastName, userEmail, Long.parseLong(userPhone), userPassword, role));
         JOptionPane.showMessageDialog(this, "Clerk successfully registered.");
         dispose();
+    }
 
+    public void updateClerkAccount() {
+        ClerkAccountController clerkAccountController = new ClerkAccountController(new ClerkAccountDAO());
+        Optional<Account> loggedInAccountOptional = clerkAccountController.getAccount(existingAccount.getEmail());
+        Account loggedInAccount = loggedInAccountOptional.get();
+
+        // Update the account with the modified information
+        loggedInAccount.setFirstName(firstName.getText());
+        loggedInAccount.setLastName(lastName.getText());
+        loggedInAccount.setEmail(email.getText());
+        loggedInAccount.setPhoneNumber(Long.parseLong(phoneNumber.getText().replaceAll("-", "")));
+        loggedInAccount.setPassword(password.getText());
+
+        // Call the update method in AccountController to update the account in the database
+        clerkAccountController.updateAccounts(loggedInAccount, existingAccount.getEmail());
+
+        // Close the dialog
+        JOptionPane.showMessageDialog(this, "Account information updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+        HotelManagementSystem.openClerkHomePage();
     }
 
 }
