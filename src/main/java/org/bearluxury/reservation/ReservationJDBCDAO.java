@@ -12,7 +12,7 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
 
     private Connection connection;
 
-    private static String JDBC_URL = "jdbc:h2:~/testingReservations222";
+    private static String JDBC_URL = "jdbc:h2:~/testingReservations2222";
 
     public ReservationJDBCDAO() {
         try {

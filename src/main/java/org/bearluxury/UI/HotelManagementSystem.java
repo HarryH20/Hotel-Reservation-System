@@ -85,7 +85,6 @@ public class HotelManagementSystem  {
         RegisterPane register = new RegisterPane();
         register.setVisible(true);
     }*/
-
     public static void openShopHomePage() {
         try {
             ProductJDBCDAO productDAO = new ProductJDBCDAO();
