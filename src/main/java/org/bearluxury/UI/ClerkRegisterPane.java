@@ -72,8 +72,10 @@ public class ClerkRegisterPane extends JFrame {
         firstName = new JTextField();
         lastName = new JTextField();
         email = new JTextField();
-        email.setEnabled(false);
-        email.setFocusable(false);
+        if (modify) {
+            email.setEnabled(false);
+            email.setFocusable(false);
+        }
         try {
             MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
             phoneNumber = new JFormattedTextField(maskFormatter);
@@ -200,7 +202,13 @@ public class ClerkRegisterPane extends JFrame {
         firstName.setText(account.getFirstName());
         lastName.setText(account.getLastName());
         email.setText(account.getEmail());
-        //phoneNumber.setValue(account.getPhoneNumber());
+        try {
+            MaskFormatter maskFormatter = new MaskFormatter("###-###-####");
+            maskFormatter.setPlaceholder(String.valueOf(account.getPhoneNumber()));
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         phoneNumber.setText(String.valueOf(account.getPhoneNumber()));
         password.setText(account.getPassword());
     }
@@ -275,6 +283,7 @@ public class ClerkRegisterPane extends JFrame {
                 addedComponentCount++;
             }
         }
+        System.out.println(phoneNumber.getValue());
         if (phoneNumber.getText().length() < 12) {
             clerkRegisterPanel.add(emptyPhoneLabel, 10 + addedComponentCount);
             addedComponentCount++;
