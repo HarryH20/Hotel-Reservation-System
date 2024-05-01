@@ -72,6 +72,7 @@ public class SaleController {
         saleDAO.deleteSalesByAccountId(acctId);
     }
 
+
     /**
      * Deletes a sale from the database based on its sale ID.
      *

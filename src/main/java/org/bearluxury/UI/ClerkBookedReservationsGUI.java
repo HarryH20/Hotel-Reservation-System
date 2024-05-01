@@ -2,6 +2,7 @@ package org.bearluxury.UI;
 
 import org.bearluxury.Billing.SaleJDBCDAO;
 import org.bearluxury.account.CreditCard;
+import org.bearluxury.account.Guest;
 import org.bearluxury.account.GuestAccountJDBCDAO;
 import org.bearluxury.controllers.GuestAccountController;
 import org.bearluxury.controllers.ReservationController;
@@ -11,6 +12,7 @@ import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomJDBCDAO;
+import org.bearluxury.shop.CreditCardPayment;
 import org.bearluxury.shop.Sale;
 
 import javax.swing.*;
@@ -110,10 +112,10 @@ class DeleteReservationAction implements ActionListener {
                 throw new RuntimeException(ex);
             }
             int roomNumber = roomController.getRoom(
-                    controller.getReservationByReservationId(
-                            Integer.parseInt(table.getValueAt(
-                                    selectedRow, 1).toString())).
-                            orElseThrow().getRoomNumber()).
+                            controller.getReservationByReservationId(
+                                            Integer.parseInt(table.getValueAt(
+                                                    selectedRow, 1).toString())).
+                                    orElseThrow().getRoomNumber()).
                     orElseThrow().
                     getRoomNumber();
 
@@ -123,28 +125,40 @@ class DeleteReservationAction implements ActionListener {
 
             long differenceMillis = res.getStartDate().getTime() - new Date().getTime();
             long daysApart = differenceMillis / (1000 * 60 * 60 * 24);
+            if (!res.isCheckedIn()) {
+                if (controller.deleteReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString()))) {
+                    Set<Sale> sales = saleController.listSale(Integer.parseInt(table.getValueAt(selectedRow, 0).toString()));
+                    for (Sale sale : sales) {
+                        if (table.getValueAt(selectedRow, 2).toString().equals(sale.getProductName())) {
+                            if (daysApart < 2) {
+                                GuestAccountController guestAccountController = new GuestAccountController(new GuestAccountJDBCDAO());
+                                Guest account = guestAccountController.getAccount(table.getValueAt(selectedRow, 5).toString()).orElseThrow();
+                                CreditCard card = account.getCreditCard();
+                                CreditCardPayment payment = new CreditCardPayment(0.8 * sale.getPrice() * sale.getQuantity(),card);
+                                if(payment.processPayment()){
+                                    JOptionPane.showMessageDialog(null, "Card charged for late cancellation!");
+                                    account.setCreditCard(card);
+                                    guestAccountController.updateAccounts(account, account.getEmail());
+                                }
+                                else{
+                                    JOptionPane.showMessageDialog(null, "Insufficent funds");
+                                }
 
-            if (controller.deleteReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString()))) {
-                Set<Sale> sales = saleController.listSale(Integer.parseInt(table.getValueAt(selectedRow, 0).toString()));
-                for(Sale sale: sales){
-                    if(table.getValueAt(selectedRow, 2).toString().equals(sale.getProductName())){
-                        if(daysApart < 2){
-                            GuestAccountController guestAccountController = new GuestAccountController(new GuestAccountJDBCDAO());
-                            CreditCard card = guestAccountController.getAccount(table.getValueAt(selectedRow,5).toString()).orElseThrow().getCreditCard();
-                            card.chargeCard(0.8 * sale.getPrice() * sale.getQuantity());
-                            JOptionPane.showMessageDialog(null,"Card charged for late cancellation!");
+                            }
+                            saleController.deleteSaleBySaleId(sale.getSaleId());
+                            JOptionPane.showMessageDialog(null, "Reservation Deleted!");
+
                         }
-                        saleController.deleteSaleBySaleId(sale.getSaleId());
-                        JOptionPane.showMessageDialog(null,"Reservation Deleted!");
 
                     }
 
+                    model.removeRow(selectedRow);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Reservation not found");
                 }
-
-                model.removeRow(selectedRow);
             }
-            else {
-                JOptionPane.showMessageDialog(null, "Reservation not found");
+            else{
+                JOptionPane.showMessageDialog(null,"You cannot delete a checked in reservation");
             }
         }
         else {

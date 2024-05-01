@@ -22,12 +22,12 @@ public class Account {
 
     /**
      * constructs an account with the following fields
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param phoneNumber
-     * @param password
-     * @param role
+     * @param firstName accounts first name
+     * @param lastName accounts last name
+     * @param email accounts email
+     * @param phoneNumber account phone number
+     * @param password account password
+     * @param role account role
      */
     public Account(String firstName,
                    String lastName,
