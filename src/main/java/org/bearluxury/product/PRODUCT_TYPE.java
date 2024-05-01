@@ -1,26 +1,48 @@
 package org.bearluxury.product;
 
+
+/**
+ * Enumeration representing different types of products.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public enum PRODUCT_TYPE {
     CLOTHING,
+
     ACCESSORY,
+
     ARTESIAN_GOOD,
+
     TOILETRY,
+
+
     PHARMACEUTICAL;
 
-    public String toString(){
-        if(this == CLOTHING){
-            return "clothing";
+    /**
+     * Returns a string representation of the product type.
+     *
+     * @return a string representation of the product type
+     */
+    @Override
+    public String toString() {
+        switch (this) {
+            case CLOTHING:
+                return "clothing";
+            case ACCESSORY:
+                return "accessory";
+            case ARTESIAN_GOOD:
+                return "artesian good";
+            case TOILETRY:
+                return "toiletry";
+            case PHARMACEUTICAL:
+                return "pharmaceutical";
+            default:
+                throw new IllegalStateException("Unexpected value: " + this);
         }
-        else if(this == ACCESSORY){
-            return "accessory";
-        }
-        else if(this == ARTESIAN_GOOD){
-            return "artesian good";
-        }
-        else if(this == TOILETRY) {
-            return "toiletry";
-        }
-        return "pharmaceutical";
     }
 }
 
