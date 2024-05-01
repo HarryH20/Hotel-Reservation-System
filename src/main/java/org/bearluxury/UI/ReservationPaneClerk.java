@@ -15,7 +15,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
@@ -200,24 +202,40 @@ public class ReservationPaneClerk extends JFrame {
             long differenceMillis = res.getEndDate().getTime() - res.getStartDate().getTime();
             long daysApart = differenceMillis / (1000 * 60 * 60 * 24);
 
+
+
             Sale sale = new Sale(res.getStartDate(),
                     String.valueOf(roomController.getRoom(roomNumber).orElseThrow().getRoomNumber()),
                     roomController.getRoom(roomNumber).orElseThrow().getPrice(), (int) daysApart);
 
             if (SessionManager.getInstance().getCurrentAccount().getRole() == Role.GUEST) {
-                sale.setAccountId(SessionManager.getInstance().getCurrentAccount().getId());
-                saleController.insertSale(sale);
-                controller.insertReservation(res);
-                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-                dispose();
+                if(!controller.hasConflictingReservations(res.getRoomNumber(),checkInDatePicker.getDate(), checkOutDatePicker.getDate())){
+                    sale.setAccountId(SessionManager.getInstance().getCurrentAccount().getId());
+                    saleController.insertSale(sale);
+                    controller.insertReservation(res);
+                    JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+                    dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Reservation times conflict");
+                }
+
             } else {
-                int acctId = guestAccountController.getAccount(guestEmail).orElseThrow(() ->
-                        new NoSuchElementException("Guest not found")).getId();
-                sale.setAccountId(acctId);
-                saleController.insertSale(sale);
-                controller.insertReservation(res);
-                JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
-                dispose();
+
+                if(!controller.hasConflictingReservations(res.getRoomNumber(),checkInDatePicker.getDate(), checkOutDatePicker.getDate())){
+                    int acctId = guestAccountController.getAccount(guestEmail).orElseThrow(() ->
+                            new NoSuchElementException("Guest not found")).getId();
+                    sale.setAccountId(acctId);
+                    saleController.insertSale(sale);
+                    controller.insertReservation(res);
+                    JOptionPane.showMessageDialog(this, "Reservation saved successfully.");
+                    dispose();
+                }
+                else{
+                    JOptionPane.showMessageDialog(null,"Reservation times conflict");
+                }
+
+
             }
 
 
