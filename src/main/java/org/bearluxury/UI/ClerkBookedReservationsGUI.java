@@ -82,8 +82,13 @@ class EditReservationAction implements ActionListener {
             ReservationController controller = new ReservationController(new ReservationJDBCDAO());
             Optional<Reservation> opReservation = controller.getReservationByReservationId(Integer.parseInt(table.getValueAt(selectedRow, 1).toString()));
             Reservation reservation = opReservation.orElseThrow(() -> new NoSuchElementException("Reservation not found"));
-            EditReservationPane pane = new EditReservationPane(reservation, (DefaultTableModel) table.getModel(), table);
-            pane.setVisible(true);
+            if(!reservation.isCheckedIn()) {
+                EditReservationPane pane = new EditReservationPane(reservation, (DefaultTableModel) table.getModel(), table);
+                pane.setVisible(true);
+            }
+            else{
+                JOptionPane.showMessageDialog(null, "You cannot edit a checked in reservation!");
+            }
         } else {
             JOptionPane.showMessageDialog(null, "Please select a row first.");
         }
@@ -289,7 +294,7 @@ class CheckOutAction implements ActionListener{
 
             }
             else{
-                JOptionPane.showMessageDialog(null, "You can't check out yet!");
+                JOptionPane.showMessageDialog(null, "You can't check out early!");
             }
 
         }
