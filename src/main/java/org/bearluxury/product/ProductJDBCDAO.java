@@ -7,12 +7,25 @@ import org.bearluxury.database.ProductDAO;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * The ProductJDBCDAO class implements both DAO and ProductDAO interfaces to interact with a database
+ * and perform CRUD operations on Product objects.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
 
     private Connection connection;
 
-    private static final String JDBC_URL = "jdbc:h2:~/testingProduct";
+    private static final String JDBC_URL = "jdbc:h2:~/testingProduct00";
 
+    /**
+     * Constructs a ProductJDBCDAO object and establishes a connection to the database.
+     */
     public ProductJDBCDAO() {
         try {
             connection = DriverManager.getConnection(JDBC_URL);
@@ -22,6 +35,9 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         }
     }
 
+    /**
+     * Creates the product table in the database if it does not exist.
+     */
     private void createProductTableIfNotExists() {
         try (Statement stmt = connection.createStatement()) {
             boolean tableExists = false;
@@ -51,6 +67,11 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         }
     }
 
+    /**
+     * Retrieves a set of all products from the database.
+     *
+     * @return a set of all products
+     */
     @Override
     public Set<Product> list() {
         Set<Product> products = new TreeSet<>(Comparator.comparing(Product::getId));
@@ -75,6 +96,11 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
     }
 
 
+    /**
+     * Inserts a new product into the database.
+     *
+     * @param product the product to insert
+     */
     @Override
     public void insert(Product product) {
         try {
@@ -95,6 +121,12 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         }
     }
 
+    /**
+     * Retrieves a product from the database by its ID.
+     *
+     * @param id the ID of the product to retrieve
+     * @return an optional containing the retrieved product, or empty if not found
+     */
     @Override
     public Optional<Product> get(int id) {
         try {
@@ -118,6 +150,12 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         return Optional.empty();
     }
 
+    /**
+     * Updates an existing product in the database.
+     *
+     * @param product the updated product
+     * @param id the ID of the product to update
+     */
     @Override
     public void update(Product product, int id) {
         try {
@@ -139,6 +177,12 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         }
     }
 
+    /**
+     * Adds stock to an existing product in the database.
+     *
+     * @param id the ID of the product to add stock to
+     * @param amount the amount of stock to add
+     */
     public void addStock(int id, int amount) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE products SET quantity = quantity + ? WHERE id = ?");
@@ -156,6 +200,12 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         }
     }
 
+    /**
+     * Removes stock from an existing product in the database.
+     *
+     * @param id the ID of the product to remove stock from
+     * @param amount the amount of stock to remove
+     */
     public void removeStock(int id, int amount) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE products SET quantity = quantity - ? WHERE id = ? AND quantity >= ?");
@@ -175,6 +225,12 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
     }
 
 
+    /**
+     * Deletes a product from the database by its ID.
+     *
+     * @param id the ID of the product to delete
+     * @return true if the product was successfully deleted, false otherwise
+     */
     @Override
     public boolean delete(int id) {
         try {
@@ -190,6 +246,9 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         return false;
     }
 
+    /**
+     * Closes the database connection.
+     */
     @Override
     public void close() {
         try {
@@ -203,6 +262,9 @@ public class ProductJDBCDAO implements DAO<Product>, ProductDAO<Product> {
         }
     }
 
+    /**
+     * Clears all data from the product table in the database.
+     */
     @Override
     public void clear() {
         try {

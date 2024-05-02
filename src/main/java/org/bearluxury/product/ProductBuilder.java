@@ -10,9 +10,27 @@ import java.util.Comparator;
 import java.util.Set;
 import java.util.TreeSet;
 
+/**
+ * The ProductBuilder class is responsible for building a set of products from a CSV file,
+ * adding products to the set, and writing the set of products back to a CSV file.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
+
 public class ProductBuilder {
     Set<Product> productList;
 
+
+    /**
+     * Constructs a ProductBuilder object and initializes the productList set by reading data from a CSV file.
+     *
+     * @param csvName the name of the CSV file containing product data
+     * @throws RuntimeException if an I/O error occurs while reading the file
+     */
     public ProductBuilder(String csvName) {
         productList = new TreeSet<>(Comparator.comparing(Product::getName));
         File file = new File(csvName);
@@ -46,13 +64,33 @@ public class ProductBuilder {
         }
     }
 
+    /**
+     * Retrieves the set of products.
+     *
+     * @return the set of products
+     */
     public Set<Product> getProductList() {
         return productList;
     }
 
+    /**
+     * Adds a product to the set of products.
+     *
+     * @param product the product to add
+     * @return true if the product was successfully added, false otherwise
+     */
+
     public boolean addProduct(Product product) {
         return productList.add(product);
     }
+
+
+    /**
+     * Writes the set of products to a CSV file.
+     *
+     * @param csvName the name of the CSV file to write to
+     * @throws RuntimeException if an I/O error occurs while writing the file
+     */
 
     public void writeProduct(String csvName){
         File file = new File(csvName);
@@ -80,6 +118,13 @@ public class ProductBuilder {
             }
         }
     }
+
+    /**
+     * Converts a string representation of a product type to a PRODUCT_TYPE enum value.
+     *
+     * @param str the string representation of the product type
+     * @return the corresponding PRODUCT_TYPE enum value
+     */
 
     public PRODUCT_TYPE readAsProductType(String str) {
         if (str.equals("clothing")) {
