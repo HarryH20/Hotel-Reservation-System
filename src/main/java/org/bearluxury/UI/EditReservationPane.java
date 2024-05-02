@@ -99,12 +99,6 @@ public class EditReservationPane extends JFrame{
                         java.sql.Date.valueOf(startDate),
                         java.sql.Date.valueOf(endDate),toChange.isCheckedIn());
 
-                // Check for conflicting reservations
-                if (controller.hasConflictingReservations(res.getRoomNumber(), startDate, endDate)) {
-                    JOptionPane.showMessageDialog(null, "There are conflicting reservations for the selected dates", "Error", JOptionPane.ERROR_MESSAGE);
-                    return; // Don't proceed further
-                }
-
                 res.setReservationID(toChange.getReservationID());
                 controller.updateReservationByReservationId(res,toChange.getReservationID());
 
