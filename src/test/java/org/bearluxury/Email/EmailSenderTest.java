@@ -9,13 +9,12 @@ import java.util.Date;
 public class EmailSenderTest {
     @Test
     public void sendingEmailTest(){
-        EmailSender.sendAccountCreationEmail("Will","will_clore1@baylor.edu");
+        EmailSender.sendAccountCreationEmail("Nick","Nicholas_Nolen1@baylor.edu");
     }
     @Test
     public void sendingReservationEmailTest(){
         Date date1 = new Date();
-
-        EmailSender.sendReservationConfirmation("Alan","Alan_Villagrand1@baylor.edu", date1, date1);
+        EmailSender.sendReservationConfirmation("Nick","Nicholas_Nolen1@baylor.edu", date1, date1);
     }
 
 }
