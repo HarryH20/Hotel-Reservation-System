@@ -15,13 +15,35 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.List;
-
+/**
+ * Represents a GUI for displaying available rooms.
+ */
 public class AvaliableRoomsGUI extends JFrame {
-
+    /**
+     * Background color of the GUI.
+     */
     private final Color backgroundColor = new Color(232, 223, 185);
+    /**
+     * Color of the table header.
+     */
     private final Color tableHeaderColor = new Color(184, 134, 11);
+    /**
+     * Font for the table header.
+     */
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
+    /**
+     * Font for the table content.
+     */
     private final Font tableFont = new Font("Arial", Font.BOLD, 16);
+    /**
+     * Constructs a new AvaliableRoomsGUI.
+     *
+     * @param roomCatalog       The catalog of rooms.
+     * @param beds              The number of beds required.
+     * @param checkIn           The check-in date.
+     * @param checkOut          The check-out date.
+     * @param reservationCatalog The catalog of reservations.
+     */
 
     public AvaliableRoomsGUI(RoomCatalog roomCatalog, int beds, LocalDate checkIn, LocalDate checkOut,
                              ReservationCatalog reservationCatalog) {
@@ -58,6 +80,11 @@ public class AvaliableRoomsGUI extends JFrame {
         getContentPane().add(buttonWrapperPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Creates the table model for the GUI.
+     *
+     * @return The table model.
+     */
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Room ID", "Room Type", "Price", "Quality", "# Of Beds", "Bed Type", "Smoking Allowed"};
         return new DefaultTableModel(columnNames, 0){
@@ -67,6 +94,11 @@ public class AvaliableRoomsGUI extends JFrame {
             }
         };
     }
+    /**
+     * Creates the back button for the GUI.
+     *
+     * @return The back button.
+     */
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -96,7 +128,12 @@ public class AvaliableRoomsGUI extends JFrame {
         return backButton;
     }
 
-
+    /**
+     * Creates the table for the GUI.
+     *
+     * @param model The table model.
+     * @return The created table.
+     */
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
         table.setBackground(Color.WHITE);
@@ -115,6 +152,15 @@ public class AvaliableRoomsGUI extends JFrame {
         return table;
     }
 
+    /**
+     * Creates the reservation button for the GUI.
+     *
+     * @param table     The table to which the button is associated.
+     * @param checkIn   The check-in date.
+     * @param checkOut  The check-out date.
+     * @param model     The table model.
+     * @return The reservation button.
+     */
     private JButton createReservationButton(JTable table, LocalDate checkIn, LocalDate checkOut, DefaultTableModel model) {
         JButton reservationButton = new JButton("Make Reservation");
         reservationButton.setPreferredSize(new Dimension(200, 50));
@@ -125,6 +171,12 @@ public class AvaliableRoomsGUI extends JFrame {
         return reservationButton;
     }
 
+    /**
+     * Creates the panel to hold the table.
+     *
+     * @param scrollPane The scroll pane containing the table.
+     * @return The panel containing the scroll pane.
+     */
     private JPanel createPanel(JScrollPane scrollPane) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
@@ -133,6 +185,12 @@ public class AvaliableRoomsGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Creates the panel to hold the reservation button.
+     *
+     * @param reservationButton The reservation button.
+     * @return The panel containing the reservation button.
+     */
     private JPanel createButtonWrapperPanel(JButton reservationButton) {
         JPanel buttonWrapperPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         buttonWrapperPanel.setBackground(backgroundColor);
@@ -140,6 +198,16 @@ public class AvaliableRoomsGUI extends JFrame {
         return buttonWrapperPanel;
     }
 
+    /**
+     * Fills the table rows with available rooms based on the specified criteria.
+     *
+     * @param unsortedRooms      The list of unsorted rooms.
+     * @param model              The table model.
+     * @param beds               The number of beds required.
+     * @param reservationCatalog The catalog of reservations.
+     * @param checkIn            The check-in date.
+     * @param checkOut           The check-out date.
+     */
     private void fillTableRows(Set<Room> unsortedRooms, DefaultTableModel model, int beds,
                                ReservationCatalog reservationCatalog, LocalDate checkIn, LocalDate checkOut) {
         int maxBeds =  unsortedRooms.stream().mapToInt(Room::getNumberOfBeds).max().orElseThrow();
@@ -172,6 +240,9 @@ public class AvaliableRoomsGUI extends JFrame {
         }
     }
 
+    /**
+     * ActionListener implementation to handle reservation button clicks.
+     */
     private static class ReservationFormOpener implements ActionListener {
         private final JTable table;
 
@@ -181,6 +252,14 @@ public class AvaliableRoomsGUI extends JFrame {
         LocalDate checkOut;
 
 
+        /**
+         * Constructs a new ReservationFormOpener.
+         *
+         * @param table     The table associated with the reservation button.
+         * @param checkIn   The check-in date.
+         * @param checkOut  The check-out date.
+         * @param model     The table model.
+         */
         private ReservationFormOpener(JTable table, LocalDate checkIn, LocalDate checkOut, DefaultTableModel model) {
             this.table = table;
             this.model = model;
@@ -188,6 +267,11 @@ public class AvaliableRoomsGUI extends JFrame {
             this.checkOut = checkOut;
         }
 
+        /**
+         * Handles the action event triggered by the reservation button.
+         *
+         * @param e The action event.
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             int selectedRow = table.getSelectedRow();
@@ -205,10 +289,25 @@ public class AvaliableRoomsGUI extends JFrame {
             }
         }
 
+        /**
+         * Opens the reservation form for a guest.
+         *
+         * @param roomID    The ID of the room for which reservation is made.
+         * @param checkIn   The check-in date.
+         * @param checkOut  The check-out date.
+         */
         private static void openReservationFormGuest(int roomID, LocalDate checkIn, LocalDate checkOut) {
             ReservationPaneGuest pane = new ReservationPaneGuest(roomID, checkIn, checkOut);
             pane.setVisible(true);
         }
+
+        /**
+         * Opens the reservation form for a clerk.
+         *
+         * @param roomID    The ID of the room for which reservation is made.
+         * @param checkIn   The check-in date.
+         * @param checkOut  The check-out date.
+         */
         private static void openReservationFormClerk(int roomID, LocalDate checkIn, LocalDate checkOut) {
             ReservationPaneClerk pane = new ReservationPaneClerk(roomID, checkIn, checkOut);
             pane.setVisible(true);

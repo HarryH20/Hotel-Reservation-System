@@ -19,7 +19,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
+/**
+ * Represents a billing page GUI for displaying sales information and allowing bill payment.
+ */
 public class BillingPage extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
     private final Font headerFont = new Font("Arial", Font.BOLD, 18);
@@ -27,7 +29,11 @@ public class BillingPage extends JFrame {
 
     private JTable saleTable;
 
-
+    /**
+     * Constructs a new BillingPage.
+     *
+     * @param rowVal The row value.
+     */
     public BillingPage(int rowVal) {
         setTitle("Billing Page");
         setSize(1000, 720);
@@ -40,6 +46,11 @@ public class BillingPage extends JFrame {
         setVisible(true);
     }
 
+    /**
+     * Creates components for the billing page GUI.
+     *
+     * @param rowVal The row value.
+     */
     private void createComponents(int rowVal) {
         SaleController controller = new SaleController(new SaleJDBCDAO());
         Set<Sale> sales = new HashSet<>();
@@ -56,6 +67,11 @@ public class BillingPage extends JFrame {
         add(createButtonsPanel(), BorderLayout.SOUTH);
     }
 
+    /**
+     * Creates the sales table based on the provided set of sales.
+     *
+     * @param sales The set of sales to display in the table.
+     */
     private void createSaleTable(Set<Sale> sales) {
         String[] columnNames = {"Sale ID", "Date", "Name", "Price", "Quantity"};
 
@@ -96,6 +112,11 @@ public class BillingPage extends JFrame {
         getContentPane().add(scrollPane, BorderLayout.CENTER);
     }
 
+    /**
+     * Creates the back button.
+     *
+     * @return The created back button.
+     */
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -128,6 +149,11 @@ public class BillingPage extends JFrame {
 
         return backButton;
     }
+    /**
+     * Creates the panel containing the back button and pay bill button.
+     *
+     * @return The created panel.
+     */
     private JPanel createButtonsPanel() {
         JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, 10, 0)); // 1 row, 2 columns, horizontal gap 10, vertical gap 0
         buttonsPanel.setBackground(backgroundColor);
@@ -141,6 +167,11 @@ public class BillingPage extends JFrame {
         return buttonsPanel;
     }
 
+    /**
+     * Creates the pay bill button.
+     *
+     * @return The created pay bill button.
+     */
     private JButton createPayBillButton() {
         JButton payBillButton = new JButton("Pay Bill");
         payBillButton.addActionListener(new ActionListener() {
@@ -190,6 +221,11 @@ public class BillingPage extends JFrame {
 
         return payBillButton;
     }
+    /**
+     * Updates the billing page with new sales information.
+     *
+     * @param sales The updated set of sales.
+     */
     public void updatePage(Set<Sale> sales){
         createSaleTable(sales);
     }
