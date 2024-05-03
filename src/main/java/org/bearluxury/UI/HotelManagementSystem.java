@@ -7,6 +7,7 @@ import org.bearluxury.UI.shopUI.ShopHomePage;
 import org.bearluxury.account.*;
 import org.bearluxury.controllers.*;
 import org.bearluxury.product.ProductJDBCDAO;
+import org.bearluxury.reservation.Reservation;
 import org.bearluxury.reservation.ReservationCatalog;
 import org.bearluxury.reservation.ReservationJDBCDAO;
 import org.bearluxury.room.RoomCatalog;
@@ -18,6 +19,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
 
 //Window
@@ -106,10 +108,11 @@ public class HotelManagementSystem  {
         FlatLightLaf.setup();
         ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
         Optional<Account> existingAdmin = controller.getAccount("admin@admin.com");
+        ReservationController controller1 = new ReservationController(new ReservationJDBCDAO());
         if (!existingAdmin.isPresent()) {
             // Create a Clerk with Admin role
             Account admin = new Account("Admin", "Admin", "admin@admin.com", 1234567890, "adminpassword", Role.ADMIN);
-
+            //controller1.insertReservation(new Reservation(2000, "Ernesto", "Caballero", "Alan_Villagrand1@baylor.edu", 2, new Date(), new Date(),false));
             // Insert the Clerk into the database
             controller.insertAccount(admin);
         }
