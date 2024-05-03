@@ -8,6 +8,13 @@ import java.util.stream.Collectors;
 /**
  * This class is used to get and set rooms to
  * pass to a database or function.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
  */
 public class RoomCatalog {
     private Set<Room> rooms = new TreeSet<>();
