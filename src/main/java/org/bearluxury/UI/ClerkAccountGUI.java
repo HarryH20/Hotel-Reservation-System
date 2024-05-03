@@ -19,12 +19,27 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a graphical user interface for managing clerk accounts.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class ClerkAccountGUI extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
     private final Color tableHeaderColor = new Color(184, 134, 11);
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 14);
 
+    /**
+     * Constructs a new ClerkAccountGUI.
+     *
+     * @param accounts The set of clerk accounts.
+     */
     public ClerkAccountGUI(Set<Account> accounts) {
         setTitle("Account Information");
         setSize(1280, 720);
@@ -99,6 +114,11 @@ public class ClerkAccountGUI extends JFrame {
     }
 
 
+    /**
+     * Creates the table model for the GUI.
+     *
+     * @return The table model.
+     */
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Account ID","First Name", "Last Name", "Email", "Phone Number", "Password", "Role"};
         return new DefaultTableModel(columnNames, 0) {
@@ -109,6 +129,11 @@ public class ClerkAccountGUI extends JFrame {
         };
     }
 
+    /**
+     * Creates the back button for the GUI.
+     *
+     * @return The back button.
+     */
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -135,6 +160,12 @@ public class ClerkAccountGUI extends JFrame {
     }
 
 
+    /**
+     * Creates the table for the GUI.
+     *
+     * @param model The table model.
+     * @return The created table.
+     */
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
         table.setBackground(Color.WHITE);
@@ -153,6 +184,12 @@ public class ClerkAccountGUI extends JFrame {
         return table;
     }
 
+    /**
+     * Creates the panel to hold the table.
+     *
+     * @param scrollPane The scroll pane containing the table.
+     * @return The panel containing the table.
+     */
     private JPanel createPanel(JScrollPane scrollPane) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
@@ -161,6 +198,12 @@ public class ClerkAccountGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Fills the table rows with clerk account information.
+     *
+     * @param accounts The set of clerk accounts.
+     * @param model    The table model.
+     */
     private void fillTableRows(Set<Account> accounts, DefaultTableModel model) {
         // Fill the table rows with account information
         accounts.stream().filter(account -> account.getRole() == Role.CLERK).
@@ -175,6 +218,12 @@ public class ClerkAccountGUI extends JFrame {
                 account.getRole().toString()
         }));
     }
+    /**
+     * Opens a dialog for editing clerk account information.
+     *
+     * @param table The table displaying clerk accounts.
+     * @param model The table model.
+     */
     public void openEditDialog(JTable table,DefaultTableModel model){
 
         int selectedRow = table.getSelectedRow();

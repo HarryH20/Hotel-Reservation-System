@@ -23,6 +23,16 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a GUI for displaying booked reservations.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class BookedReservationsGUI extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
     private final Color tableHeaderColor = new Color(184, 134, 11);
@@ -31,6 +41,11 @@ public class BookedReservationsGUI extends JFrame {
     protected JTable table;
     protected DefaultTableModel model;
 
+    /**
+     * Constructs a new BookedReservationsGUI.
+     *
+     * @param reservationCatalog The reservation catalog.
+     */
     public BookedReservationsGUI(ReservationCatalog reservationCatalog) {
         setTitle("Booked Reservations");
         setSize(1280, 720);
@@ -64,6 +79,11 @@ public class BookedReservationsGUI extends JFrame {
         getContentPane().add(panel, BorderLayout.CENTER);
     }
 
+    /**
+     * Creates the table model for the GUI.
+     *
+     * @return The table model.
+     */
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Account ID", "Reservation ID","Room ID", "First Name", "Last Name", "Email", "# Of Guests", "Start Date", "End Date" ,"Checked In"};
         return new DefaultTableModel(columnNames, 0){
@@ -73,6 +93,11 @@ public class BookedReservationsGUI extends JFrame {
             }
         };
     }
+    /**
+     * Creates the back button for the GUI.
+     *
+     * @return The back button.
+     */
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -103,6 +128,12 @@ public class BookedReservationsGUI extends JFrame {
     }
 
 
+    /**
+     * Creates the table for the GUI.
+     *
+     * @param model The table model.
+     * @return The created table.
+     */
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
         table.setBackground(Color.WHITE);
@@ -122,6 +153,12 @@ public class BookedReservationsGUI extends JFrame {
     }
 
 
+    /**
+     * Creates the panel to hold the table.
+     *
+     * @param scrollPane The scroll pane containing the table.
+     * @return The panel containing the table.
+     */
     private JPanel createPanel(JScrollPane scrollPane) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
@@ -130,7 +167,12 @@ public class BookedReservationsGUI extends JFrame {
         return panel;
     }
 
-
+    /**
+     * Fills the table rows with booked reservations.
+     *
+     * @param unsortedReservations The unsorted set of reservations.
+     * @param model                The table model.
+     */
     public void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
         List<Reservation> reservations = unsortedReservations.stream().
                 sorted(Comparator.comparing(Reservation::getFirstName).

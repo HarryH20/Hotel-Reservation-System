@@ -21,6 +21,13 @@ import java.util.HashSet;
 import java.util.Set;
 /**
  * Represents a billing page GUI for displaying sales information and allowing bill payment.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 public class BillingPage extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);

@@ -17,6 +17,13 @@ import java.util.*;
 import java.util.List;
 /**
  * Represents a GUI for displaying available rooms.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 public class AvaliableRoomsGUI extends JFrame {
     /**

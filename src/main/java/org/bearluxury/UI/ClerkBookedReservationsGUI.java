@@ -28,9 +28,18 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * Represents a graphical user interface for managing booked reservations by a clerk.
+ * Extends the BookedReservationsGUI class.
+ */
 public class ClerkBookedReservationsGUI extends BookedReservationsGUI {
 
 
+    /**
+     * Constructs a new ClerkBookedReservationsGUI with the provided reservation catalog.
+     *
+     * @param reservationCatalog The reservation catalog containing booked reservations.
+     */
     public ClerkBookedReservationsGUI(ReservationCatalog reservationCatalog) {
 
         super(reservationCatalog);
@@ -68,9 +77,20 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI {
     }
 }
 
+/**
+ * Action listener for editing a reservation.
+ */
 class EditReservationAction implements ActionListener {
+    /**
+     * The table displaying reservations.
+     */
     private JTable table;
 
+    /**
+     * Constructs a new EditReservationAction with the provided table.
+     *
+     * @param table The table displaying reservations.
+     */
     public EditReservationAction(JTable table) {
         this.table = table;
     }
@@ -95,10 +115,25 @@ class EditReservationAction implements ActionListener {
     }
 }
 
+/**
+ * Action listener for deleting a reservation.
+ */
 class DeleteReservationAction implements ActionListener {
+    /**
+     * The table displaying reservations.
+     */
     private JTable table;
+    /**
+     * The table model.
+     */
     private DefaultTableModel model;
 
+    /**
+     * Constructs a new DeleteReservationAction with the provided table and model.
+     *
+     * @param table The table displaying reservations.
+     * @param model The table model.
+     */
     public DeleteReservationAction(JTable table, DefaultTableModel model) {
         this.table = table;
         this.model = model;
@@ -171,6 +206,10 @@ class DeleteReservationAction implements ActionListener {
         }
     }
 }
+
+/**
+ * Action listener for checking in a reservation.
+ */
 class CheckInAction implements ActionListener{
 
     private JTable table;
@@ -238,6 +277,9 @@ class CheckInAction implements ActionListener{
 
     }
 }
+/**
+ * Action listener for checking out a reservation.
+ */
 class CheckOutAction implements ActionListener{
     private JTable table;
     private DefaultTableModel model;
