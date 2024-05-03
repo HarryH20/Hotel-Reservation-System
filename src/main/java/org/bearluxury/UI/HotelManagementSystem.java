@@ -25,6 +25,13 @@ import java.util.Optional;
 /**
  * The HotelManagementSystem class is the main class that handles the initial setup for UI and Controllers.
  * Also used to open various UI frames.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
  */
 public class HotelManagementSystem  {
 
