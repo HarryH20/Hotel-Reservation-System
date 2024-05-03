@@ -15,6 +15,18 @@ import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.util.Optional;
 
+/**
+ * Represents a graphical user interface for clerk registration or modification.
+ * Extends the JFrame class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class ClerkRegisterPane extends JFrame {
     ImageIcon logo;
     private JPanel clerkRegisterPanel;
@@ -53,6 +65,11 @@ public class ClerkRegisterPane extends JFrame {
     MaskFormatter maskFormatter;
 
 
+    /**
+     * Constructs a new ClerkRegisterPane.
+     *
+     * @param modify Indicates whether the pane is used for modifying existing account information.
+     */
     public ClerkRegisterPane(boolean modify) {
         if (modify) {
             setTitle("Modify Clerk Account");
@@ -198,6 +215,11 @@ public class ClerkRegisterPane extends JFrame {
         add(clerkRegisterPanel);
     }
 
+    /**
+     * Fills the existing information of an account into the text fields for modification.
+     *
+     * @param account The existing account to be modified.
+     */
     private void fillExistingInformation(Account account) {
         firstName.setText(account.getFirstName());
         lastName.setText(account.getLastName());
@@ -207,6 +229,9 @@ public class ClerkRegisterPane extends JFrame {
         password.setText(account.getPassword());
     }
 
+    /**
+     * Removes error labels from the registration panel.
+     */
     private void removeErrorLabels() {
         clerkRegisterPanel.remove(emptyFirstNameLabel);
         clerkRegisterPanel.remove(badFirstNameLabel);
@@ -223,6 +248,11 @@ public class ClerkRegisterPane extends JFrame {
         clerkRegisterPanel.remove(passwordNotMatchLabel);
     }
 
+    /**
+     * Checks the validity of the credentials entered in the registration panel.
+     *
+     * @return true if the credentials are valid, false otherwise.
+     */
     private boolean checkCredentials() {
         boolean validCredentials = true;
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
@@ -330,6 +360,9 @@ public class ClerkRegisterPane extends JFrame {
         return validCredentials;
     }
 
+    /**
+     * Saves the clerk account information to the database.
+     */
     public void saveClerkToDatabase() {
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();
@@ -347,6 +380,9 @@ public class ClerkRegisterPane extends JFrame {
         HotelManagementSystem.openAdminHomePage();
     }
 
+    /**
+     * Updates the clerk account information in the database.
+     */
     public void updateClerkAccount() {
         ClerkAccountController clerkAccountController = new ClerkAccountController(new ClerkAccountDAO());
         Optional<Account> loggedInAccountOptional = clerkAccountController.getAccount(existingAccount.getEmail());

@@ -14,9 +14,23 @@ import java.awt.event.ActionListener;
 import java.util.Date;
 import java.util.Set;
 
-//FIXME: NEED TO MAKE HOTELHOMEPAGE GENERIC
+/**
+ * Represents the graphical user interface for the guest home page.
+ * Extends the HotelHomePage class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class GuestHomePage extends HotelHomePage {
 
+    /**
+     * Constructs a GuestHomePage object.
+     */
     public GuestHomePage() {
         JButton reserveButton = new JButton("Get A Room");
         reserveButton.setFont(font);
@@ -63,6 +77,11 @@ public class GuestHomePage extends HotelHomePage {
         reservePanel.add(shopButton);
         reservePanel.add(seeReservations);
     }
+    /**
+     * Checks if the current date is valid for accessing the shop based on the user's reservations.
+     *
+     * @return True if the current date is valid for accessing the shop, false otherwise.
+     */
     public boolean isValidDateForShop(){
         int accountId = SessionManager.getInstance().getCurrentAccount().getId();
 
@@ -84,6 +103,9 @@ public class GuestHomePage extends HotelHomePage {
         }
         return isValid;
     }
+    /**
+     * Action listener for opening the view reservation pane.
+     */
     private class openViewReservationPane implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -95,6 +117,9 @@ public class GuestHomePage extends HotelHomePage {
             catalogPane.setVisible(true);
         }
     }
+    /**
+     * Action listener for opening the hotel management pane.
+     */
     private class openHotelManagmentPane implements ActionListener {
 
         @Override

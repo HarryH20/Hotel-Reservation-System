@@ -24,6 +24,14 @@ import java.util.Set;
 /**
  * Represents the home page interface for a clerk user.
  * Extends the HotelHomePage class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 public class ClerkHomePage extends HotelHomePage {
 

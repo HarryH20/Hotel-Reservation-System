@@ -23,6 +23,18 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.NoSuchElementException;
 
+/**
+ * Represents a graphical user interface for editing reservations.
+ * Extends the JFrame class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class EditReservationPane extends JFrame{
 
     Reservation toChange;
@@ -35,6 +47,13 @@ public class EditReservationPane extends JFrame{
 
     LocalDate endDate;
 
+    /**
+     * Constructs a new EditReservationPane.
+     *
+     * @param toChange The reservation to be edited.
+     * @param model The table model.
+     * @param table The table containing reservations.
+     */
     public EditReservationPane(Reservation toChange, DefaultTableModel model, JTable table){
         this.table = table;
         this.model = model;

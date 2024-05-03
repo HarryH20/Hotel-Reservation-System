@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 
 /**
  * Represents a GUI for displaying booked reservations.
+ *
  * @author Will Clore
  * @author Harrsion Hassler
  * @author Derek Martinez

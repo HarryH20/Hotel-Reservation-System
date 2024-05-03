@@ -21,6 +21,18 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a graphical user interface for managing guest accounts by a clerk.
+ * Extends the JFrame class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class GuestAccountClerkGUI extends JFrame {
     private GuestAccountController controller;
     private final Color backgroundColor = new Color(232, 223, 185);
@@ -28,6 +40,9 @@ public class GuestAccountClerkGUI extends JFrame {
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 14);
 
+    /**
+     * Constructs a new GuestAccountClerkGUI.
+     */
     public GuestAccountClerkGUI() {
         controller = new GuestAccountController(new GuestAccountJDBCDAO());
 
@@ -61,6 +76,12 @@ public class GuestAccountClerkGUI extends JFrame {
         getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(panel, BorderLayout.CENTER);
     }
+
+    /**
+     * Creates the table model for the guest accounts.
+     *
+     * @return The DefaultTableModel for the guest accounts.
+     */
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Account ID","First Name", "Last Name", "Email", "Phone Number", "Password", "Role"};
         return new DefaultTableModel(columnNames, 0) {
@@ -70,6 +91,11 @@ public class GuestAccountClerkGUI extends JFrame {
             }
         };
     }
+    /**
+     * Creates the "Back" button.
+     *
+     * @return The "Back" button.
+     */
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -94,6 +120,12 @@ public class GuestAccountClerkGUI extends JFrame {
         });
         return backButton;
     }
+    /**
+     * Creates the main panel containing the table.
+     *
+     * @param scrollPane The scroll pane containing the table.
+     * @return The panel containing the table.
+     */
     private JPanel createPanel(JScrollPane scrollPane) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
@@ -101,6 +133,12 @@ public class GuestAccountClerkGUI extends JFrame {
         panel.add(scrollPane, BorderLayout.CENTER);
         return panel;
     }
+    /**
+     * Creates the table for displaying guest account information.
+     *
+     * @param model The table model.
+     * @return The JTable for displaying guest account information.
+     */
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
         table.setBackground(Color.WHITE);
@@ -117,6 +155,11 @@ public class GuestAccountClerkGUI extends JFrame {
         table.setRowSorter(sorter);
         return table;
     }
+    /**
+     * Fills the table rows with guest account information.
+     *
+     * @param model The table model.
+     */
     private void fillTableRows(DefaultTableModel model) {
         // Fetch account information from the database
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
@@ -139,6 +182,12 @@ public class GuestAccountClerkGUI extends JFrame {
 
                 });
     }
+    /**
+     * Opens a dialog for editing guest account information.
+     *
+     * @param selectedRow The index of the selected row in the table.
+     * @param table       The JTable containing guest account information.
+     */
     private void editAccountDialog(int selectedRow, JTable table) {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         String email = (String) model.getValueAt(selectedRow, 3); // Assuming email is at index 4
@@ -278,7 +327,12 @@ public class GuestAccountClerkGUI extends JFrame {
         }
     }
 
-
+    /**
+     * Creates the "Edit" button.
+     *
+     * @param table The JTable containing guest account information.
+     * @return The "Edit" button.
+     */
     private JButton createEditButton(JTable table) {
         JButton editButton = new JButton("Edit");
         editButton.addActionListener(new ActionListener() {
@@ -295,6 +349,13 @@ public class GuestAccountClerkGUI extends JFrame {
         });
         return editButton;
     }
+    /**
+     * Creates the "Delete" button.
+     *
+     * @param table The JTable containing guest account information.
+     * @param model The table model.
+     * @return The "Delete" button.
+     */
     private JButton createDeleteButton(JTable table, DefaultTableModel model) {
         JButton deleteButton = new JButton("Delete");
         deleteButton.addActionListener(new ActionListener() {

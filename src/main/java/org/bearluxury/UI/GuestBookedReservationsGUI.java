@@ -13,7 +13,24 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Set;
 
+/**
+ * Represents a graphical user interface specifically designed for displaying booked
+ * reservations by a guest. Extends the BookedReservationsGUI class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class GuestBookedReservationsGUI extends BookedReservationsGUI {
+    /**
+     * Constructs a GuestBookedReservationsGUI object.
+     *
+     * @param reservationCatalog The reservation catalog to be displayed.
+     */
     public GuestBookedReservationsGUI(ReservationCatalog reservationCatalog) {
         super(reservationCatalog);
 
@@ -44,6 +61,12 @@ public class GuestBookedReservationsGUI extends BookedReservationsGUI {
 
     }
 
+    /**
+     * Fills the table rows with guest reservations retrieved from the database.
+     *
+     * @param unsortedReservations The set of unsorted reservations.
+     * @param model                The table model to fill with reservation data.
+     */
     @Override
     public void fillTableRows(Set<Reservation> unsortedReservations, DefaultTableModel model) {
         SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");

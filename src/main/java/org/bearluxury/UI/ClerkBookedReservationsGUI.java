@@ -31,6 +31,14 @@ import java.util.*;
 /**
  * Represents a graphical user interface for managing booked reservations by a clerk.
  * Extends the BookedReservationsGUI class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 public class ClerkBookedReservationsGUI extends BookedReservationsGUI {
 
@@ -79,6 +87,14 @@ public class ClerkBookedReservationsGUI extends BookedReservationsGUI {
 
 /**
  * Action listener for editing a reservation.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 class EditReservationAction implements ActionListener {
     /**
@@ -117,6 +133,14 @@ class EditReservationAction implements ActionListener {
 
 /**
  * Action listener for deleting a reservation.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 class DeleteReservationAction implements ActionListener {
     /**
@@ -209,6 +233,14 @@ class DeleteReservationAction implements ActionListener {
 
 /**
  * Action listener for checking in a reservation.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 class CheckInAction implements ActionListener{
 
@@ -279,6 +311,14 @@ class CheckInAction implements ActionListener{
 }
 /**
  * Action listener for checking out a reservation.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
  */
 class CheckOutAction implements ActionListener{
     private JTable table;

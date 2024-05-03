@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
 
 /**
  * Represents a graphical user interface for managing clerk accounts.
+ *
  * @author Will Clore
  * @author Harrsion Hassler
  * @author Derek Martinez

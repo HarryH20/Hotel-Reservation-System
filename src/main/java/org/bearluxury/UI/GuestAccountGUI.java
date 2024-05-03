@@ -19,12 +19,29 @@ import java.awt.event.MouseEvent;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a graphical user interface for displaying guest account information.
+ * Extends the JFrame class.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public class GuestAccountGUI extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
     private final Color tableHeaderColor = new Color(184, 134, 11);
     private final Font tableHeaderFont = new Font("Arial", Font.BOLD, 18);
     private final Font tableFont = new Font("Arial", Font.BOLD, 14);
 
+    /**
+     * Constructs a new GuestAccountGUI.
+     *
+     * @param accounts The set of guest accounts to display.
+     */
     public GuestAccountGUI(Set<Guest> accounts) {
         setTitle("Account Information");
         setSize(1280, 720);
@@ -53,7 +70,11 @@ public class GuestAccountGUI extends JFrame {
         getContentPane().add(topPanel, BorderLayout.NORTH);
         getContentPane().add(panel, BorderLayout.CENTER);
     }
-
+    /**
+     * Creates the table model for the guest accounts.
+     *
+     * @return The DefaultTableModel for the guest accounts.
+     */
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Account ID","First Name", "Last Name", "Email", "Phone Number", "Role"};
         return new DefaultTableModel(columnNames, 0) {
@@ -64,6 +85,11 @@ public class GuestAccountGUI extends JFrame {
         };
     }
 
+    /**
+     * Creates the "Back" button.
+     *
+     * @return The "Back" button.
+     */
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {
@@ -89,6 +115,12 @@ public class GuestAccountGUI extends JFrame {
         return backButton;
     }
 
+    /**
+     * Creates the JTable for displaying guest account information.
+     *
+     * @param model The table model.
+     * @return The JTable for displaying guest account information.
+     */
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
         table.setBackground(Color.WHITE);
@@ -120,6 +152,12 @@ public class GuestAccountGUI extends JFrame {
         return table;
     }
 
+    /**
+     * Creates the main panel containing the JTable.
+     *
+     * @param scrollPane The JScrollPane containing the JTable.
+     * @return The panel containing the JTable.
+     */
     private JPanel createPanel(JScrollPane scrollPane) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
@@ -128,6 +166,12 @@ public class GuestAccountGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Fills the table rows with guest account information.
+     *
+     * @param accounts The set of guest accounts to display.
+     * @param model    The table model.
+     */
     private void fillTableRows(Set<Guest> accounts, DefaultTableModel model) {
         // Fill the table rows with account information
         accounts.stream().filter(account -> account.getRole() == Role.GUEST).

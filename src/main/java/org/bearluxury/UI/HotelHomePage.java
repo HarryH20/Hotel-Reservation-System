@@ -11,10 +11,25 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Represents the abstract class for the hotel's home page.
+ * Extends JFrame.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ */
 public abstract class HotelHomePage extends JFrame {
     Font font = new Font("Goudy Old Style", Font.PLAIN, 30);
     JPanel reservePanel = new JPanel();
 
+    /**
+     * Constructs a HotelHomePage object.
+     */
     public HotelHomePage() {
         setTitle("Baylor Bear Luxury");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
