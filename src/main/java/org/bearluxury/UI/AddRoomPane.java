@@ -13,7 +13,14 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
 /**
- * GUI for the addition of room in the Clerks home page
+ * GUI for adding a new room in the Clerk's home page.
+ * This class provides a form for entering details about the room, such as room number, price, smoking status,
+ * room type, bed type, quality level, and number of beds.
+ * It allows users to input data and save the room information to the database.
+ * If the room already exists in the database, it prompts the user to update the existing room or leave it unchanged.
+ *
+ * This class extends JFrame and implements ActionListener.
+ *
  * @author Alan Vilagrand
  * @author Derek Martinez
  * @author Nicholas Nolen
@@ -38,6 +45,10 @@ public class AddRoomPane extends JFrame {
     private JSpinner bedNumber;
     private JButton createRoom;
 
+    /**
+     * Constructs a new AddRoomPane GUI.
+     * Initializes the components and sets up the layout.
+     */
     public AddRoomPane() {
         setTitle("Add Room");
         setSize(600, 300);
@@ -92,8 +103,10 @@ public class AddRoomPane extends JFrame {
     }
 
     /**
-     * Uses room controller to insert a new room to the database
-     * @param priceSelection
+     * Saves the room information to the database using the RoomController.
+     * Prompts the user to update the room if it already exists.
+     *
+     * @param priceSelection The selected price for the room.
      */
     private void saveRoom(double priceSelection) {
         Room room = null;
@@ -115,6 +128,12 @@ public class AddRoomPane extends JFrame {
         }
 
     }
+
+    /**
+     * Retrieves the selected price for the room from the user input.
+     *
+     * @return The selected price for the room.
+     */
     private double getPriceSelection() {
         double priceSelection = 0;
         if (priceChoices.getSelectedItem().toString().equals("Other")) {
@@ -130,7 +149,8 @@ public class AddRoomPane extends JFrame {
     }
 
     /**
-     * Prompts user for creation of new room, else returned to previous window
+     * Shows a confirmation dialog after successfully creating a room.
+     * Prompts the user to add another room or return to the previous window.
      */
     private void showConfirmationDialog() {
         int selection = JOptionPane.showConfirmDialog(null, "Room Created! " +
@@ -144,8 +164,9 @@ public class AddRoomPane extends JFrame {
     }
 
     /**
-     * Takes in room object and prompts user to update or leave as is
-     * @param room
+     * Prompts the user to update the existing room or leave it unchanged.
+     *
+     * @param room The existing room object.
      */
     private void roomUpdate(Room room) {
         try {
@@ -165,6 +186,10 @@ public class AddRoomPane extends JFrame {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Opens the AddRoomPane GUI.
+     */
 
     public static void openAddRoomPane(){
         AddRoomPane pane = new AddRoomPane();
