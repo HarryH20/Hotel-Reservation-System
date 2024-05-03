@@ -14,6 +14,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 
+/**
+ * The RegisterPage class UI is for registering a new guest account.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class RegisterPage extends JFrame implements ActionListener {
 
     ImageIcon logo;
@@ -52,6 +62,9 @@ public class RegisterPage extends JFrame implements ActionListener {
 
     private PasswordSpecifier passwordSpecifier = new PasswordSpecifier();
 
+    /**
+     * Constructs a new RegisterPage object.
+     */
     public RegisterPage() {
         // Set window preferences
         setTitle("Register");
@@ -185,6 +198,10 @@ public class RegisterPage extends JFrame implements ActionListener {
         add(scrollPane);
     }
 
+    /**
+     * Creates a login label to allow the user to login if wanted
+     * @return a JLabel with the message
+     */
     private Component createLoginLabel() {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         panel.putClientProperty(FlatClientProperties.STYLE,
@@ -203,6 +220,9 @@ public class RegisterPage extends JFrame implements ActionListener {
         return panel;
     }
 
+    /**
+     * Removes all error labels
+     */
     private void removeErrorLabels() {
         registerPanel.remove(emptyFirstNameLabel);
         registerPanel.remove(badFirstNameLabel);
@@ -220,6 +240,12 @@ public class RegisterPage extends JFrame implements ActionListener {
         registerPanel.remove(emptyCardInfoLabel);
     }
 
+    /**
+     * Checks to see if every credential is filled and in correct format.
+     * Also checks to see if existing information such as email and phone already exist
+     *
+     * @return true if all credentials are valid, false otherwise
+     */
     private boolean checkCredentials() {
         boolean validCredentials = true;
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
@@ -333,7 +359,9 @@ public class RegisterPage extends JFrame implements ActionListener {
         return validCredentials;
     }
 
-    /////TEMP FIX: MADE ACCOUNT BUILDER ROLE GUEST
+    /**
+     * Registers a new account to the database
+     */
     private void registerAccount() {
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
         String firstName = firstNameField.getText();
@@ -348,11 +376,15 @@ public class RegisterPage extends JFrame implements ActionListener {
         String expDate = dateField.getText();
         String cvv = cvvField.getText();
 
-        //FIXME
         Role role = Role.GUEST;
         controller.insertAccount(new Guest(firstName,lastName, email,phoneNumber,password, role,new CreditCard(cardNumber,cardHolderName, expDate,cvv)));
     }
 
+    /**
+     * Handles action listeners.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == cmdLogin) {

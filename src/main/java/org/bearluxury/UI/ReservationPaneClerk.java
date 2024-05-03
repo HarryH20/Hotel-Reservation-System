@@ -21,10 +21,15 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-/*
- * This is the class for the reservation pane is not completed.
- * Attempting to make it work with a calendar need new maven dependacies.
- * It is in its own seperate class and called by openReservationPane().
+/**
+ * The ReservationPaneClerk class UI is for making a reservation as a clerk user.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
  */
 public class ReservationPaneClerk extends JFrame {
     private Container c;
@@ -39,6 +44,13 @@ public class ReservationPaneClerk extends JFrame {
     private DatePicker checkInDatePicker;
     private DatePicker checkOutDatePicker;
 
+    /**
+     * Constructs a new ReservationPaneClerk object with the specified room ID, check-in date, and check-out date.
+     *
+     * @param id       The room ID.
+     * @param checkIn  The check-in date.
+     * @param checkOut The check-out date.
+     */
     public ReservationPaneClerk(int id, LocalDate checkIn, LocalDate checkOut) {
         setTitle("Reservation Form");
         setBounds(300, 90, 500, 600);
@@ -170,6 +182,9 @@ public class ReservationPaneClerk extends JFrame {
         add(submitButton);
     }
 
+    /**
+     * Saves the reservation information to a CSV file.
+     */
     public void saveToCSV() {
         String csvFileName = "src/main/resources/ReservationList.csv";
         // Extracting the reservation data from the form
@@ -245,6 +260,12 @@ public class ReservationPaneClerk extends JFrame {
         }
     }
 
+    /**
+     * Formats the given date object to a string in "yyyy-MM-dd" format.
+     *
+     * @param date The date to format.
+     * @return A formatted date string.
+     */
     private String formatDate(java.util.Date date) {
         return new java.text.SimpleDateFormat("yyyy-MM-dd").format(date);
     }

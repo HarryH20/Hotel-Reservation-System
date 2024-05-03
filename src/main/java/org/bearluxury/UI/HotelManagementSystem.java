@@ -22,8 +22,19 @@ import java.time.LocalDate;
 import java.util.Date;
 import java.util.Optional;
 
-//Window
+/**
+ * The HotelManagementSystem class is the main class that handles the initial setup for UI and Controllers.
+ * Also used to open various UI frames.
+ */
 public class HotelManagementSystem  {
+
+    /**
+     * Opens the room catalog pane with the specified number of beds and date range.
+     *
+     * @param beds     The number of beds required.
+     * @param checkIn  The check-in date.
+     * @param checkOut The check-out date.
+     */
     public static void openRoomCatalogPane(int beds, LocalDate checkIn, LocalDate checkOut){
         try {
             RoomController rooms = new RoomController(new RoomJDBCDAO());
@@ -39,58 +50,75 @@ public class HotelManagementSystem  {
         }
     }
 
-    //added homepages for user role
-    /*
-    public static void openHomePage() {
-        HotelHomePage hotelHomePage = new HotelHomePage();
-        hotelHomePage.setVisible(true);
-    }
-
+    /**
+     * Opens the guest home page.
      */
-
     public static void openGuestHomePage() {
         GuestHomePage guestHomePage = new GuestHomePage();
         guestHomePage.setVisible(true);
     }
 
+    /**
+     * Opens the clerk home page.
+     */
     public static void openClerkHomePage() {
         ClerkHomePage clerkHomePage = new ClerkHomePage();
         clerkHomePage.setVisible(true);
     }
 
+    /**
+     * Opens the admin home page.
+     */
     public static void openAdminHomePage() {
         AdminHomePage adminHomePage = new AdminHomePage();
         adminHomePage.setVisible(true);
     }
 
+    /**
+     * Opens the login page.
+     */
     public static void openLoginPage() {
         LoginPage loginPage = new LoginPage();
         loginPage.setVisible(true);
     }
 
+    /**
+     * Opens the register page.
+     */
     public static void openRegisterPage() {
         RegisterPage registerPage = new RegisterPage();
         registerPage.setVisible(true);
     }
 
+    /**
+     * Opens the clerk register pane.
+     *
+     * @param modify indicates whether the pane is used for modifying or not
+     */
     public static void openClerkRegisterPane(boolean modify) {
         ClerkRegisterPane clerkRegisterPane = new ClerkRegisterPane(modify);
         clerkRegisterPane.setVisible(true);
     }
 
+    /**
+     * Opens the info filter pane.
+     */
     public static void openHotelManagmentSystem(){
         InfoFilterPane window = new InfoFilterPane();
         window.setVisible(true);
     }
+
+    /**
+     * Opens the billing page.
+     */
     public static void openBillingPage(){
         BillingPage page = new BillingPage(0);
         page.setVisible(true);
     }
 
-    /*public static void openRegisterPane() {
-        RegisterPane register = new RegisterPane();
-        register.setVisible(true);
-    }*/
+    /**
+     * Opens the shop home page.
+     */
     public static void openShopHomePage() {
         try {
             ProductJDBCDAO productDAO = new ProductJDBCDAO();
@@ -102,6 +130,11 @@ public class HotelManagementSystem  {
         }
     }
 
+    /**
+     * Initializes the system and opens the login page.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         FlatRobotoFont.install();
         UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
@@ -112,16 +145,9 @@ public class HotelManagementSystem  {
         if (!existingAdmin.isPresent()) {
             // Create a Clerk with Admin role
             Account admin = new Account("Admin", "Admin", "admin@admin.com", 1234567890, "adminpassword", Role.ADMIN);
-            //controller1.insertReservation(new Reservation(2000, "Ernesto", "Caballero", "Alan_Villagrand1@baylor.edu", 2, new Date(), new Date(),false));
             // Insert the Clerk into the database
             controller.insertAccount(admin);
         }
-
-
-
         openLoginPage();
-
     }
-
-
 }

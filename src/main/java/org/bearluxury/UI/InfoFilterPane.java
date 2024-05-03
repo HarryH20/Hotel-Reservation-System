@@ -13,6 +13,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 
+/**
+ * The InfoFilterPane class UI is used for filtering reservations based on check in/out dates and number of beds.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class InfoFilterPane extends JFrame implements DateChangeListener, ActionListener {
 
     ImageIcon icon;
@@ -60,7 +70,9 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
     private int numBeds;
     private int numRooms;
 
-
+    /**
+     * Creates a new InfoFilterPane object.
+     */
     public InfoFilterPane() {
         setTitle("Bear Luxury");
         setSize(1280, 720);
@@ -121,7 +133,6 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
         roomsLabel.setFont(font);
 
         centerPanel.add(bedsLabel);
-//        centerPanel.add(roomsLabel);
 
         bedsPanel = new JPanel();
         bedsPanel.setBackground(backgroundColor);
@@ -150,7 +161,6 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
         roomsPanel.add(plusRoomButton);
 
         centerPanel.add(bedsPanel);
-//        centerPanel.add(roomsPanel);
 
         southPanel = new JPanel();
         southPanel.setBackground(backgroundColor);
@@ -195,12 +205,22 @@ public class InfoFilterPane extends JFrame implements DateChangeListener, Action
 
     }
 
+    /**
+     * Handles date changes.
+     *
+     * @param dateChangeEvent the event to be handled
+     */
     @Override
     public void dateChanged(DateChangeEvent dateChangeEvent) {
         checkInDate = checkInDatePicker.getDate();
         checkOutDate = checkOutDatePicker.getDate();
     }
 
+    /**
+     * Handles action listeners.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == minusBedsButton) {

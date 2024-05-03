@@ -19,6 +19,16 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/**
+ * The LoginPage class UI is for logging into an existing account.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class LoginPage extends JFrame implements ActionListener, ItemListener {
     final String SAVED_LOGIN_PATH = "src/main/resources/SavedLogin.csv";
 
@@ -37,6 +47,9 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
     private JCheckBox rememberMe;
     private boolean rememberAccount;
 
+    /**
+     * Creates a new LoginPage object.
+     */
     public LoginPage() {
         setTitle("Login");
         setSize(1280, 720);
@@ -110,6 +123,11 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
         }
     }
 
+    /**
+     * Creates a register label to allow the user to register a new account if needed.
+     *
+     * @return a JLabel with the register message
+     */
     private JButton createRegisterLabel() {
         JButton cmdRegister = new JButton("<html><a href=\"#\">Don't have an account register now</a></html>");
         cmdRegister.putClientProperty(FlatClientProperties.STYLE, "" +
@@ -120,6 +138,13 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
         return cmdRegister;
     }
 
+    /**
+     * Checks if account exists in the database
+     *
+     * @param email the account email to be found
+     * @param password the account password to be found
+     * @return the account object if it exists, null otherwise
+     */
     private Account doesAccountExist(String email, String password) {
         GuestAccountController controller = new GuestAccountController(new GuestAccountJDBCDAO());
         for (Account account : controller.listAccounts()) {
@@ -129,6 +154,14 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
         }
         return null;
     }
+
+    /**
+     * Checks if clerk account exists in the database
+     *
+     * @param email the clerk account email to be found
+     * @param password the clerk account password to be found
+     * @return the clerk account object if it exists, null otherwise
+     */
     private Account doesClerkAccountExist(String email, String password) {
         ClerkAccountController controller = new ClerkAccountController(new ClerkAccountDAO());
         for (Account account : controller.listAccounts()) {
@@ -139,6 +172,9 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
         return null;
     }
 
+    /**
+     * Saves login information to a csv file to remember for next login
+     */
     private void saveLoginInformation() {
         try (FileWriter writer = new FileWriter(SAVED_LOGIN_PATH)) {
             writer.append("Email,Password,Role\n");
@@ -154,6 +190,9 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
         }
     }
 
+    /**
+     * Clear the saved login information in the csv.
+     */
     private void clearLoginInformation() {
         try (FileWriter writer = new FileWriter(SAVED_LOGIN_PATH)) {
             writer.write("");
@@ -162,6 +201,11 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
         }
     }
 
+    /**
+     * Retrieves and sets the saved login information from the csv
+     *
+     * @return true if login information exist, false otherwise
+     */
     private boolean getSavedLogin() {
         try (BufferedReader br = new BufferedReader(new FileReader(SAVED_LOGIN_PATH))) {
 
@@ -182,6 +226,11 @@ public class LoginPage extends JFrame implements ActionListener, ItemListener {
         return true;
     }
 
+    /**
+     * Handles action listeners.
+     *
+     * @param e the event to be processed
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         // Change focus to password
