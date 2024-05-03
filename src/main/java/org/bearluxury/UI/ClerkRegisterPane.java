@@ -330,7 +330,6 @@ public class ClerkRegisterPane extends JFrame {
         return validCredentials;
     }
 
-    //FIXME: SET ROLE TO GUEST
     public void saveClerkToDatabase() {
         String userFirstName = firstName.getText();
         String userLastName = lastName.getText();
