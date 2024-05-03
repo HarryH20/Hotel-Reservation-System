@@ -21,10 +21,15 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.util.Set;
+/**
+ * Represents the home page interface for a clerk user.
+ * Extends the HotelHomePage class.
+ */
+public class ClerkHomePage extends HotelHomePage {
 
-public class ClerkHomePage extends HotelHomePage{
-
-
+    /**
+     * Constructs a new ClerkHomePage.
+     */
     public ClerkHomePage() {
 
 
@@ -41,7 +46,6 @@ public class ClerkHomePage extends HotelHomePage{
         infoButton.setForeground(Color.BLACK);
         infoButton.addActionListener(new OpenModifyPersonalInfoPane());
         reservePanel.add(infoButton);
-
 
 
         JButton seeReservations = new JButton("See All Reservations");
@@ -74,10 +78,11 @@ public class ClerkHomePage extends HotelHomePage{
         reservePanel.add(viewStore);
 
 
-
-
-
     }
+
+    /**
+     * ActionListener for opening the hotel management system pane.
+     */
     private class openHotelManagmentPane implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -85,6 +90,10 @@ public class ClerkHomePage extends HotelHomePage{
             HotelManagementSystem.openHotelManagmentSystem();
         }
     }
+
+    /**
+     * ActionListener for opening the store products page.
+     */
     private class openViewStoreProductsPage implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -121,18 +130,24 @@ public class ClerkHomePage extends HotelHomePage{
     }
 
 
+    /**
+     * ActionListener for opening the reservations pane.
+     */
     private class openViewReservationPane implements ActionListener {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                ReservationCatalog reservations = new ReservationCatalog();
-                ReservationController controller = new ReservationController(new ReservationJDBCDAO());
-                reservations.setReservations(controller.listReservations());
-                ClerkBookedReservationsGUI catalogPane = new ClerkBookedReservationsGUI(reservations);
-                catalogPane.setVisible(true);
-            }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            ReservationCatalog reservations = new ReservationCatalog();
+            ReservationController controller = new ReservationController(new ReservationJDBCDAO());
+            reservations.setReservations(controller.listReservations());
+            ClerkBookedReservationsGUI catalogPane = new ClerkBookedReservationsGUI(reservations);
+            catalogPane.setVisible(true);
         }
+    }
 
+    /**
+     * ActionListener for opening the modify personal information pane.
+     */
     private class OpenModifyPersonalInfoPane implements ActionListener {
 
         @Override
@@ -156,23 +171,28 @@ public class ClerkHomePage extends HotelHomePage{
     }
 
 
-
+    /**
+     * ActionListener for opening the guest accounts pane.
+     */
     private class openViewAccountsPane implements ActionListener {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-                GuestAccountController guestAccountController = new GuestAccountController(new GuestAccountJDBCDAO());
-                GuestAccountGUI guestAccountGUI = new GuestAccountGUI(guestAccountController.listAccounts());
-                guestAccountGUI.setVisible(true);
-            }
-        }
-
-        private class openAddRoomPane implements ActionListener {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddRoomPane.openAddRoomPane();
-            }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            dispose();
+            GuestAccountController guestAccountController = new GuestAccountController(new GuestAccountJDBCDAO());
+            GuestAccountGUI guestAccountGUI = new GuestAccountGUI(guestAccountController.listAccounts());
+            guestAccountGUI.setVisible(true);
         }
     }
+
+    /**
+     * ActionListener for opening the add room pane.
+     */
+    private class openAddRoomPane implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            AddRoomPane.openAddRoomPane();
+        }
+    }
+}
 
