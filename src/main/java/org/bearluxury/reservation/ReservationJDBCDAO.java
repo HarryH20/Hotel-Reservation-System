@@ -8,12 +8,25 @@ import org.bearluxury.database.DAO;
 import org.bearluxury.database.RoomResDAO;
 import org.bearluxury.state.SessionManager;
 
+/**
+ * The ReservationJDBCDAO class implements both DAO and RoomResDAO interfaces to interact with a database
+ *  * and perform CRUD operations on Reservation objects.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservation> {
 
     private Connection connection;
 
     private static String JDBC_URL = "jdbc:h2:~/testingReservations2222";
 
+    /**
+     * Default constructor. Establishes a connection to the database
+     */
     public ReservationJDBCDAO() {
         try {
             connection = DriverManager.getConnection(JDBC_URL);
@@ -23,6 +36,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
     }
 
+    /**
+     * Creates a table in the database for reservations.
+     */
     private void createReservationTableIfNotExists() {
         try (Statement stmt = connection.createStatement()) {
             boolean tableExists = false;
@@ -57,7 +73,11 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
     }
 
-
+    /**
+     * Retrieves a set of all reservations in the database.
+     *
+     * @return a set of all reservations
+     */
     @Override
     public Set<Reservation> list() {
         Set<Reservation> reservations = new HashSet<>();
@@ -88,6 +108,11 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         return reservations;
     }
 
+    /**
+     * Inserts a reservation into the database.
+     *
+     * @param reservation the object to be inserted into the database
+     */
     @Override
     public void insert(Reservation reservation) {
         try {
@@ -119,6 +144,13 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
             e.printStackTrace();
         }
     }
+
+    /**
+     * Retrieves a reservation from the database given its id.
+     *
+     * @param id the value used to search for the room reservation (e.g., reservation ID)
+     * @return the reservation found by the id
+     */
     @Override
     public Optional<Reservation> get(int id) {
         try {
@@ -146,6 +178,12 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         return Optional.empty();
     }
 
+    /**
+     * Updates a current reservation in the database with a new reservation.
+     *
+     * @param reservation the updated room reservation object
+     * @param id the value used to identify the room reservation to be updated
+     */
     @Override
     public void update(Reservation reservation, int id) {
         try {
@@ -174,6 +212,12 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
     }
 
+    /**
+     * Deletes a reservation in the database.
+     *
+     * @param id the value used to identify the room reservation to be deleted
+     * @return true if reservation is deleted, false otherwise
+     */
     @Override
     public boolean delete(int id) {
         try {
@@ -189,6 +233,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         return false;
     }
 
+    /**
+     * Closes the connection to the database.
+     */
     @Override
     public void close() {
         try {
@@ -198,6 +245,9 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
     }
 
+    /**
+     * Clears all reservations in the database.
+     */
     @Override
     public void clear() {
         try {
@@ -210,7 +260,12 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
     }
 
-
+    /**
+     * Lists the reservations tied to a certain account in the database.
+     *
+     * @param accountId the account id to find the tied reservations
+     * @return a set of reservations tied with the account id
+     */
     public Set<Reservation> list(int accountId) {
         Set<Reservation> reservations = new HashSet<>();
         try {
@@ -240,6 +295,13 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
         return reservations;
     }
+
+    /**
+     * Retrieves a reservation given its id
+     *
+     * @param reservationId the reservation id to be searched
+     * @return the reservation tied with the id
+     */
     public Optional<Reservation> getByReservationId(int reservationId) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservations WHERE reservationId = ?");
@@ -268,6 +330,12 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         return Optional.empty();
     }
 
+    /**
+     * deletes a reservation in the database given its id
+     *
+     * @param reservationId the reservation id to be searched and deleted
+     * @return true if reservation is deleted, false otherwise
+     */
     public boolean deleteByReservationId(int reservationId) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM reservations WHERE reservationId = ?");
@@ -282,6 +350,12 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         return false;
     }
 
+    /**
+     * Updates an existing reservation in the database given its reservation id and new reservation.
+     *
+     * @param reservation the new reservation to replace the existing one
+     * @param reservationId the reservation id to be found
+     */
     public void updateByReservationId(Reservation reservation, int reservationId) {
         try {
             String sql = "UPDATE reservations SET roomNumber = ?, firstName = ?, lastName = ?, email = ?, numberOfGuests = ?, startDate = ?, endDate = ?, checkedIn = ? WHERE reservationId = ?";
@@ -311,6 +385,14 @@ public class ReservationJDBCDAO implements DAO<Reservation>, RoomResDAO<Reservat
         }
     }
 
+    /**
+     * Checks if a new reservation has conflicting information with existing reservations in the database.
+     *
+     * @param roomNumber the room number to be checked
+     * @param startDate the start date to be checked
+     * @param endDate the end date to be checked
+     * @return true if conflicts occur, false otherwise
+     */
     public boolean hasConflictingReservations(int roomNumber, LocalDate startDate, LocalDate endDate) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM reservations WHERE roomNumber = ? AND ((startDate <= ? AND endDate >= ?) OR (startDate <= ? AND endDate >= ?) OR (startDate >= ? AND endDate <= ?))");

@@ -6,11 +6,27 @@ import org.bearluxury.database.RoomResDAO;
 import java.sql.*;
 import java.util.*;
 
+/**
+ * The RoomJDBCDAO class provides data access functionality for Room objects using JDBC.
+ * It implements both DAO and RoomResDAO interfaces for general data access and specific
+ * room reservation data access, respectively.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
     private Connection connection;
 
     private static String JDBC_URL = "jdbc:h2:~/testingRoom";
 
+    /**
+     * Constructs a new RoomJDBCDAO instance. It establishes a database connection and
+     * ensures the existence of the rooms table in the database.
+     */
     public RoomJDBCDAO() {
         try {
             connection = DriverManager.getConnection(JDBC_URL);
@@ -20,6 +36,9 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         }
     }
 
+    /**
+     * Checks if the rooms table exists in the database and creates it if it does not exist.
+     */
     private void createRoomTableIfNotExists() {
         try (Statement stmt = connection.createStatement()) {
             boolean tableExists = false;
@@ -50,6 +69,12 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Retrieves all rooms from the database.
+     *
+     * @return A set of Room objects representing all rooms in the database.
+     */
     @Override
     public Set<Room> list() {
         Set<Room> rooms = new TreeSet<>(Comparator.comparing(Room::getRoomNumber));
@@ -79,6 +104,12 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         return rooms;
     }
 
+    /**
+     * Inserts a new room into the database.
+     *
+     * @param room The Room object to insert into the database.
+     * @throws SQLException If an SQL exception occurs during the insertion process.
+     */
     @Override
     public void insert(Room room) throws SQLException {
         String sql = "INSERT INTO rooms(roomNumber, price, canSmoke, roomType, bedType, qualityLevel, numberOfBeds) " +
@@ -102,6 +133,12 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         }
     }
 
+    /**
+     * Retrieves a room from the database based on its room number.
+     *
+     * @param roomNumber The room number of the room to retrieve.
+     * @return An Optional containing the Room object if found, or an empty Optional if not found.
+     */
     @Override
     public Optional<Room> get(int roomNumber) {
         try {
@@ -127,6 +164,12 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         return Optional.empty();
     }
 
+    /**
+     * Updates a room in the database.
+     *
+     * @param room       The updated Room object.
+     * @param roomNumber The room number of the room to update.
+     */
     @Override
     public void update(Room room, int roomNumber) {
         try {
@@ -151,6 +194,12 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         }
     }
 
+    /**
+     * Deletes a room from the database.
+     *
+     * @param roomNumber The room number of the room to delete.
+     * @return True if the room was successfully deleted, false otherwise.
+     */
     public boolean delete(int roomNumber) {
         try {
             PreparedStatement statement = connection.prepareStatement("DELETE FROM rooms WHERE roomNumber=?");
@@ -165,6 +214,9 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         return false;
     }
 
+    /**
+     * Closes the database connection.
+     */
     @Override
     public void close() {
         try {
@@ -178,6 +230,9 @@ public class RoomJDBCDAO implements DAO<Room>, RoomResDAO<Room> {
         }
     }
 
+    /**
+     * Clears all data from the rooms table in the database.
+     */
     @Override
     public void clear() {
         try {

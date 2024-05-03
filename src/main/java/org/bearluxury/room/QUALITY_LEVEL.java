@@ -1,10 +1,26 @@
 package org.bearluxury.room;
 
+/**
+ * The QUALITY_LEVEL enum is used clarify the quality level of Room.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public enum QUALITY_LEVEL{
     EXECUTIVE,
     BUSINESS,
     COMFORT,
     ECONOMY;
+
+    /**
+     * Converts the enum type to string
+     *
+     * @return the enum type in string form
+     */
     public String toString(){
         if(this == EXECUTIVE){
             return "Executive";
@@ -20,6 +36,12 @@ public enum QUALITY_LEVEL{
         }
         return "EMPTY";
     }
+
+    /**
+     * Converts the enum type to a string in csv format
+     *
+     * @return the enum type in string csv format
+     */
     public String csvFormat() {
         if(this == EXECUTIVE){
             return "executive";

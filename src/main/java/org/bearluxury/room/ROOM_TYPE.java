@@ -1,5 +1,15 @@
 package org.bearluxury.room;
 
+/**
+ * The ROOM_TYPE enum is used to clarify the type of room
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public enum ROOM_TYPE{
     VINTAGE,
     URBAN,

@@ -2,12 +2,31 @@ package org.bearluxury.state;
 
 import org.bearluxury.account.*;
 
+/**
+ * The SessionManager class manages the current user session and provides methods
+ * to get and set the current account.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class SessionManager {
     private static SessionManager instance;
     private Account account;
 
+    /**
+     * Private constructor to prevent direct instantiation of SessionManager.
+     */
     private SessionManager() {}
 
+    /**
+     * Returns the singleton instance of SessionManager.
+     *
+     * @return The SessionManager instance.
+     */
     public static SessionManager getInstance() {
         if (instance == null) {
             instance = new SessionManager();
@@ -15,6 +34,11 @@ public class SessionManager {
         return instance;
     }
 
+    /**
+     * Retrieves the current account associated with the session.
+     *
+     * @return The current Account object, or null if no account is set.
+     */
     public Account getCurrentAccount() {
         if (account == null) {
             return null; // No account set
@@ -58,6 +82,11 @@ public class SessionManager {
         }
     }
 
+    /**
+     * Sets the current account for the session.
+     *
+     * @param account The Account object to set as the current account.
+     */
     public void setCurrentAccount(Account account) {
         this.account = account;
     }
