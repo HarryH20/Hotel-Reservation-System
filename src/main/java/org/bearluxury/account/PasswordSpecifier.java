@@ -54,15 +54,15 @@ public class PasswordSpecifier {
 
     /**
      * checks if a string contains another string
-     * @param str1 the string to check
-     * @param str2 the other string to check
+     * @param password the string to check
+     * @param symbols the other string to check
      * @return whether str1 contains any of str2
      */
-    public boolean containsAny(String str1, String str2){
+    public boolean containsAny(String password, String symbols){
         boolean contains = false;
-        for(int i = 0; i < str1.length(); i++){
-            for(int j = 0; j < str2.length(); j++){
-                if(str1.charAt(i) == str2.charAt(j)){
+        for(int i = 0; i < password.length(); i++){
+            for(int j = 0; j < symbols.length(); j++){
+                if(password.charAt(i) == symbols.charAt(j)){
                     contains = true;
                     break;
                 }
