@@ -64,12 +64,10 @@ public class ProductTableGUI extends JFrame {
                         int amount = Integer.parseInt(amountStr);
                         int currentQuantity = (int) table.getValueAt(selectedRow, 3);
                         int newQuantity = currentQuantity + amount;
-                        int id = (int) table.getValueAt(selectedRow, 0); // Assuming ID is in the first column
+                        int id = (int) table.getValueAt(selectedRow, 0);
 
-                        // Update GUI
                         table.setValueAt(newQuantity, selectedRow, 3);
 
-                        // Update Database
                         try {
                             ProductController productController = new ProductController(new ProductJDBCDAO());
                             productController.addStock(id, amount);
