@@ -11,9 +11,33 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
+ * The AdminHomePage class represents the user interface for the admin's home page.
+ * It extends the HotelHomePage class and provides functionality to register new clerks, view clerk accounts,
+ * and view guest accounts.
  *
+ * It contains buttons for registering new clerks, viewing clerk accounts, and viewing guest accounts.
+ *
+ * This class is intended to be used within the Hotel Management System application.
+ *
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ *
+ * @see HotelHomePage
+ * @see ClerkAccountController
+ * @see ClerkAccountGUI
+ * @see GuestAccountClerkGUI
+ * @see HotelManagementSystem
  */
+
 public class AdminHomePage extends HotelHomePage{
+    /**
+     * Constructs a new AdminHomePage.
+     * Initializes buttons for registering new clerks, viewing clerk accounts, and viewing guest accounts.
+     */
     AdminHomePage() {
         JButton addUser = new JButton("Register New Clerk");
         addUser.setFont(font);
@@ -32,6 +56,11 @@ public class AdminHomePage extends HotelHomePage{
 
         reservePanel.add(viewGuestAccounts);
     }
+
+    /**
+     * ActionListener implementation to handle the event of opening the registration pane for new clerks.
+     * Disposes of the current window and opens the clerk registration pane.
+     */
     private class openRegistration implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -40,6 +69,10 @@ public class AdminHomePage extends HotelHomePage{
         }
     }
 
+    /**
+     * ActionListener implementation to handle the event of opening the view accounts pane for clerks.
+     * Disposes of the current window and opens the clerk account GUI to view clerk accounts.
+     */
     private class OpenViewAccountsPane implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -50,6 +83,10 @@ public class AdminHomePage extends HotelHomePage{
         }
     }
 
+    /**
+     * ActionListener implementation to handle the event of opening the view guest accounts pane.
+     * Disposes of the current window and opens the GUI to view guest accounts.
+     */
     private class openViewGuestAccountsPane implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e){
