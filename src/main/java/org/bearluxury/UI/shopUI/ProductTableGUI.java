@@ -18,6 +18,16 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.Set;
 
+/**
+ * ProductTableGUI class represents a graphical user interface for displaying and managing
+ * product information within a table.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class ProductTableGUI extends JFrame {
     private final Color backgroundColor = new Color(232, 223, 185);
     private final Color tableHeaderColor = new Color(184, 134, 11);
@@ -27,6 +37,11 @@ public class ProductTableGUI extends JFrame {
     private DefaultTableModel model;
     private JTable table;
 
+    /**
+     * Constructs a ProductTableGUI object with the specified set of products.
+     *
+     * @param products The set of products to display in the table.
+     */
     public ProductTableGUI(Set<Product> products) {
         setTitle("Product Information");
         setSize(1280, 720);
@@ -158,6 +173,11 @@ public class ProductTableGUI extends JFrame {
 
 
 
+    /**
+     * Creates a table model for the product table.
+     *
+     * @return The created DefaultTableModel.
+     */
     private DefaultTableModel createTableModel() {
         String[] columnNames = {"Product ID", "Name", "Price", "Quantity", "Type"};
         return new DefaultTableModel(columnNames, 0) {
@@ -168,6 +188,11 @@ public class ProductTableGUI extends JFrame {
         };
     }
 
+
+
+    /**
+     * Adds a new product to the table upon user input.
+     */
     private void addProduct() {
         JTextField nameField = new JTextField(10);
         JTextField priceField = new JTextField(5);
@@ -203,6 +228,9 @@ public class ProductTableGUI extends JFrame {
         }
     }
 
+    /**
+     * Refreshes the table with the latest data from the database.
+     */
     private void refreshTable() {
         DefaultTableModel model = (DefaultTableModel) table.getModel();
         model.setRowCount(0); // Clear the table
@@ -215,7 +243,12 @@ public class ProductTableGUI extends JFrame {
         }
     }
 
-
+    /**
+     * Creates a JTable with the specified table model and customizes its appearance.
+     *
+     * @param model The table model to be used for the JTable.
+     * @return The created JTable.
+     */
 
     private JTable createTable(DefaultTableModel model) {
         JTable table = new JTable(model);
@@ -235,6 +268,12 @@ public class ProductTableGUI extends JFrame {
         return table;
     }
 
+    /**
+     * Creates a JPanel with a BorderLayout and adds the specified JScrollPane to it.
+     *
+     * @param scrollPane The JScrollPane to be added to the panel.
+     * @return The created JPanel.
+     */
     private JPanel createPanel(JScrollPane scrollPane) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
@@ -243,6 +282,13 @@ public class ProductTableGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Fills the table rows of the specified DefaultTableModel with product information
+     * retrieved from the given set of products.
+     *
+     * @param products The set of products containing the data to fill the table rows.
+     * @param model The DefaultTableModel to which the product information will be added.
+     */
     private void fillTableRows(Set<Product> products, DefaultTableModel model) {
         // Fill the table rows with product information
         for (Product product : products) {
@@ -256,6 +302,12 @@ public class ProductTableGUI extends JFrame {
         }
     }
 
+    /**
+     * Creates a JButton labeled "Back" and sets up its ActionListener to handle the action of
+     * returning to the previous page, based on the user's role.
+     *
+     * @return The created JButton configured with the "Back" label and ActionListener.
+     */
     private JButton createBackButton() {
         JButton backButton = new JButton("Back");
         backButton.addActionListener(new ActionListener() {

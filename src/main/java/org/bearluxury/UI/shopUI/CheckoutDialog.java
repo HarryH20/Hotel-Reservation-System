@@ -19,6 +19,18 @@ import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * A dialog window for the checkout process in the shop user interface.
+ * Allows users to review their cart, see the purchase summary, and confirm their purchase.
+ * Handles actions related to confirming the purchase, updating product quantities in the database,
+ * and inserting sale records.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
+ */
 public class CheckoutDialog extends JDialog implements ActionListener {
     private final double SALES_TAX = 0.0625;
 
@@ -51,6 +63,13 @@ public class CheckoutDialog extends JDialog implements ActionListener {
 
     JButton purchaseButton;
 
+
+    /**
+     * Constructs a new CheckoutDialog.
+     * @param parent The parent JFrame of the dialog.
+     * @param cart The map representing the cart with products and quantities.
+     * @param totalPrice The total price of all products in the cart.
+     */
     public CheckoutDialog(JFrame parent, Map<Product, Integer> cart, double totalPrice) {
         super(parent, "Checkout", true);
         setLocationRelativeTo(parent);
@@ -139,6 +158,10 @@ public class CheckoutDialog extends JDialog implements ActionListener {
         add(purchasePanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Handles the actionPerformed event for buttons in the dialog.
+     * @param e The ActionEvent representing the user's action.
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == purchaseButton) {

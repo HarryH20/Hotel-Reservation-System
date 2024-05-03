@@ -20,9 +20,15 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.List;
 
-/*
-    User Interface for store. Uses ProductCard component class to create product cards that
-    show on screen
+/**
+ * The ShopHomePage class represents the main shopping interface for the application.
+ * It allows users to browse products, add them to the cart, and proceed to checkout.
+ * @author Will Clore
+ * @author Harrsion Hassler
+ * @author Derek Martinez
+ * @author Nicholas Nolen
+ * @author Joseph Zuniga
+ * @author Alan Vilagrand
  */
 public class ShopHomePage extends JFrame implements ActionListener, ListSelectionListener {
 
@@ -55,6 +61,11 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
     double totalPrice;
     JButton checkoutButton;
 
+    /**
+     * Constructs a new ShopHomePage with the specified ProductController.
+     *
+     * @param productController The ProductController to manage product data.
+     */
     public ShopHomePage(ProductController productController) {
         setTitle("Shop Home");
         setSize(1280, 720);
@@ -138,6 +149,9 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         add(checkoutPanel, BorderLayout.EAST);
     }
 
+    /**
+     * Initializes the product cards for display.
+     */
     private void initProductCards() {
         productCards = new ArrayList<>();
         // Retrieve products from the database
@@ -146,6 +160,13 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         productCards.forEach(itemPanel::add);
     }
 
+
+
+    /**
+     * Reloads the product cards based on the selected filter.
+     *
+     * @param filter The filter to apply to the product list.
+     */
     private void reloadProductCards(String filter) {
         itemPanel.removeAll();
         // Retrieve products from the database based on the filter
@@ -162,6 +183,12 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         productScrollPane.repaint();
     }
 
+    /**
+     * Updates the cart with the specified product and quantity.
+     *
+     * @param product The product to be added or updated in the cart.
+     * @param quantity The quantity of the product to add or update.
+     */
     public void updateCart(Product product, int quantity) {
         //This code kinda goofy, but it works (for now)
         cartInventory.put(product, quantity);
@@ -190,7 +217,12 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         this.setVisible(true);
     }
 
-    // Used for wrapping
+    /**
+     * Creates a JLabel with whitespace for layout spacing.
+     *
+     * @param whitespace The amount of whitespace to add.
+     * @return The created JLabel with the specified whitespace.
+     */
     private JLabel fillSpace(int whitespace) {
         StringBuilder filler = new StringBuilder();
         for (int i = 0; i < whitespace; ++i) {
@@ -233,6 +265,10 @@ public class ShopHomePage extends JFrame implements ActionListener, ListSelectio
         }
     }
 
+
+    /**
+     * Defines comparators for sorting ProductCard objects based on price and name.
+     */
     public enum ProductPriceComparator implements Comparator<ProductCard>{
         LOW_TO_HIGH {
             @Override
